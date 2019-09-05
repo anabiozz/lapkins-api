@@ -19,7 +19,7 @@ import (
 
 const (
 	// URL ...
-	URL = "127.0.0.1:8080"
+	URL = "127.0.0.1:8081"
 )
 
 func main() {
@@ -48,8 +48,6 @@ func main() {
 
 	// Create router
 	router := mux.NewRouter()
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	router.PathPrefix("/images/").Handler(http.StripPrefix("/images/", http.FileServer(http.Dir("./static/images"))))
 
 	imagesRouter := router.PathPrefix(imagesPath).Subrouter()
 	imagesRouter.PathPrefix("/").Handler(http.StripPrefix(imagesPath+"/", http.FileServer(http.Dir(imagesPath))))
@@ -60,7 +58,7 @@ func main() {
 	apiRouter.Handle("/get-product-by-id", middleware.Cors(api.GetProductByID(&env)))
 
 	// Index.html handler
-	router.PathPrefix("/").HandlerFunc(IndexHandler())
+	// router.PathPrefix("/").HandlerFunc(IndexHandler())
 
 	srv := &http.Server{
 		Handler:      router,

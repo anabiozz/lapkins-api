@@ -1,63 +1,122 @@
 --CREATE SCHEMA lapkin;
 
--- currencies
-CREATE TABLE currencies (
-  currency_id SERIAL PRIMARY KEY,
-  currency TEXT
-);
+--ALTER TABLE lapkin.details_to_products DROP COLUMN detail;
 
--- product_types
-CREATE TABLE product_types (
-  product_type_id SERIAL PRIMARY KEY,
-  product_type TEXT
-);
-INSERT INTO lapkin.product_types (product_type)
-VALUES ('postcards');
-INSERT INTO lapkin.product_types (product_type)
-VALUES ('posters');
+--*******************************************************
 
 -- sizes
 CREATE TABLE sizes (
-  size_id SERIAL PRIMARY KEY,
-  product_type INTEGER REFERENCES product_types (product_type_id),
-  proportions TEXT
+  id SERIAL PRIMARY KEY,
+  value TEXT
 );
 
--- families
-CREATE TABLE families (
-  family_id SERIAL PRIMARY KEY,
-  family TEXT
-);
+INSERT INTO lapkin.sizes (value)
+VALUES ('105х148'), ('148x210'), ('130x180'), ('300x450'), ('300x450'), ('200x300'), ('400x600'), ('600x900'), ('1000x1500'), ('800x1200');
+
+--*******************************************************
 
 -- authors
 CREATE TABLE authors (
-  author_id SERIAL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   author TEXT
 );
+
+INSERT INTO lapkin.authors (author)
+VALUES ('Анастасия Кондратьева'), ('Lolka Lolkina');
+
+--*******************************************************
+
+CREATE TABLE details (
+  id SERIAL PRIMARY KEY,
+  details TEXT
+);
+
+INSERT INTO lapkin.details (details)
+VALUES ('авторы'), ('материал'), ('покрытие'), ('тип печати'), ('размер');
+
+--*******************************************************
+
+-- product_types
+CREATE TABLE product_types (
+  id SERIAL PRIMARY KEY,
+  product_type TEXT
+);
+
+INSERT INTO lapkin.product_types (product_type)
+VALUES ('postcards'), ('posters');
+
+--*******************************************************
+
+CREATE TABLE details_to_product_types (
+	id SERIAL PRIMARY KEY,
+  	product_type_id INTEGER REFERENCES product_types(id),
+	detail_id INTEGER REFERENCES details(id)
+);
+
+INSERT INTO lapkin.details_to_product_types (product_type_id, detail_id)
+VALUES (2, 1), (2, 2), (2, 3), (2, 4), (2, 5);
+
+--*******************************************************
 
 -- products
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
-  name UUID UNIQUE,
-  categories JSONB,
-  currency INTEGER REFERENCES currencies (currency_id),
+  name TEXT,
   description TEXT,
   price INTEGER,
-  product_type INTEGER REFERENCES product_types (product_type_id),
-  is_available BOOLEAN,
-  ext text
+  product_type INTEGER REFERENCES product_types(id),
+  is_available BOOLEAN
 );
 
-INSERT INTO lapkin.currencies (currency)
-VALUES ('RU');
-INSERT INTO lapkin.sizes (product_type, proportions)
-VALUES (1, '105x148');
-INSERT INTO lapkin.sizes (product_type, proportions)
-VALUES (1, '148x210');
-INSERT INTO lapkin.authors (author)
-VALUES ('Анастасия Кондратьева');
-INSERT INTO lapkin.authors (author)
-VALUES ('Lolka Lolkina');
+INSERT INTO lapkin.products (name, description, price, product_type, is_available)
+VALUES ('product_1', 'descripttion 1', 50, 2, true), 
+			 ('product_2', 'descripttion 2', 50, 2, true), 
+			 ('product_3', 'descripttion 3', 50, 2, true), 
+			 ('product_4', 'descripttion 4', 50, 2, true),
+			 ('product_5', 'descripttion 5', 50, 2, true), 
+			 ('product_6', 'descripttion 6', 50, 2, true);
+			
+--*******************************************************
+
+CREATE TABLE authors_to_products (
+	id SERIAL PRIMARY KEY,
+  	author_id INTEGER REFERENCES authors(id),
+	product_id INTEGER REFERENCES products(id)
+);
+
+INSERT INTO lapkin.authors_to_products (author_id, product_id)
+VALUES (1, 1), (2, 1);
+
+--*******************************************************
+
+CREATE TABLE sizes_to_products (
+	id SERIAL PRIMARY KEY,
+  	size_id INTEGER REFERENCES sizes(id),
+	product_id INTEGER REFERENCES products(id)
+);
+
+INSERT INTO lapkin.sizes_to_products (size_id, product_id)
+VALUES (2, 1), (3, 1), (4, 1);
+
+--*******************************************************
+
+CREATE TABLE details_to_products (
+	id SERIAL PRIMARY KEY,
+  	details_id INTEGER REFERENCES details(id),
+	product_id INTEGER REFERENCES products(id)
+);
+
+INSERT INTO lapkin.details_to_products (details_id, product_id)
+VALUES (1, 1), (2, 1), (3, 1), (4, 1), (5, 1);
+
+--*******************************************************
+
+
+SELECT name, description, price, is_available, dtp.details_id
+FROM lapkin.products AS p
+JOIN lapkin.details_to_products AS dtp ON  p.id = dtp.product_id 
+WHERE product_type = 2
+
 
 -- get_products
 CREATE OR REPLACE FUNCTION lapkin.get_products(INT)
