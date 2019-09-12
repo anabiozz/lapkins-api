@@ -51,6 +51,12 @@ VALUES ('semi-gloss'), ('gloss'), ('matte');
 
 --*******************************************************
 
+CREATE TABLE products_to_details (
+  detail_id INT REFERENCES details(id),
+	product_id INT REFERENCES products(id),
+	value TEXT
+);
+
 
 CREATE TABLE print_types (
   id SERIAL PRIMARY KEY,
@@ -205,20 +211,112 @@ from (
 		    ptm.material_id AS materials, 
 	  		ptpt.print_type_id AS print_types
 		FROM cte
-		LEFT JOIN lapkin.products_to_authors AS pta ON  cte.id = pta.product_id
-		LEFT JOIN lapkin.products_to_finishes AS ptf ON  cte.id = ptf.product_id
-		LEFT JOIN lapkin.products_to_materials AS ptm ON  cte.id = ptm.product_id
-		LEFT JOIN lapkin.products_to_print_types AS ptpt ON  cte.id = ptpt.product_id
+		JOIN lapkin.products_to_authors AS pta ON  cte.id = pta.product_id
+		JOIN lapkin.products_to_finishes AS ptf ON  cte.id = ptf.product_id
+		JOIN lapkin.products_to_materials AS ptm ON  cte.id = ptm.product_id
+		JOIN lapkin.products_to_print_types AS ptpt ON  cte.id = ptpt.product_id
     ) x
-    LEFT JOIN lapkin.authors AS a ON x.authors = a.id
-	LEFT JOIN lapkin.finishes AS f ON x.finishes = f.id
-	LEFT JOIN lapkin.materials AS m ON x.materials = m.id
-	LEFT JOIN lapkin.print_types AS pt ON x.print_types = pt.id
+    JOIN lapkin.authors AS a ON x.authors = a.id
+	  JOIN lapkin.finishes AS f ON x.finishes = f.id
+		JOIN lapkin.materials AS m ON x.materials = m.id
+		JOIN lapkin.print_types AS pt ON x.print_types = pt.id
 ) mmm
 GROUP BY mmm.name,
 mmm.description,
 mmm.price,
 mmm.is_available;
+
+
+-- ***************************************************
+
+
+WITH cte AS (
+	SELECT *
+	FROM lapkin.products AS products
+	WHERE product_type = 2
+)
+SELECT
+	mmm.name,
+	mmm.description, 
+	mmm.price, 
+	mmm.is_available,
+	json_build_object(
+	    mmm.detail, json_agg(mmm.value)
+	) AS details
+FROM (
+	SELECT
+		x.name,
+		x.description, 
+		x.price, 
+		x.is_available,
+		pdetails.value,
+		d.detail
+	FROM (
+        SELECT
+        	cte.id,
+            cte.name,
+			cte.description,
+			cte.price, 
+			cte.is_available,
+		    ptd.detail_id AS detail
+		FROM cte
+		JOIN lapkin.product_types_to_details AS ptd ON cte.product_type = ptd.product_type_id
+    ) x
+    JOIN lapkin.products_to_details AS pdetails ON x.detail = pdetails.detail_id AND x.id = pdetails.product_id
+    JOIN lapkin.details AS d ON x.detail = d.id
+   
+) mmm
+GROUP BY mmm.name,
+mmm.description,
+mmm.price,
+mmm.is_available,
+mmm.detail;
+
+-- ***************************************************
+
+WITH cte AS (
+	SELECT *
+	FROM lapkin.products AS products
+	WHERE product_type = 2
+)
+SELECT
+	mmm.name,
+	mmm.description, 
+	mmm.price, 
+	mmm.is_available,
+	array_to_json(array_agg(row_to_json((select detail, value from mmm))))
+--	json_build_object(
+--	    mmm.detail, json_agg(mmm.value)
+--	) AS details
+FROM (
+	SELECT
+		x.name,
+		x.description, 
+		x.price, 
+		x.is_available,
+		x.value,
+		x.detail
+	FROM (
+        SELECT
+        	cte.id,
+            cte.name,
+			cte.description,
+			cte.price, 
+			cte.is_available,
+			pdetails.value AS value,
+			d.detail AS detail,
+			array_to_json(array_agg(row_to_json((select detail, value from mmm))))
+		FROM cte
+		JOIN lapkin.product_types_to_details AS ptd ON cte.product_type = ptd.product_type_id
+		LEFT OUTER JOIN lapkin.products_to_details AS pdetails ON ptd.detail_id = pdetails.detail_id AND pdetails.product_id = cte.id
+   		JOIN lapkin.details AS d ON ptd.detail_id = d.id
+    ) x
+) mmm
+GROUP BY mmm.name,
+mmm.description,
+mmm.price,
+mmm.is_available;
+
 
 -- get_products
 CREATE OR REPLACE FUNCTION lapkin.get_products(INT)
