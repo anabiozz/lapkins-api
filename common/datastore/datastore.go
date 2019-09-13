@@ -3,13 +3,14 @@ package datastore
 import (
 	"errors"
 
-	"github.com/anabiozz/lapkin-project/lapkin/backend/models"
+	"github.com/anabiozz/lapkin-project/lapkin-api/models"
 )
 
 // Datastore ...
 type Datastore interface {
 	GetProducts(productsID string, paths models.Paths) (products []models.Product, err error)
-	GetProductByID(productID string) (product *models.Product, err error)
+	GetProductByID(productID string) (product *models.ProductVariant, err error)
+	GetProductVariantByID(productVariantID string) (product *models.ProductVariant, err error)
 	CloseDB()
 }
 

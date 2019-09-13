@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/anabiozz/lapkin-project/lapkin/backend/common"
-	"github.com/anabiozz/lapkin-project/lapkin/backend/models"
+	"github.com/anabiozz/lapkin-project/lapkin-api/common"
+	"github.com/anabiozz/lapkin-project/lapkin-api/models"
 	"github.com/anabiozz/logger"
 )
 

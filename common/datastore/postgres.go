@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/anabiozz/lapkin-project/lapkin/backend/models"
+	"github.com/anabiozz/lapkin-project/lapkin-api/models"
 	"github.com/anabiozz/logger"
 	"github.com/kelseyhightower/envconfig"
+	"github.com/lib/pq"
 )
 
 // Configs for database
@@ -38,7 +39,7 @@ func NewPostgresDatastore() (*PostgresDatastore, error) {
 // GetProducts ..
 func (p *PostgresDatastore) GetProducts(productsID string, paths models.Paths) (products []models.Product, err error) {
 	id, err := strconv.Atoi(productsID)
-	query := fmt.Sprintf(`SELECT * FROM lapkin.get_products(%d);`, id)
+	query := fmt.Sprintf(`SELECT * FROM products.get_products(%d);`, id)
 	rows, err := p.Query(query)
 	if err != nil {
 		return nil, err
@@ -51,13 +52,8 @@ func (p *PostgresDatastore) GetProducts(productsID string, paths models.Paths) (
 		err = rows.Scan(
 			&product.ID,
 			&product.Name,
-			&product.Categories,
-			&product.Currency,
 			&product.Description,
-			&product.Price,
-			&product.IsAvailable,
-			&product.ProductsType,
-			&product.Ext)
+			&product.Price)
 		if err != nil {
 			return nil, err
 		}
@@ -69,22 +65,42 @@ func (p *PostgresDatastore) GetProducts(productsID string, paths models.Paths) (
 }
 
 // GetProductByID ..
-func (p *PostgresDatastore) GetProductByID(productID string) (product *models.Product, err error) {
+func (p *PostgresDatastore) GetProductByID(productID string) (product *models.ProductVariant, err error) {
 	id, err := strconv.Atoi(productID)
-	query := fmt.Sprintf(`SELECT * FROM lapkin.get_product_by_id(%d);`, id)
+	query := fmt.Sprintf(`SELECT * FROM products.get_product_by_id(%d);`, id)
 
-	product = &models.Product{}
+	product = &models.ProductVariant{}
 
 	err = p.QueryRow(query).Scan(
 		&product.ID,
+		&product.ProductID,
 		&product.Name,
-		&product.Categories,
-		&product.Currency,
 		&product.Description,
-		&product.Price,
-		&product.IsAvailable,
-		&product.ProductsType,
-		&product.Ext)
+		&product.PriceOverride,
+		&product.Attributes,
+		pq.Array(&product.Sizes))
+	if err != nil {
+		return nil, err
+	}
+
+	return product, nil
+}
+
+// GetProductVariantByID ..
+func (p *PostgresDatastore) GetProductVariantByID(productVariantID string) (product *models.ProductVariant, err error) {
+	id, err := strconv.Atoi(productVariantID)
+	query := fmt.Sprintf(`SELECT * FROM products.get_product_variant_by_id(%d);`, id)
+
+	product = &models.ProductVariant{}
+
+	err = p.QueryRow(query).Scan(
+		&product.ID,
+		&product.ProductID,
+		&product.Name,
+		&product.Description,
+		&product.PriceOverride,
+		&product.Attributes,
+		pq.Array(&product.Sizes))
 	if err != nil {
 		return nil, err
 	}
