@@ -1,5 +1,3 @@
-CREATE SCHEMA IF NOT EXISTS products AUTHORIZATION lapkin;
-
 -- FUNCTIONS ********************************************
 
 CREATE OR REPLACE FUNCTION products.update_modified_column()
@@ -20,7 +18,7 @@ CREATE TABLE products.product_attribute (
 );
 
 INSERT INTO products.product_attribute (name, display)
-VALUES ('authors', 'авторы'), ('materials', 'материалы'), ('finish', 'покрытие'), ('print type', 'тип печати'), ('postcards size', 'размер'), ('posters size', 'размер');
+VALUES ('authors', 'авторы'), ('materials', 'материалы'), ('finish', 'покрытие'), ('print type', 'тип печати'), ('postcards size', 'размер'), ('posters size', 'размер'), ('frame', 'рамка');
 
 
 CREATE TABLE products.product_class (
@@ -60,6 +58,8 @@ VALUES ('Анастасия Кондратьева', 1),
 ('1000x1500', 5),
 ('800x1200', 5),
 ('A4', 5),
+('A6', 5),
+('дервянная', 7),
 ('A6', 5);
 
 
@@ -97,7 +97,7 @@ CREATE TABLE products.product_class_variant_attribute (
 );
 
 INSERT INTO products.product_class_variant_attribute (product_class_id, product_attribute_id)
-VALUES (1, 2), (2, 2);
+VALUES (1, 2), (2, 2), (2, 7);
 
 -- PRODUCT ********************************************
 
@@ -133,18 +133,18 @@ CREATE TABLE products.product_variant (
 
 INSERT INTO products.product_variant (name, price_override, product_id, attributes)
 VALUES ('плакат веселье 300x450', 300, 1, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper"]}'), 
-('плакат веселье с металической рамой 300x450', 600, 1, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "металл"]}'),
-('плакат веселье с деревянной рамой 300x450', 400, 1, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "дерево"]}'),
-('плакат веселье 600x900', 300, 1, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper"]}'), 
-('плакат веселье с металической рамой 600x900', 600, 1, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "металл"]}'),
-('плакат веселье с деревянной рамой 600x900', 400, 1, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "дерево"]}'),
+('плакат веселье с платиковой рамой 300x450', 600, 1, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "плаcтик"], "frame":["плаcтик"]}'),
+('плакат веселье с деревянной рамой 300x450', 400, 1, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "дерево"], "frame":["дерево"]}'),
+('плакат веселье 600x900', 400, 1, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper"]}'), 
+('плакат веселье с платиковой рамой 600x900', 600, 1, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "плаcтик"], "frame":["плаcтик"]}'),
+('плакат веселье с деревянной рамой 600x900', 400, 1, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "дерево"], "frame":["дерево"]}'),
 ('открытка веселье 105х148', 50, 3, '{"sizes": ["105х148"], "authors": ["Анастасия Кондратьева", "Lolka Lolkina"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["300 g/m² Munken Lynx Rough paper (woodfree)"]}'),
 ('плакат надпись со смыслом 300x450', 300, 2, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper"]}'), 
-('плакат надпись со смыслом с металической рамой 300x450', 600, 2, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "металл"]}'),
-('плакат надпись со смыслом с деревянной рамой 300x450', 400, 2, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "дерево"]}'),
-('плакат надпись со смыслом 600x900', 300, 2, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper"]}'), 
-('плакат надпись со смыслом с металической рамой 600x900', 600, 2, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "металл"]}'),
-('плакат надпись со смыслом с деревянной рамой 600x900', 400, 2, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "дерево"]}'),
+('плакат надпись со смыслом с платиковой рамой 300x450', 600, 2, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "плаcтик"], "frame":["плаcтик"]}'),
+('плакат надпись со смыслом с деревянной рамой 300x450', 400, 2, '{"sizes": ["300x450"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "дерево"], "frame":["дерево"]}'),
+('плакат надпись со смыслом 600x900', 400, 2, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper"]}'), 
+('плакат надпись со смыслом с платиковой рамой 600x900', 600, 2, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "плаcтик"], "frame":["плаcтик"]}'),
+('плакат надпись со смыслом с деревянной рамой 600x900', 400, 2, '{"sizes": ["600x900"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["240 g/m² pure white paper", "дерево"], "frame":["дерево"]}'),
 ('открытка надпись со смыслом 105х148', 50, 4, '{"sizes": ["105х148"], "authors": ["Анастасия Кондратьева"], "finish": ["semi-gloss"], "print type": ["digital printing"], "materials": ["300 g/m² Munken Lynx Rough paper (woodfree)"]}');
 
 
@@ -248,16 +248,16 @@ AS $$
 	BEGIN
 	 	RETURN QUERY 
  		SELECT 
-	 		product_variant.id,
+ 			product_variant.id,
 	 		p.id,
 	 		product_variant."name",
 	 		p.description,
 	 		product_variant.price_override, 
 	 		product_variant."attributes",
 	 		p.sizes::TEXT[]
-	 	FROM products.product_variant
-	 	JOIN products.product AS p ON products.product_variant.product_id = p.id
-	 	WHERE products.product_variant.id = $1;
+		FROM products.product_variant
+		JOIN products.product AS p ON products.product_variant.product_id = p.id
+		WHERE product_variant."attributes" @> '{"sizes": ["600x900"]}' AND product_variant."attributes"->'frame' IS NULL AND product_variant.product_id = $1;
 	END;
 $$ LANGUAGE plpgsql;
 
@@ -270,18 +270,18 @@ WHERE product_variant."attributes" ->> '600x900' AND product_id = 2
 
 SELECT * 
 FROM product_variant 
-WHERE "attributes" @> '{"sizes": ["600x900"]}' AND product_id = 2
+WHERE "attributes" @> '{"sizes": ["600x900"]}' AND "attributes"->'frame' IS NULL AND product_id = 2
 
-UPDATE products.product_variant
+UPDATE products.product
 SET ATTRIBUTES = (
 WITH attr AS (
 	SELECT pcva.product_attribute_id AS id
 	FROM product_class_variant_attribute AS pcva
-	WHERE pcva.product_class_id = 1
+	WHERE pcva.product_class_id = 2
 	UNION
 	SELECT pcpa.product_attribute_id AS id
 	FROM product_class_product_attribute AS pcpa
-	WHERE pcpa.product_class_id = 1
+	WHERE pcpa.product_class_id = 2
 )
 SELECT json_object_agg(ch.name, ch.display)
 FROM (
@@ -291,7 +291,7 @@ FROM (
 	JOIN attribute_choice_value AS acv ON acv.attribute_id = attr.id
 	GROUP BY p_attr.name
 ) ch)
-WHERE product_class_id = 1;
+WHERE product_class_id = 2;
 
 
 WITH attr AS (

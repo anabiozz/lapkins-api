@@ -13,7 +13,7 @@ func GetProductVariantByID(env *common.Env) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		product, err := env.DB.GetProductByID(r.URL.Query().Get("product_variant_id"))
+		product, err := env.DB.GetProductVariantByID(r.URL.Query().Get("product_variant_id"))
 		if err != nil {
 			logger.Info(err)
 			w.WriteHeader(http.StatusNotFound)
