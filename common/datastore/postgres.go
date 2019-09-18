@@ -87,9 +87,9 @@ func (p *PostgresDatastore) GetProductByID(productID string) (product *models.Pr
 }
 
 // GetProductVariantByID ..
-func (p *PostgresDatastore) GetProductVariantByID(productVariantID string) (product *models.ProductVariant, err error) {
+func (p *PostgresDatastore) GetProductVariantByID(productVariantID, size string) (product *models.ProductVariant, err error) {
 	id, err := strconv.Atoi(productVariantID)
-	query := fmt.Sprintf(`SELECT * FROM products.get_product_variant_by_id(%d);`, id)
+	query := fmt.Sprintf(`SELECT * FROM products.get_product_variant_by_id(%d, '%s');`, id, size)
 
 	product = &models.ProductVariant{}
 

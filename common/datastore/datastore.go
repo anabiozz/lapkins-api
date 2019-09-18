@@ -10,7 +10,7 @@ import (
 type Datastore interface {
 	GetProducts(productsID string, paths models.Paths) (products []models.Product, err error)
 	GetProductByID(productID string) (product *models.ProductVariant, err error)
-	GetProductVariantByID(productVariantID string) (product *models.ProductVariant, err error)
+	GetProductVariantByID(productVariantID, size string) (product *models.ProductVariant, err error)
 	CloseDB()
 }
 
