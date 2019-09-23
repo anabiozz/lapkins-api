@@ -1,22 +1,5 @@
--- FUNCTIONS ********************************************
 
-CREATE OR REPLACE FUNCTION products.update_modified_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = now();
-    RETURN NEW;   
-END;
-$$ language 'plpgsql';
-
-
--- PRODUCT ATTRIBUTE ********************************************
-
-CREATE TABLE products.product_attribute (
-	id SERIAL PRIMARY KEY,
-	name TEXT,
-	display TEXT
-);
-
+-- product_attribute
 INSERT INTO products.product_attribute (name, display)
 VALUES ('authors', 'авторы'), 
 ('materials', 'материалы'), 
@@ -26,27 +9,14 @@ VALUES ('authors', 'авторы'),
 ('posters size', 'размер'), 
 ('frame', 'рамка');
 
-
-CREATE TABLE products.product_class (
-	id SERIAL PRIMARY KEY,
-	name TEXT,
-	has_variant BOOLEAN,
-	is_shipping_required BOOLEAN
-);
-
+-- product_class
 INSERT INTO products.product_class (name)
 VALUES ('postcards'), 
 ('posters'), 
 ('badges'), 
 ('table lamps');
 
-
-CREATE TABLE products.attribute_choice_value (
-	id SERIAL PRIMARY KEY,
-	display TEXT,
-	attribute_id INT REFERENCES products.product_attribute(id)
-);
-
+-- attribute_choice_value
 INSERT INTO products.attribute_choice_value (display, attribute_id)
 VALUES ('Анастасия Кондратьева', 1), 
 ('Lolka Lolkina', 1),
@@ -60,31 +30,15 @@ VALUES ('Анастасия Кондратьева', 1),
 ('дерево', 7),
 ('пластик', 7);
 
--- CATEGORY ********************************************
+-- category
+INSERT INTO products.category (name, parent_id)
+VALUES ('wallart', 1), 
+('stationery', 2), 
+('gifts', 3), 
+('home', 4),
+("postcards", 2);
 
-CREATE TABLE products.category (
-	id SERIAL PRIMARY KEY,
-	name TEXT NOT NULL,
-	description TEXT,
-	hidden BOOLEAN,
-	lft INT,
-	rgt INT,
-	tree_id INT,
-	parent_id INT REFERENCES products.category(id)
-);
-
-INSERT INTO products.category (name)
-VALUES ('wallart'), 
-('stationery'), 
-('gifts'), 
-('home');
-
-CREATE TABLE products.product_class_product_attribute (
-	id SERIAL PRIMARY KEY,
-	product_class_id INT REFERENCES products.product_class(id),
-	product_attribute_id INT REFERENCES products.product_attribute(id)
-);
-
+-- product_class_product_attribute
 INSERT INTO products.product_class_product_attribute (product_class_id, product_attribute_id)
 VALUES (1, 1), 
 (1, 3), 
@@ -95,27 +49,11 @@ VALUES (1, 1),
 (2, 4), 
 (2, 6);
 
-CREATE TABLE products.product_class_variant_attribute (
-	id SERIAL PRIMARY KEY,
-	product_class_id INT REFERENCES products.product_class(id),
-	product_attribute_id INT REFERENCES products.product_attribute(id)
-);
-
+-- product_class_variant_attribute
 INSERT INTO products.product_class_variant_attribute (product_class_id, product_attribute_id)
 VALUES (1, 2), (2, 2), (2, 7);
 
--- PRODUCT ********************************************
-
-CREATE TABLE products.product (
-	id SERIAL PRIMARY KEY,
-	name TEXT,
-	description TEXT,
-	price INT,
-	available_on BOOLEAN,
-	updated_at timestamptz DEFAULT current_timestamp,
-	product_class_id INT REFERENCES product_class(id)
-);
-
+-- product
 INSERT INTO products.product (name, description, price, product_class_id)
 VALUES (
 			'плакат веселье', 
@@ -166,7 +104,7 @@ VALUES (
 			1
 		);
 
-CREATE TRIGGER update_product_modtime BEFORE UPDATE ON products.product FOR EACH ROW EXECUTE PROCEDURE update_modified_column();
+
 
 CREATE TABLE products.product_variant ( 
 	id SERIAL PRIMARY KEY,
@@ -531,82 +469,25 @@ VALUES (
 			}'
 		);
 
-
-
-CREATE TABLE products.product_categories (
-	id SERIAL PRIMARY KEY,
-	product_id INT REFERENCES products.product(id),
-	category_id INT REFERENCES products.category(id)
-);
-
+-- product_categories
 INSERT INTO products.product_categories (product_id, category_id)
 VALUES (1, 1), (2, 1), (3, 2), (4, 2), (5, 1), (6, 1), (7, 2), (8, 2);
 
--- IMAGES ********************************************
-
-CREATE TABLE products.product_images (
-	id SERIAL PRIMARY KEY,
-	image TEXT,
-	ppoi TEXT,
-	alt TEXT,
-	"order" INT,
-	product_id INT REFERENCES products.product(id)
-);
-
-CREATE TABLE products.variant_image (
-	id SERIAL PRIMARY KEY,
-	image_id INT REFERENCES products.product_images(id),
-	variant_id INT REFERENCES products.product_variant(id)
-);
-
--- STOCK ********************************************
-
-CREATE TABLE products.stock_location (
-	id SERIAL PRIMARY KEY,
-	name TEXT
-);
-
-CREATE TABLE products.stock (
-	id SERIAL PRIMARY KEY,
-	qty INT,
-	cost_price INT,
-	variant_id INT REFERENCES products.product_variant(id),
-	quantity_allocated INT,
-	location_id INT REFERENCES products.stock_location(id)
-);
-
--- SIZES ********************************************
-
-CREATE TABLE products."size" (
-	id serial PRIMARY KEY,
-	x TEXT,
-	y TEXT
-);
-
+-- size
 INSERT INTO products."size" (x, y)
 VALUES ('105', '148'),
 ('148', '210'),
 ('300', '450'),
 ('600', '900');
 
-CREATE TABLE products.product_class_product_size (
-	id serial PRIMARY KEY,
-	product_class_id INT REFERENCES products.product_class(id),
-	product_size_id INT REFERENCES products."size"(id)
-);
-
+-- product_class_product_size
 INSERT INTO products.product_class_product_size (product_class_id, product_size_id)
 VALUES (1, 1),
 (1, 2),
 (2, 3),
 (2, 4);
 
-CREATE TABLE products.product_class_variant_size (
-	id serial PRIMARY KEY,
-	variant_id INT REFERENCES products.product_variant(id),
-	product_size_id INT REFERENCES products."size"(id)
-);
-
+-- product_class_variant_size
 INSERT INTO products.product_class_variant_size (variant_id, product_size_id)
 VALUES (1, 3),
 (2, 3),
@@ -637,71 +518,42 @@ VALUES (1, 3),
 (27, 4),
 (28, 2);
 
--- get_products
-CREATE OR REPLACE FUNCTION products.get_products(INT)
-RETURNS TABLE  (
-	id INT,
-	name TEXT,
-	description TEXT,
-	price INT
-)
-AS $$
-	BEGIN
-	 	RETURN QUERY SELECT product.id, product."name", product.description, product.price
-		FROM products.product
-		JOIN products.product_categories AS pc ON pc.product_id = product.id AND pc.category_id = $1;
-	END;
-$$ LANGUAGE plpgsql;
+-- stock_location
+insert into products.stock_location (name)
+values ("default")
 
-CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
-RETURNS TABLE (
-	id INT,
-	product_id INT,
-	name TEXT,
-	description TEXT,
-	price_override INT,
-	ATTRIBUTES jsonb,
-	sizes TEXT[]
-)
-AS $$
-	BEGIN
-	 	RETURN QUERY 
- 		SELECT 
-			pv.id,
-			p.id,
-			pv."name",
-			p.description,
-			pv.price_override, 
-			pv."attributes",
-			ARRAY_AGG(s.x || 'x' || s.y) AS size
-		FROM products.product_variant AS pv
-		JOIN products.product AS p ON pv.product_id = p.id
-		JOIN products.product_class_product_size AS pcps ON pcps.product_class_id = p.product_class_id
-		JOIN products."size" AS s ON s.id = pcps.product_size_id
-		WHERE 
-			string_to_array(COALESCE(NULLIF(p_size, ''), (
-												SELECT s.x || 'x' || s.y AS size 
-												FROM products.product_class_variant_size AS pcvs
-												JOIN products."size" AS s ON s.id = pcvs.product_size_id
-												WHERE pcvs.variant_id = pv.id
-											)
-									), '|') IN 
-				(
-					SELECT ARRAY_AGG(s.x || 'x' || s.y) AS size
-					FROM products.product_class_variant_size AS pcvs
-					JOIN products."size" AS s ON s.id = pcvs.product_size_id
-					WHERE pcvs.variant_id = pv.id
-					
-				)
-		AND pv."attributes"->'frame' IS NULL 
-		AND pv.product_id = p_id
-		GROUP BY pv.id, p.id;
-	END;
-$$ LANGUAGE plpgsql;
+-- stock
+insert into products.stock (qty, cost_price, variant_id, location_id)
+values (10, 150, 1, 1), -- 300x450
+(10, 190, 2, 1), -- 300x450 пластик
+(10, 200, 3, 1), -- 300x450 дерево
+(10, 160, 4, 1), -- 600х900
+(10, 250, 1), -- 600х900 пластик
+(10, 270, 6, 1), -- 600х900 дерево
+(10, 15, 7, 1), -- 105х148
+(10, 150, 8, 1), -- 300x450
+(10, 190, 9, 1), -- 300x450 пластик
+(10, 200, 10, 1), -- 300x450 дерево
+(10, 150, 11, 1),  -- 600х900
+(10, 250, 12, 1), -- 600х900 пластик
+(10, 270, 13, 1),  -- 600х900 дерево
+(10, 15, 14, 1),  -- 105х148
+(10, 150, 15, 1), -- 300x450
+(10, 190, 16, 1), -- 300x450 пластик
+(10, 200, 17, 1), -- 300x450 дерево
+(10, 160, 18, 1), -- 600х900
+(10, 250, 19), -- 600х900 пластик
+(10, 270, 20, 1), -- 600х900 дерево
+(10, 15, 21, 1), -- 105х148
+(10, 150, 22, 1), -- 300x450
+(10, 190, 23, 1), -- 300x450 пластик
+(10, 200, 24, 1), -- 300x450 дерево
+(10, 150, 25, 1),  -- 600х900
+(10, 250, 26, 1), -- 600х900 пластик
+(10, 270, 27, 1),  -- 600х900 дерево
+(10, 15, 28, 1),  -- 105х148
 
-
-SELECT * FROM products.get_product_variant_by_id(1, '600x900')
-
+-- **************************************************************************
 
 SELECT *
 FROM product_variant
@@ -760,11 +612,6 @@ GROUP BY product_variant.id, p.id;
 -- **************************************************************************
 
 
-
-FROM product_variant  
-WHERE product_variant."attributes" ->> '600x900' AND product_id = 2
-
-
 SELECT * 
 FROM product_variant 
 WHERE "attributes" @> '{"sizes": ["600x900"]}' AND "attributes"->'frame' IS NULL AND product_id = 2
@@ -805,3 +652,9 @@ FROM (
 ) ch;
 
 
+WITH inserted AS (
+  INSERT INTO CATEGORY (NAME) VALUES ('PARENT_1')
+  RETURNING id
+) INSERT INTO CATEGORY (NAME, PARENT_ID) VALUES
+  ('CHILD_1_1', (SELECT inserted.id FROM inserted)),
+  ('CHILD_2_1', (SELECT inserted.id FROM inserted))

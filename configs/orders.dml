@@ -1,0 +1,2 @@
+insert into orders.order_status_code (status_desc)
+values ("in process"), ("cancelled"), ("completed")
