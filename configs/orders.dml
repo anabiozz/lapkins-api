@@ -1,2 +1,11 @@
 insert into orders.order_status_code (status_desc)
-values ("in process"), ("cancelled"), ("completed")
+values ("in process"), ("cancelled"), ("completed"), ("out of stock");
+
+insert into orders.shipping_method (status_desc)
+values ("pickup"), ("fedex"), ("ups");
+
+insert into orders.payment_method (method_description)
+values ("credit card"), ("debit card"), ("cash");
+
+insert into orders.invoice_status_code (status_desc)
+values ("issued"), ("paid");

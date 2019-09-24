@@ -13,14 +13,3 @@ CREATE TABLE customers.customer (
 	created_at timestamptz DEFAULT current_timestamp,
 	updated_at timestamptz DEFAULT current_timestamp
 );
-
-CREATE TABLE customers.payment_method (
-	id INT SERIAL PRIMARY KEY,
-	method_description TEXT
-)
-
-CREATE TABLE customers.customer_payment_method (
-	id INT SERIAL PRIMARY KEY,
-	customer_id INT REFERENCES customers.customer(id),
-	payment_code_id INT REFERENCES customers.payment_method(id)
-)

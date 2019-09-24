@@ -16,20 +16,18 @@ CREATE TRIGGER update_product_modtime BEFORE UPDATE ON products.product FOR EACH
 
 CREATE TABLE products.product_attribute (
 	id SERIAL PRIMARY KEY,
-	name TEXT,
-	display TEXT
+	name TEXT NOT NULL,
+	display TEXT NOT NULL
 );
 
 CREATE TABLE products.product_class (
 	id SERIAL PRIMARY KEY,
-	name TEXT,
-	has_variant BOOLEAN,
-	is_shipping_required BOOLEAN
+	name TEXT NOT NULL
 );
 
 CREATE TABLE products.attribute_choice_value (
 	id SERIAL PRIMARY KEY,
-	display TEXT,
+	display TEXT NOT NULL,
 	attribute_id INT REFERENCES products.product_attribute(id)
 );
 
@@ -39,7 +37,7 @@ CREATE TABLE products.category (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL,
 	description TEXT,
-	hidden BOOLEAN,
+	hidden BOOLEAN NOT NULL DEFAULT false,
 	tree_id INT,
 	parent_id INT REFERENCES products.category(id)
 );
@@ -60,21 +58,19 @@ CREATE TABLE products.product_class_variant_attribute (
 
 CREATE TABLE products.product (
 	id SERIAL PRIMARY KEY,
-	name TEXT,
-	description TEXT,
-	price INT,
-	available_on BOOLEAN,
-	updated_at timestamptz DEFAULT current_timestamp,
+	name TEXT NOT NULL,
+	description TEXT NOT NULL,
+	price INT NOT NULL,
+	updated_at timestamptz DEFAULT current_timestamp NOT NULL,
 	product_class_id INT REFERENCES product_class(id)
 );
 
-CREATE TRIGGER update_product_modtime BEFORE UPDATE ON products.product FOR EACH ROW EXECUTE PROCEDURE update_modified_column();
 
 CREATE TABLE products.product_variant ( 
 	id SERIAL PRIMARY KEY,
-	sku INT,
-	name TEXT,
-	price_override INT,
+	sku INT NOT NULL,
+	name TEXT NOT NULL,
+	price_override INT NOT NULL,
 	product_id INT REFERENCES products.product(id),
 	attributes JSONB
 );
@@ -106,15 +102,14 @@ CREATE TABLE products.variant_image (
 
 CREATE TABLE products.stock_location (
 	id SERIAL PRIMARY KEY,
-	name TEXT
+	name TEXT NOT NULL
 );
 
 CREATE TABLE products.stock (
 	id SERIAL PRIMARY KEY,
-	qty INT,
-	cost_price INT,
+	qty INT NOT NULL,
+	cost_price INT NOT NULL,
 	variant_id INT REFERENCES products.product_variant(id),
-	quantity_allocated INT,
 	location_id INT REFERENCES products.stock_location(id)
 );
 
@@ -122,8 +117,8 @@ CREATE TABLE products.stock (
 
 CREATE TABLE products."size" (
 	id serial PRIMARY KEY,
-	x TEXT,
-	y TEXT
+	x TEXT NOT NULL,
+	y TEXT NOT NULL
 );
 
 	id serial PRIMARY KEY,
