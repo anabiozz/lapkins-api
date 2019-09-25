@@ -37,7 +37,7 @@ func NewPostgresDatastore() (*PostgresDatastore, error) {
 }
 
 // GetProducts ..
-func (p *PostgresDatastore) GetProducts(productsID string, paths models.Paths) (products []models.Product, err error) {
+func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Product, err error) {
 	id, err := strconv.Atoi(productsID)
 	query := fmt.Sprintf(`SELECT * FROM products.get_products(%d);`, id)
 	rows, err := p.Query(query)

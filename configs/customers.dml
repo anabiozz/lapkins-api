@@ -1,3 +1,0 @@
-
-insert into customers.payment_method (method_description)
-values ("credit card")

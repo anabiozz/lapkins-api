@@ -1,16 +1,41 @@
+drop table if exists "product_attribute" cascade;
+drop table if exists "attribute_choice_value" cascade;
+drop table if exists "category" cascade;
+drop table if exists "product_class" cascade;
+drop table if exists "product_class_product_attribute" cascade;
+drop table if exists "product_class_variant_attribute" cascade;
+drop table if exists "product" cascade;
+drop table if exists "product_variant" cascade;
+drop table if exists "product_categories" cascade;
+drop table if exists "product_images" cascade;
+drop table if exists "variant_image" cascade;
+drop table if exists "stock" cascade;
+drop table if exists "stock_location" cascade;
+drop table if exists "product_class_product_size" cascade;
+drop table if exists "size" cascade;
+drop table if exists "product_variant_to_size" cascade;
+
+drop sequence if exists "product_attribute_id_seq" cascade;
+drop sequence if exists "product_class_id_seq" cascade;
+drop sequence if exists "attribute_choice_value_id_seq" cascade;
+drop sequence if exists "category_id_seq" cascade;
+drop sequence if exists "product_class_product_attribute_id_seq" cascade;
+drop sequence if exists "product_class_variant_attribute_id_seq" cascade;
+drop sequence if exists "product_id_seq" cascade;
+drop sequence if exists "product_variant_id_seq" cascade;
+drop sequence if exists "product_categories_id_seq" cascade;
+drop sequence if exists "product_images_id_seq" cascade;
+drop sequence if exists "variant_image_id_seq" cascade;
+drop sequence if exists "stock_location_id_seq" cascade;
+drop sequence if exists "stock_id_seq" cascade;
+drop sequence if exists "size_id_seq" cascade;
+drop sequence if exists "product_class_product_size_id_seq" cascade;
+drop sequence if exists "product_variant_to_size_id_seq" cascade;
+
+DROP TRIGGER IF EXISTS "update_modified_column" ON products.product;
+DROP TRIGGER IF EXISTS "add_sku_tr" ON products.product_variant;
+
 CREATE SCHEMA IF NOT EXISTS products AUTHORIZATION lapkin;
-
--- TRIGGERS ********************************************
-
-CREATE OR REPLACE FUNCTION products.update_modified_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = now();
-    RETURN NEW;   
-END;
-$$ language 'plpgsql';
-
-CREATE TRIGGER update_product_modtime BEFORE UPDATE ON products.product FOR EACH ROW EXECUTE PROCEDURE update_modified_column();
 
 -- PRODUCT ATTRIBUTE ********************************************
 
@@ -22,7 +47,8 @@ CREATE TABLE products.product_attribute (
 
 CREATE TABLE products.product_class (
 	id SERIAL PRIMARY KEY,
-	name TEXT NOT NULL
+	name TEXT NOT NULL,
+	sku_part TEXT UNIQUE
 );
 
 CREATE TABLE products.attribute_choice_value (
@@ -68,7 +94,7 @@ CREATE TABLE products.product (
 
 CREATE TABLE products.product_variant ( 
 	id SERIAL PRIMARY KEY,
-	sku INT NOT NULL,
+	sku TEXT,
 	name TEXT NOT NULL,
 	price_override INT NOT NULL,
 	product_id INT REFERENCES products.product(id),
@@ -116,18 +142,19 @@ CREATE TABLE products.stock (
 -- SIZES ********************************************
 
 CREATE TABLE products."size" (
-	id serial PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	x TEXT NOT NULL,
 	y TEXT NOT NULL
 );
 
-	id serial PRIMARY KEY,
+CREATE TABLE products.product_class_product_size(
+	id SERIAL PRIMARY KEY,
 	product_class_id INT REFERENCES products.product_class(id),
 	product_size_id INT REFERENCES products."size"(id)
 );
 
-CREATE TABLE products.product_class_variant_size (
-	id serial PRIMARY KEY,
+CREATE TABLE products.product_variant_to_size (
+	id SERIAL PRIMARY KEY,
 	variant_id INT REFERENCES products.product_variant(id),
 	product_size_id INT REFERENCES products."size"(id)
 );
@@ -195,3 +222,32 @@ AS $$
 		GROUP BY pv.id, p.id;
 	END;
 $$ LANGUAGE plpgsql;
+
+-- TRIGGERS ********************************************
+
+CREATE OR REPLACE FUNCTION products.update_modified_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;   
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_product_modtime BEFORE UPDATE ON products.product FOR EACH ROW EXECUTE PROCEDURE update_modified_column();
+
+--currval(pg_get_serial_sequence(TG_TABLE_NAME, 'id'))
+
+CREATE OR REPLACE FUNCTION products.add_sku()
+RETURNS TRIGGER AS $$
+BEGIN
+	NEW.sku = (
+    	SELECT pc.sku_part || '-' || currval(pg_get_serial_sequence(TG_TABLE_NAME, 'id'))
+	   	FROM products.product_class AS pc
+	   	JOIN products.product AS p ON p.product_class_id = pc.id
+	   	JOIN (SELECT NEW.*) AS pv ON pv.product_id = p.id AND pv.id = currval(pg_get_serial_sequence(TG_TABLE_NAME, 'id'))
+	);
+    RETURN NEW;   
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER add_sku_tr BEFORE INSERT ON products.product_variant FOR EACH ROW EXECUTE PROCEDURE products.add_sku();
