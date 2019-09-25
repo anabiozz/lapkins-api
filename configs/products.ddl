@@ -223,6 +223,68 @@ AS $$
 	END;
 $$ LANGUAGE plpgsql;
 
+DROP FUNCTION products.get_product_variant_by_id(INT, TEXT);
+CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
+RETURNS TABLE (
+	variant_id INT,
+	product_id INT,
+	name TEXT,
+	description TEXT,
+	price_override INT,
+	ATTRIBUTES jsonb,
+	sizes TEXT[]
+)
+AS $$
+	BEGIN
+	 	RETURN QUERY
+	 	WITH ctm AS (
+	 		SELECT 
+			pv.id AS variant_id,
+			p.id AS product_id,
+			pv."name",
+			p.description,
+			pv.price_override, 
+			pv."attributes",
+			ARRAY_AGG(s.x || 'x' || s.y) AS SIZE
+			FROM products.product_variant AS pv
+			JOIN products.product AS p ON pv.product_id = p.id
+			JOIN products.product_class_product_size AS pcps ON pcps.product_class_id = p.product_class_id
+			JOIN products."size" AS s ON s.id = pcps.product_size_id
+			WHERE 
+				pv.product_id = p_id
+			AND
+				string_to_array(COALESCE(NULLIF(p_size, ''), (
+												SELECT s.x || 'x' || s.y AS size 
+												FROM products.product_class_variant_size AS pcvs
+												JOIN products."size" AS s ON s.id = pcvs.product_size_id
+												WHERE pcvs.variant_id = pv.id
+											)
+									), '|') IN 
+				(
+					SELECT ARRAY_AGG(s.x || 'x' || s.y) AS size
+					FROM products.product_class_variant_size AS pcvs
+					JOIN products."size" AS s ON s.id = pcvs.product_size_id
+					WHERE pcvs.variant_id = pv.id
+					
+				)
+			GROUP BY pv.id, p.id
+	 	)
+ 		SELECT 
+ 			DISTINCT ON (ctm.variant_id) ctm.variant_id,
+			ctm.product_id,
+			ctm."name",
+			ctm.description,
+			ctm.price_override, 
+			ctm."attributes",
+			ctm.size
+		FROM ctm
+		ORDER BY ctm.variant_id ASC
+		LIMIT 1;
+	END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM get_product_variant_by_id(9, NULL)s
+
 -- TRIGGERS ********************************************
 
 CREATE OR REPLACE FUNCTION products.update_modified_column()
