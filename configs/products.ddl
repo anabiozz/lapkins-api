@@ -1,39 +1,36 @@
-drop table if exists "product_attribute" cascade;
-drop table if exists "attribute_choice_value" cascade;
-drop table if exists "category" cascade;
-drop table if exists "product_class" cascade;
-drop table if exists "product_class_product_attribute" cascade;
-drop table if exists "product_class_variant_attribute" cascade;
-drop table if exists "product" cascade;
-drop table if exists "product_variant" cascade;
-drop table if exists "product_categories" cascade;
-drop table if exists "product_images" cascade;
-drop table if exists "variant_image" cascade;
-drop table if exists "stock" cascade;
-drop table if exists "stock_location" cascade;
-drop table if exists "product_class_product_size" cascade;
-drop table if exists "size" cascade;
-drop table if exists "product_variant_to_size" cascade;
+DROP TABLE if EXISTS "product_attribute" cascade;
+DROP TABLE if EXISTS "attribute_choice_value" cascade;
+DROP TABLE if EXISTS "category" cascade;
+DROP TABLE if EXISTS "product_class" cascade;
+DROP TABLE if EXISTS "product_class_product_attribute" cascade;
+DROP TABLE if EXISTS "product_class_variant_attribute" cascade;
+DROP TABLE if EXISTS "product" cascade;
+DROP TABLE if EXISTS "product_variant" cascade;
+DROP TABLE if EXISTS "product_categories" cascade;
+DROP TABLE if EXISTS "product_images" cascade;
+DROP TABLE if EXISTS "variant_image" cascade;
+DROP TABLE if EXISTS "stock" cascade;
+DROP TABLE if EXISTS "stock_location" cascade;
+DROP TABLE if EXISTS "product_class_product_size" cascade;
+DROP TABLE if EXISTS "size" cascade;
+DROP TABLE if EXISTS "product_variant_to_size" cascade;
 
-drop sequence if exists "product_attribute_id_seq" cascade;
-drop sequence if exists "product_class_id_seq" cascade;
-drop sequence if exists "attribute_choice_value_id_seq" cascade;
-drop sequence if exists "category_id_seq" cascade;
-drop sequence if exists "product_class_product_attribute_id_seq" cascade;
-drop sequence if exists "product_class_variant_attribute_id_seq" cascade;
-drop sequence if exists "product_id_seq" cascade;
-drop sequence if exists "product_variant_id_seq" cascade;
-drop sequence if exists "product_categories_id_seq" cascade;
-drop sequence if exists "product_images_id_seq" cascade;
-drop sequence if exists "variant_image_id_seq" cascade;
-drop sequence if exists "stock_location_id_seq" cascade;
-drop sequence if exists "stock_id_seq" cascade;
-drop sequence if exists "size_id_seq" cascade;
-drop sequence if exists "product_class_product_size_id_seq" cascade;
-drop sequence if exists "product_variant_to_size_id_seq" cascade;
-
-DROP TRIGGER IF EXISTS "update_modified_column" ON products.product;
-DROP TRIGGER IF EXISTS "add_sku_tr" ON products.product_variant;
+DROP SEQUENCE if EXISTS "product_attribute_id_seq" cascade;
+DROP SEQUENCE if EXISTS "product_class_id_seq" cascade;
+DROP SEQUENCE if EXISTS "attribute_choice_value_id_seq" cascade;
+DROP SEQUENCE if EXISTS "category_id_seq" cascade;
+DROP SEQUENCE if EXISTS "product_class_product_attribute_id_seq" cascade;
+DROP SEQUENCE if EXISTS "product_class_variant_attribute_id_seq" cascade;
+DROP SEQUENCE if EXISTS "product_id_seq" cascade;
+DROP SEQUENCE if EXISTS "product_variant_id_seq" cascade;
+DROP SEQUENCE if EXISTS "product_categories_id_seq" cascade;
+DROP SEQUENCE if EXISTS "product_images_id_seq" cascade;
+DROP SEQUENCE if EXISTS "variant_image_id_seq" cascade;
+DROP SEQUENCE if EXISTS "stock_location_id_seq" cascade;
+DROP SEQUENCE if EXISTS "stock_id_seq" cascade;
+DROP SEQUENCE if EXISTS "size_id_seq" cascade;
+DROP SEQUENCE if EXISTS "product_class_product_size_id_seq" cascade;
+DROP SEQUENCE if EXISTS "product_variant_to_size_id_seq" cascade;
 
 CREATE SCHEMA IF NOT EXISTS products AUTHORIZATION lapkin;
 
@@ -42,19 +39,22 @@ CREATE SCHEMA IF NOT EXISTS products AUTHORIZATION lapkin;
 CREATE TABLE products.product_attribute (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL,
-	display TEXT NOT NULL
+	display TEXT NOT NULL,
+	created_at timestamp with time zone DEFAULT current_timestamp
 );
 
 CREATE TABLE products.product_class (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL,
-	sku_part TEXT UNIQUE
+	sku_part TEXT UNIQUE,
+	created_at timestamp with time zone DEFAULT current_timestamp
 );
 
 CREATE TABLE products.attribute_choice_value (
 	id SERIAL PRIMARY KEY,
 	display TEXT NOT NULL,
-	attribute_id INT REFERENCES products.product_attribute(id)
+	attribute_id INT REFERENCES products.product_attribute(id),
+	created_at timestamp with time zone DEFAULT current_timestamp
 );
 
 -- CATEGORY ********************************************
@@ -65,19 +65,22 @@ CREATE TABLE products.category (
 	description TEXT,
 	hidden BOOLEAN NOT NULL DEFAULT false,
 	tree_id INT,
-	parent_id INT REFERENCES products.category(id)
+	parent_id INT REFERENCES products.category(id),
+	created_at timestamp with time zone DEFAULT current_timestamp
 );
 
 CREATE TABLE products.product_class_product_attribute (
 	id SERIAL PRIMARY KEY,
 	product_class_id INT REFERENCES products.product_class(id),
-	product_attribute_id INT REFERENCES products.product_attribute(id)
+	product_attribute_id INT REFERENCES products.product_attribute(id),
+	created_at timestamp with time zone DEFAULT current_timestamp
 );
 
 CREATE TABLE products.product_class_variant_attribute (
 	id SERIAL PRIMARY KEY,
 	product_class_id INT REFERENCES products.product_class(id),
-	product_attribute_id INT REFERENCES products.product_attribute(id)
+	product_attribute_id INT REFERENCES products.product_attribute(id),
+	created_at timestamp with time zone DEFAULT current_timestamp
 );
 
 -- PRODUCT ********************************************
@@ -87,8 +90,9 @@ CREATE TABLE products.product (
 	name TEXT NOT NULL,
 	description TEXT NOT NULL,
 	price INT NOT NULL,
-	updated_at timestamptz DEFAULT current_timestamp NOT NULL,
-	product_class_id INT REFERENCES product_class(id)
+	product_class_id INT REFERENCES product_class(id),
+	created_at timestamptz DEFAULT current_timestamp,
+	updated_at timestamptz DEFAULT current_timestamp
 );
 
 
@@ -98,13 +102,16 @@ CREATE TABLE products.product_variant (
 	name TEXT NOT NULL,
 	price_override INT NOT NULL,
 	product_id INT REFERENCES products.product(id),
-	attributes JSONB
+	attributes JSONB,
+	created_at timestamptz DEFAULT current_timestamp,
+	updated_at timestamptz DEFAULT current_timestamp
 );
 
 CREATE TABLE products.product_categories (
 	id SERIAL PRIMARY KEY,
 	product_id INT REFERENCES products.product(id),
-	category_id INT REFERENCES products.category(id)
+	category_id INT REFERENCES products.category(id),
+	created_at timestamptz DEFAULT current_timestamp
 );
 
 -- IMAGES ********************************************
@@ -115,20 +122,23 @@ CREATE TABLE products.product_images (
 	ppoi TEXT,
 	alt TEXT,
 	"order" INT,
-	product_id INT REFERENCES products.product(id)
+	product_id INT REFERENCES products.product(id),
+	created_at timestamptz DEFAULT current_timestamp
 );
 
 CREATE TABLE products.variant_image (
 	id SERIAL PRIMARY KEY,
 	image_id INT REFERENCES products.product_images(id),
-	variant_id INT REFERENCES products.product_variant(id)
+	variant_id INT REFERENCES products.product_variant(id),
+	created_at timestamptz DEFAULT current_timestamp
 );
 
 -- STOCK ********************************************
 
 CREATE TABLE products.stock_location (
 	id SERIAL PRIMARY KEY,
-	name TEXT NOT NULL
+	name TEXT NOT NULL,
+	created_at timestamptz DEFAULT current_timestamp
 );
 
 CREATE TABLE products.stock (
@@ -136,7 +146,8 @@ CREATE TABLE products.stock (
 	qty INT NOT NULL,
 	cost_price INT NOT NULL,
 	variant_id INT REFERENCES products.product_variant(id),
-	location_id INT REFERENCES products.stock_location(id)
+	location_id INT REFERENCES products.stock_location(id),
+	created_at timestamptz DEFAULT current_timestamp
 );
 
 -- SIZES ********************************************
@@ -144,19 +155,22 @@ CREATE TABLE products.stock (
 CREATE TABLE products."size" (
 	id SERIAL PRIMARY KEY,
 	x TEXT NOT NULL,
-	y TEXT NOT NULL
+	y TEXT NOT NULL,
+	created_at timestamptz DEFAULT current_timestamp
 );
 
 CREATE TABLE products.product_class_product_size(
 	id SERIAL PRIMARY KEY,
 	product_class_id INT REFERENCES products.product_class(id),
-	product_size_id INT REFERENCES products."size"(id)
+	product_size_id INT REFERENCES products."size"(id),
+	created_at timestamptz DEFAULT current_timestamp
 );
 
 CREATE TABLE products.product_variant_to_size (
 	id SERIAL PRIMARY KEY,
 	variant_id INT REFERENCES products.product_variant(id),
-	product_size_id INT REFERENCES products."size"(id)
+	product_size_id INT REFERENCES products."size"(id),
+	created_at timestamptz DEFAULT current_timestamp
 );
 
 -- Functions ********************************************
@@ -177,51 +191,51 @@ AS $$
 	END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
-RETURNS TABLE (
-	id INT,
-	product_id INT,
-	name TEXT,
-	description TEXT,
-	price_override INT,
-	ATTRIBUTES jsonb,
-	sizes TEXT[]
-)
-AS $$
-	BEGIN
-	 	RETURN QUERY 
- 		SELECT 
-			pv.id,
-			p.id,
-			pv."name",
-			p.description,
-			pv.price_override, 
-			pv."attributes",
-			ARRAY_AGG(s.x || 'x' || s.y) AS size
-		FROM products.product_variant AS pv
-		JOIN products.product AS p ON pv.product_id = p.id
-		JOIN products.product_class_product_size AS pcps ON pcps.product_class_id = p.product_class_id
-		JOIN products."size" AS s ON s.id = pcps.product_size_id
-		WHERE 
-			string_to_array(COALESCE(NULLIF(p_size, ''), (
-												SELECT s.x || 'x' || s.y AS size 
-												FROM products.product_class_variant_size AS pcvs
-												JOIN products."size" AS s ON s.id = pcvs.product_size_id
-												WHERE pcvs.variant_id = pv.id
-											)
-									), '|') IN 
-				(
-					SELECT ARRAY_AGG(s.x || 'x' || s.y) AS size
-					FROM products.product_class_variant_size AS pcvs
-					JOIN products."size" AS s ON s.id = pcvs.product_size_id
-					WHERE pcvs.variant_id = pv.id
-					
-				)
-		AND pv."attributes"->'frame' IS NULL 
-		AND pv.product_id = p_id
-		GROUP BY pv.id, p.id;
-	END;
-$$ LANGUAGE plpgsql;
+--CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
+--RETURNS TABLE (
+--	id INT,
+--	product_id INT,
+--	name TEXT,
+--	description TEXT,
+--	price_override INT,
+--	ATTRIBUTES jsonb,
+--	sizes TEXT[]
+--)
+--AS $$
+--	BEGIN
+--	 	RETURN QUERY 
+-- 		SELECT 
+--			pv.id,
+--			p.id,
+--			pv."name",
+--			p.description,
+--			pv.price_override, 
+--			pv."attributes",
+--			ARRAY_AGG(s.x || 'x' || s.y) AS size
+--		FROM products.product_variant AS pv
+--		JOIN products.product AS p ON pv.product_id = p.id
+--		JOIN products.product_class_product_size AS pcps ON pcps.product_class_id = p.product_class_id
+--		JOIN products."size" AS s ON s.id = pcps.product_size_id
+--		WHERE 
+--			string_to_array(COALESCE(NULLIF(p_size, ''), (
+--												SELECT s.x || 'x' || s.y AS size 
+--												FROM products.product_class_variant_size AS pcvs
+--												JOIN products."size" AS s ON s.id = pcvs.product_size_id
+--												WHERE pcvs.variant_id = pv.id
+--											)
+--									), '|') IN 
+--				(
+--					SELECT ARRAY_AGG(s.x || 'x' || s.y) AS size
+--					FROM products.product_class_variant_size AS pcvs
+--					JOIN products."size" AS s ON s.id = pcvs.product_size_id
+--					WHERE pcvs.variant_id = pv.id
+--					
+--				)
+--		AND pv."attributes"->'frame' IS NULL 
+--		AND pv.product_id = p_id
+--		GROUP BY pv.id, p.id;
+--	END;
+--$$ LANGUAGE plpgsql;
 
 DROP FUNCTION products.get_product_variant_by_id(INT, TEXT);
 CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
@@ -255,14 +269,14 @@ AS $$
 			AND
 				string_to_array(COALESCE(NULLIF(p_size, ''), (
 												SELECT s.x || 'x' || s.y AS size 
-												FROM products.product_class_variant_size AS pcvs
+												FROM products.product_variant_to_size AS pcvs
 												JOIN products."size" AS s ON s.id = pcvs.product_size_id
 												WHERE pcvs.variant_id = pv.id
 											)
 									), '|') IN 
 				(
 					SELECT ARRAY_AGG(s.x || 'x' || s.y) AS size
-					FROM products.product_class_variant_size AS pcvs
+					FROM products.product_variant_to_size AS pcvs
 					JOIN products."size" AS s ON s.id = pcvs.product_size_id
 					WHERE pcvs.variant_id = pv.id
 					
@@ -283,9 +297,11 @@ AS $$
 	END;
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM get_product_variant_by_id(9, NULL)s
-
 -- TRIGGERS ********************************************
+
+DROP TRIGGER IF EXISTS "update_modtime" ON products.product;
+DROP TRIGGER IF EXISTS "update_modtime" ON products.product_variant;
+DROP TRIGGER IF EXISTS "add_sku_tr" ON products.product_variant;
 
 CREATE OR REPLACE FUNCTION products.update_modified_column()
 RETURNS TRIGGER AS $$
@@ -295,9 +311,8 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER update_product_modtime BEFORE UPDATE ON products.product FOR EACH ROW EXECUTE PROCEDURE update_modified_column();
-
---currval(pg_get_serial_sequence(TG_TABLE_NAME, 'id'))
+CREATE TRIGGER update_modtime BEFORE UPDATE ON products.product FOR EACH ROW EXECUTE PROCEDURE update_modified_column();
+CREATE TRIGGER update_modtime BEFORE UPDATE ON products.product_variant FOR EACH ROW EXECUTE PROCEDURE update_modified_column();
 
 CREATE OR REPLACE FUNCTION products.add_sku()
 RETURNS TRIGGER AS $$
