@@ -58,49 +58,49 @@ VALUES (1, 2), (2, 2), (2, 7);
 -- product
 INSERT INTO products.product (name, description, price, product_class_id)
 VALUES (
-			'плакат веселье', 
+			'1-pstr-veselye', 
 			'Et deserunt labore excepteur id eiusmod reprehenderit do nostrud cupidatat consectetur laboris culpa.', 
 			300, 
 			2
 		),
 		(
-			'плакат надпись со смыслом', 
+			'2-pstr-smisl', 
 			'Commodo labore est qui laboris irure esse aliquip', 
 			300, 
 			2
 		),
 		(
-			'открытка веселье', 
+			'3-pstcrd-veselye', 
 			'Anim ex occaecat occaecat non tempor in enim id mollit.', 
 			50, 
 			1
 		),
 		(
-			'открытка надпись со смыслом', 
+			'4-pstcrd-smisl', 
 			'Nisi eiusmod laborum ullamco mollit elit amet deserunt ex sit nisi consectetur cillum commodo incididunt.', 
 			50, 
 			1
 		),
 		(
-			'плакат веселье с деревянной рамкой', 
+			'5-pstr-veselye-framed-wood', 
 			'Et deserunt labore excepteur id eiusmod reprehenderit do nostrud cupidatat consectetur laboris culpa.', 
 			400, 
 			2
 		),
 		(
-			'плакат веселье с пластиковой рамкой', 
+			'6-pstr-veselye-framed-plastic', 
 			'Et deserunt labore excepteur id eiusmod reprehenderit do nostrud cupidatat consectetur laboris culpa.', 
 			600, 
 			2
 		),
 		(
-			'плакат со смыслом с деревянной рамкой', 
+			'7-pstr-smisl-framed-wood', 
 			'Et deserunt labore excepteur id eiusmod reprehenderit do nostrud cupidatat consectetur laboris culpa.', 
 			400, 
 			2
 		),
 		(
-			'плакат со смыслом с пластиковой рамкой', 
+			'8-pstr-smisl-framed-plastic', 
 			'Et deserunt labore excepteur id eiusmod reprehenderit do nostrud cupidatat consectetur laboris culpa.', 
 			600, 
 			2
@@ -280,7 +280,7 @@ VALUES (
 
 -- product_categories
 INSERT INTO products.product_categories (product_id, category_id)
-VALUES (1, 5), (2, 5), (3, 2), (4, 2), (5, 5), (6, 5), (7, 2), (8, 2);
+VALUES (1, 5), (2, 5), (3, 2), (4, 2), (5, 7), (6, 6), (7, 7), (8, 6);
 
 -- size
 INSERT INTO products."size" (x, y)
