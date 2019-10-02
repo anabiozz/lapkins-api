@@ -4,10 +4,11 @@ import "encoding/json"
 
 // Product ..
 type Product struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"decription"`
-	Price       string `json:"price"`
+	ID                 int    `json:"id"`
+	Name               string `json:"name"`
+	Description        string `json:"decription"`
+	Price              string `json:"price"`
+	ProductVariantName string `json:"product_variant_name"`
 }
 
 // ProductVariant ..

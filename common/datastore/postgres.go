@@ -50,6 +50,7 @@ func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Pr
 	for rows.Next() {
 
 		err = rows.Scan(
+			// &product.ProductVariantName,
 			&product.ID,
 			&product.Name,
 			&product.Description,

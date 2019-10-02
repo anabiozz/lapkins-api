@@ -102,6 +102,7 @@ CREATE TABLE products.product_variant (
 	name TEXT NOT NULL,
 	price_override INT NOT NULL,
 	product_id INT REFERENCES products.product(id),
+--	parent_id INT REFERENCES products.product_variant(id),
 	attributes JSONB,
 	created_at timestamptz DEFAULT current_timestamp,
 	updated_at timestamptz DEFAULT current_timestamp
@@ -176,8 +177,10 @@ CREATE TABLE products.product_variant_to_size (
 -- Functions ********************************************
 
 -- get_products
+DROP FUNCTION products.get_products(INT);
 CREATE OR REPLACE FUNCTION products.get_products(INT)
 RETURNS TABLE  (
+--	product_variant_name TEXT,
 	id INT,
 	name TEXT,
 	description TEXT,
@@ -185,57 +188,15 @@ RETURNS TABLE  (
 )
 AS $$
 	BEGIN
-	 	RETURN QUERY SELECT product.id, product."name", product.description, product.price
-		FROM products.product
-		JOIN products.product_categories AS pc ON pc.product_id = product.id AND pc.category_id = $1;
+	 	RETURN QUERY SELECT p.id, p."name", p.description, p.price
+		FROM products.product AS p
+		JOIN products.product_categories AS pc ON pc.product_id = p.id AND pc.category_id = $1
+		JOIN products.product_variant AS pv ON pv.product_id = p.id AND pv."attributes" @> '{"parent": true}'
+		ORDER BY p.id;
 	END;
 $$ LANGUAGE plpgsql;
-
---CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
---RETURNS TABLE (
---	id INT,
---	product_id INT,
---	name TEXT,
---	description TEXT,
---	price_override INT,
---	ATTRIBUTES jsonb,
---	sizes TEXT[]
---)
---AS $$
---	BEGIN
---	 	RETURN QUERY 
--- 		SELECT 
---			pv.id,
---			p.id,
---			pv."name",
---			p.description,
---			pv.price_override, 
---			pv."attributes",
---			ARRAY_AGG(s.x || 'x' || s.y) AS size
---		FROM products.product_variant AS pv
---		JOIN products.product AS p ON pv.product_id = p.id
---		JOIN products.product_class_product_size AS pcps ON pcps.product_class_id = p.product_class_id
---		JOIN products."size" AS s ON s.id = pcps.product_size_id
---		WHERE 
---			string_to_array(COALESCE(NULLIF(p_size, ''), (
---												SELECT s.x || 'x' || s.y AS size 
---												FROM products.product_class_variant_size AS pcvs
---												JOIN products."size" AS s ON s.id = pcvs.product_size_id
---												WHERE pcvs.variant_id = pv.id
---											)
---									), '|') IN 
---				(
---					SELECT ARRAY_AGG(s.x || 'x' || s.y) AS size
---					FROM products.product_class_variant_size AS pcvs
---					JOIN products."size" AS s ON s.id = pcvs.product_size_id
---					WHERE pcvs.variant_id = pv.id
---					
---				)
---		AND pv."attributes"->'frame' IS NULL 
---		AND pv.product_id = p_id
---		GROUP BY pv.id, p.id;
---	END;
---$$ LANGUAGE plpgsql;
+--
+SELECT * FROM products.get_products(5)
 
 DROP FUNCTION products.get_product_variant_by_id(INT, TEXT);
 CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
@@ -265,7 +226,7 @@ AS $$
 			JOIN products.product_class_product_size AS pcps ON pcps.product_class_id = p.product_class_id
 			JOIN products."size" AS s ON s.id = pcps.product_size_id
 			WHERE 
-				pv.product_id = p_id
+				p.id = p_id
 			AND
 				string_to_array(COALESCE(NULLIF(p_size, ''), (
 												SELECT s.x || 'x' || s.y AS size 
@@ -296,6 +257,8 @@ AS $$
 		LIMIT 1;
 	END;
 $$ LANGUAGE plpgsql;
+
+SELECT * FROM products.get_product_variant_by_id(2, '')
 
 -- TRIGGERS ********************************************
 
