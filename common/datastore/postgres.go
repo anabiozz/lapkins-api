@@ -50,12 +50,10 @@ func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Pr
 	for rows.Next() {
 
 		err = rows.Scan(
-			// &product.ProductVariantName,
 			&product.ID,
 			&product.Name,
 			&product.Description,
-			&product.Price,
-			pq.Array(&product.Images))
+			&product.Price)
 		if err != nil {
 			return nil, err
 		}
@@ -81,6 +79,7 @@ func (p *PostgresDatastore) GetProductByID(productID string) (product *models.Pr
 		&product.PriceOverride,
 		&product.Attributes,
 		pq.Array(&product.Sizes),
+		&product.Size,
 		pq.Array(&product.Images))
 	if err != nil {
 		return nil, err
@@ -104,6 +103,7 @@ func (p *PostgresDatastore) GetProductVariantByID(productVariantID, size string)
 		&product.PriceOverride,
 		&product.Attributes,
 		pq.Array(&product.Sizes),
+		&product.Size,
 		pq.Array(&product.Images))
 	if err != nil {
 		return nil, err

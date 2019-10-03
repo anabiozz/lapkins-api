@@ -117,18 +117,18 @@ CREATE TABLE products.product_categories (
 
 -- IMAGES ********************************************
 
-CREATE TABLE products.product_images (
-	id SERIAL PRIMARY KEY,
-	image TEXT,
-	alt TEXT,
-	"order" INT,
-	product_id INT REFERENCES products.product(id),
-	created_at timestamptz DEFAULT current_timestamp
-);
+--CREATE TABLE products.product_images (
+--	id SERIAL PRIMARY KEY,
+--	image TEXT,
+--	alt TEXT,
+--	"order" INT,
+--	product_id INT REFERENCES products.product(id),
+--	created_at timestamptz DEFAULT current_timestamp
+--);
 
 CREATE TABLE products.variant_images (
 	id SERIAL PRIMARY KEY,
-	image_id INT REFERENCES products.product_images(id),
+	name TEXT,
 	variant_id INT REFERENCES products.product_variant(id),
 	created_at timestamptz DEFAULT current_timestamp
 );
@@ -179,102 +179,24 @@ CREATE TABLE products.product_variant_to_size (
 DROP FUNCTION products.get_products(INT);
 CREATE OR REPLACE FUNCTION products.get_products(INT)
 RETURNS TABLE  (
---	product_variant_name TEXT,
 	id INT,
 	name TEXT,
 	description TEXT,
-	price INT,
-	images TEXT[]
+	price INT
 )
 AS $$
 	BEGIN
-	 	RETURN QUERY SELECT p.id, p."name", p.description, p.price, array_agg(pim.image)
+	 	RETURN QUERY SELECT p.id, p."name", p.description, p.price
 		FROM products.product AS p
 		JOIN products.product_categories AS pc ON pc.product_id = p.id AND pc.category_id = $1
 		JOIN products.product_variant AS pv ON pv.product_id = p.id AND pv."attributes" @> '{"parent": true}'
-		JOIN products.product_images AS pim ON pim.product_id = p.id
 		GROUP BY p.id;
 	END;
 $$ LANGUAGE plpgsql;
 --
-SELECT * FROM products.get_products(5)
-
-WITH ctm AS (
-	SELECT
-		array_agg(s.x || 'x' || s.y) AS "size"
-	FROM products."size" AS s
-	JOIN product_class_variant_size AS pcvs ON pcvs.product_size_id = s.id
-	JOIN product_variant AS pv ON pv.id = pcvs.variant_id
-	JOIN products.product AS p ON p.id = pv.product_id AND p.id = 1
-	WHERE
-	string_to_array(COALESCE(NULLIF('', ''), (
-				SELECT s.x || 'x' || s.y AS size 
-				FROM products.product_variant_to_size AS pcvs
-				JOIN products."size" AS s ON s.id = pcvs.product_size_id
-				WHERE pcvs.variant_id = pv.id
-			)
-	), '|') IN 
-	(
-		SELECT array_agg(s.x || 'x' || s.y) AS size
-		FROM products.product_variant_to_size AS pcvs
-		JOIN products."size" AS s ON s.id = pcvs.product_size_id
-		WHERE pcvs.variant_id = pv.id
-	)								
-)
-SELECT
-	p.id AS product_id,
-	pv.id AS variant_id,
-	pv."name",
-	p.description,
-	pv.price_override, 
-	pv."attributes",
-	ctm."size",
-	array_agg(pim.image) AS images
-	FROM ctm, products.product_variant AS pv
-	JOIN products.product AS p ON pv.product_id = p.id
-	JOIN products.product_class_product_size AS pcps ON pcps.product_class_id = p.product_class_id
-	JOIN products.variant_images AS vim ON vim.variant_id = pv.id
-	JOIN products.product_images AS pim ON pim.id = vim.image_id
-	WHERE pv.id = 1
-	GROUP BY p.id, pv.id, ctm."size"
-	ORDER BY pv.id;
+--SELECT * FROM products.get_products(5);
 	
-
-SELECT 
-	p.id AS product_id,
-	pv.id AS variant_id,
-	pv."name",
-	p.description,
-	pv.price_override, 
-	pv."attributes",
---	array_agg(s.x || 'x' || s.y) AS "size",
-	array_agg(pim.image) AS images
 	
-	FROM products.product AS p
-	JOIN products.product_variant AS pv ON pv.product_id = p.id
-	JOIN products.product_class_product_size AS pcps ON pcps.product_class_id = p.product_class_id
-	JOIN products.product_categories AS pc ON pc.product_id = p.id
-	JOIN products."size" AS s ON s.id = pcps.product_size_id
-	JOIN products.variant_images AS vim ON vim.variant_id = pv.id
-	JOIN products.product_images AS pim ON pim.id = vim.image_id
-	WHERE  p.id = 1
---	AND
---		string_to_array(COALESCE(NULLIF('', ''), (
---										SELECT s.x || 'x' || s.y AS size 
---										FROM products.product_variant_to_size AS pcvs
---										JOIN products."size" AS s ON s.id = pcvs.product_size_id
---										WHERE pcvs.variant_id = pv.id
---									)
---							), '|') IN 
---		(
---			SELECT array_agg(s.x || 'x' || s.y) AS size
---			FROM products.product_variant_to_size AS pcvs
---			JOIN products."size" AS s ON s.id = pcvs.product_size_id
---			WHERE pcvs.variant_id = pv.id
---			
---		)
-	GROUP BY p.id, pv.id
-
 DROP FUNCTION products.get_product_variant_by_id(INT, TEXT);
 CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
 RETURNS TABLE (
@@ -285,54 +207,49 @@ RETURNS TABLE (
 	price_override INT,
 	ATTRIBUTES jsonb,
 	sizes TEXT[],
+	"size" TEXT,
 	images TEXT[]
 )
 AS $$
 	BEGIN
 	 	RETURN QUERY
-	 	WITH ctm AS (
-		SELECT
-			array_agg(s.x || 'x' || s.y) AS "size"
-		FROM products."size" AS s
-		JOIN products.product_class_variant_size AS pcvs ON pcvs.product_size_id = s.id
-		JOIN products.product_variant AS pv ON pv.id = pcvs.variant_id
-		JOIN products.product AS p ON p.id = pv.product_id AND p.id = 1
-		WHERE
-		string_to_array(COALESCE(NULLIF('', ''), (
-					SELECT s.x || 'x' || s.y AS size 
-					FROM products.product_variant_to_size AS pcvs
-					JOIN products."size" AS s ON s.id = pcvs.product_size_id
-					WHERE pcvs.variant_id = pv.id
-				)
-		), '|') IN 
-		(
-			SELECT array_agg(s.x || 'x' || s.y) AS size
-			FROM products.product_variant_to_size AS pcvs
-			JOIN products."size" AS s ON s.id = pcvs.product_size_id
-			WHERE pcvs.variant_id = pv.id
-		)								
-	)
-	SELECT
-		pv.id AS variant_id,
-		p.id AS product_id,
-		pv."name",
-		p.description,
-		pv.price_override, 
-		pv."attributes",
-		ctm."size",
-		array_agg(pim.image) AS images
-		FROM ctm, products.product_variant AS pv
-		JOIN products.product AS p ON pv.product_id = p.id
-		JOIN products.product_class_product_size AS pcps ON pcps.product_class_id = p.product_class_id
-		JOIN products.variant_images AS vim ON vim.variant_id = pv.id
-		JOIN products.product_images AS pim ON pim.id = vim.image_id
-		WHERE pv.id = p_id
-		GROUP BY p.id, pv.id, ctm."size"
-		ORDER BY pv.id;
+	 	SELECT 
+			pv.id AS variant_id,
+			p.id AS product_id,
+			pv."name",
+			p.description,
+			pv.price_override, 
+			pv."attributes",
+			array_agg(DISTINCT s.x || 'x' || s.y) AS sizes,
+			ss.x || 'x' || ss.y,
+			array_agg(DISTINCT p."name" || '/' || ss.x || 'x' || ss.y || '/' || vim.name) AS images
+		FROM
+			products.product_variant pv
+		INNER JOIN
+			products.product p ON pv.product_id = p.id
+		INNER JOIN
+			products.product_class pc ON pc.id = p.product_class_id
+		INNER JOIN
+			products.product_class_product_size pcps ON pcps.product_class_id = pc.id
+		INNER JOIN
+			products.product_variant_to_size pvts ON pvts.variant_id = pv.id
+		INNER JOIN
+			products."size" s ON s.id = pcps.product_size_id
+		INNER JOIN
+			products."size" ss ON ss.id = pvts.product_size_id
+		INNER JOIN 
+			products.variant_images vim ON vim.variant_id = pv.id
+		WHERE 
+			p.id = p_id
+		AND 
+			(length(p_size) = 0 OR ss.x || 'x' || ss.y = p_size)
+		GROUP BY
+			p.id, pv.id, ss.x, ss.y
+		ORDER BY p.id;
 	END;
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM products.get_product_variant_by_id(1, '')
+SELECT * FROM products.get_product_variant_by_id(2, '');
 
 -- TRIGGERS ********************************************
 
