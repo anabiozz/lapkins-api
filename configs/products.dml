@@ -314,12 +314,12 @@ VALUES (1, 3),
 (14, 2);
 
 -- stock_location
-insert into products.stock_location (name)
-values ('default');
+INSERT INTO products.stock_location (name)
+VALUES ('default');
 
 -- stock
-insert into products.stock (qty, cost_price, variant_id, location_id)
-values (10, 150, 1, 1), -- 300x450
+INSERT INTO products.stock (qty, cost_price, variant_id, location_id)
+VALUES (10, 150, 1, 1), -- 300x450
 (10, 190, 2, 1), -- 300x450 пластик
 (10, 200, 3, 1), -- 300x450 дерево
 (10, 160, 4, 1), -- 600х900
@@ -333,3 +333,16 @@ values (10, 150, 1, 1), -- 300x450
 (10, 250, 12, 1), -- 600х900 пластик
 (10, 270, 13, 1),  -- 600х900 дерево
 (10, 15, 14, 1);
+
+
+INSERT INTO products.product_images (image, "order", product_id)
+VALUES ('1-pstr-veselye/1', 1, 1),
+('1-pstr-veselye/2', 2, 1 ),
+('1-pstr-veselye/3', 3, 1);
+
+
+INSERT INTO products.variant_images (image_id, variant_id)
+VALUES (1, 1),
+(2, 1 ),
+(3, 1);
+
