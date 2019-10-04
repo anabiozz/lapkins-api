@@ -8,6 +8,7 @@ type Product struct {
 	Name        string `json:"name"`
 	Description string `json:"decription"`
 	Price       string `json:"price"`
+	Size        string `json:"size"`
 }
 
 // ProductVariant ..

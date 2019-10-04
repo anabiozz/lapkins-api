@@ -53,7 +53,8 @@ func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Pr
 			&product.ID,
 			&product.Name,
 			&product.Description,
-			&product.Price)
+			&product.Price,
+			&product.Size)
 		if err != nil {
 			return nil, err
 		}

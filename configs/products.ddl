@@ -182,20 +182,34 @@ RETURNS TABLE  (
 	id INT,
 	name TEXT,
 	description TEXT,
-	price INT
+	price INT,
+	size TEXT
 )
 AS $$
 	BEGIN
-	 	RETURN QUERY SELECT p.id, p."name", p.description, p.price
-		FROM products.product AS p
-		JOIN products.product_categories AS pc ON pc.product_id = p.id AND pc.category_id = $1
-		JOIN products.product_variant AS pv ON pv.product_id = p.id AND pv."attributes" @> '{"parent": true}'
-		GROUP BY p.id;
+	 	RETURN QUERY 
+ 		SELECT 
+ 			p.id, 
+ 			p."name", 
+ 			p.description, 
+ 			p.price,
+ 			ss.x || 'x' || ss.y
+		FROM 
+			products.product p
+		INNER JOIN 
+			products.product_categories pc ON pc.product_id = p.id AND pc.category_id = $1
+		INNER JOIN
+			products.product_variant pv ON pv.product_id = p.id AND pv."attributes" @> '{"parent": true}'
+		INNER JOIN
+			products.product_variant_to_size pvts ON pvts.variant_id = pv.id
+		INNER JOIN
+			products."size" ss ON ss.id = pvts.product_size_id
+		GROUP BY p.id, ss.x, ss.y;
 	END;
 $$ LANGUAGE plpgsql;
---
---SELECT * FROM products.get_products(5);
-	
+
+
+SELECT * FROM products.get_products(8);
 	
 DROP FUNCTION products.get_product_variant_by_id(INT, TEXT);
 CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
@@ -249,7 +263,7 @@ AS $$
 	END;
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM products.get_product_variant_by_id(2, '');
+SELECT * FROM products.get_product_variant_by_id(3, '');
 
 -- TRIGGERS ********************************************
 
