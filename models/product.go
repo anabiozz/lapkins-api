@@ -11,8 +11,8 @@ type Product struct {
 	Size        string `json:"size"`
 }
 
-// ProductVariant ..
-type ProductVariant struct {
+// Variant ..
+type Variant struct {
 	ID            int             `json:"id"`
 	ProductID     int             `json:"product_id"`
 	Name          string          `json:"name"`

@@ -55,8 +55,8 @@ func main() {
 	// API handlers
 	apiRouter := router.PathPrefix("/api/").Subrouter()
 	apiRouter.Handle("/get-products", middleware.Cors(api.GetProducts(&env, paths)))
-	apiRouter.Handle("/get-product-by-id", middleware.Cors(api.GetProductByID(&env)))
-	apiRouter.Handle("/get-product-variant-by-id", middleware.Cors(api.GetProductVariantByID(&env)))
+	apiRouter.Handle("/get-variant", middleware.Cors(api.GetVariant(&env)))
+	apiRouter.Handle("/get-categories", middleware.Cors(api.GetCategories(&env)))
 
 	srv := &http.Server{
 		Handler:      router,

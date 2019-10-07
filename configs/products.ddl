@@ -46,6 +46,7 @@ CREATE TABLE products.product_attribute (
 CREATE TABLE products.product_class (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL,
+	display TEXT NOT NULL,
 	sku_part TEXT UNIQUE,
 	created_at timestamp with time zone DEFAULT current_timestamp
 );
@@ -62,6 +63,7 @@ CREATE TABLE products.attribute_choice_value (
 CREATE TABLE products.category (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL,
+	display TEXT NOT NULL,
 	description TEXT,
 	hidden BOOLEAN NOT NULL DEFAULT false,
 	tree_id INT,
@@ -211,8 +213,8 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM products.get_products(8);
 	
-DROP FUNCTION products.get_product_variant_by_id(INT, TEXT);
-CREATE OR REPLACE FUNCTION products.get_product_variant_by_id(p_id INT, p_size TEXT)
+DROP FUNCTION products.get_variant(INT, TEXT);
+CREATE OR REPLACE FUNCTION products.get_variant(p_id INT, p_size TEXT)
 RETURNS TABLE (
 	variant_id INT,
 	product_id INT,
@@ -263,7 +265,43 @@ AS $$
 	END;
 $$ LANGUAGE plpgsql;
 
-SELECT * FROM products.get_product_variant_by_id(3, '');
+SELECT * FROM products.get_variant(3, '');
+
+DROP FUNCTION IF EXISTS products.get_categories(INT);
+CREATE OR REPLACE FUNCTION products.get_categories(category_parent_id int)
+RETURNS TABLE (
+	display TEXT,
+	categories json
+)
+AS $$
+	BEGIN
+	 	RETURN QUERY 
+		SELECT
+			t.display,
+			json_agg(t.categories)
+		FROM (
+			SELECT
+				pcl.display AS display,
+				json_build_object('display', c.display, 'url', c."name") AS categories
+			FROM
+				products.category c
+			INNER JOIN
+				products.product_categories pc ON pc.category_id = c.id
+			INNER JOIN
+				products.product p ON p.id = pc.product_id
+			INNER JOIN
+				products.product_class pcl ON pcl.id = p.product_class_id
+			WHERE
+				c.parent_id = category_parent_id
+			GROUP BY 
+				pcl.display, c.display, c."name"
+		) t
+		GROUP BY 
+			t.display;
+	END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM products.get_categories(1);
 
 -- TRIGGERS ********************************************
 
@@ -296,3 +334,27 @@ END;
 $$ language 'plpgsql';
 
 CREATE TRIGGER add_sku_tr BEFORE INSERT ON products.product_variant FOR EACH ROW EXECUTE PROCEDURE products.add_sku();
+	
+	
+SELECT
+	t.display,
+	json_agg(t.categories)
+FROM (
+	SELECT
+		pcl.display AS display,
+		json_build_object('display', c.display, 'url', c."name") AS categories
+	FROM
+		products.category c
+	INNER JOIN
+		products.product_categories pc ON pc.category_id = c.id
+	INNER JOIN
+		products.product p ON p.id = pc.product_id
+	INNER JOIN
+		products.product_class pcl ON pcl.id = p.product_class_id
+	WHERE
+		pcl.id = 1
+	GROUP BY 
+		pcl.display, c.display, c."name"
+) t
+GROUP BY 
+	t.display

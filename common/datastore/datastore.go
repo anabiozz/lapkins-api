@@ -9,8 +9,8 @@ import (
 // Datastore ...
 type Datastore interface {
 	GetProducts(productsID string) (products []models.Product, err error)
-	GetProductByID(productID string) (product *models.ProductVariant, err error)
-	GetProductVariantByID(productVariantID, size string) (product *models.ProductVariant, err error)
+	GetVariant(productVariantID, size string) (product *models.Variant, err error)
+	GetCategories(categoryID string) (categories models.Categories, err error)
 	CloseDB()
 }
 

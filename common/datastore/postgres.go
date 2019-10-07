@@ -65,55 +65,50 @@ func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Pr
 	return products, nil
 }
 
-// GetProductByID ..
-func (p *PostgresDatastore) GetProductByID(productID string) (product *models.ProductVariant, err error) {
-	id, err := strconv.Atoi(productID)
-	query := fmt.Sprintf(`SELECT * FROM products.get_product_by_id(%d);`, id)
+// GetVariant ..
+func (p *PostgresDatastore) GetVariant(variantID, size string) (*models.Variant, error) {
+	query := fmt.Sprintf(`SELECT * FROM products.get_variant(%s, '%s');`, variantID, size)
 
-	product = &models.ProductVariant{}
+	variant := &models.Variant{}
 
-	err = p.QueryRow(query).Scan(
-		&product.ID,
-		&product.ProductID,
-		&product.Name,
-		&product.Description,
-		&product.PriceOverride,
-		&product.Attributes,
-		pq.Array(&product.Sizes),
-		&product.Size,
-		pq.Array(&product.Images))
+	err := p.QueryRow(query).Scan(
+		&variant.ID,
+		&variant.ProductID,
+		&variant.Name,
+		&variant.Description,
+		&variant.PriceOverride,
+		&variant.Attributes,
+		pq.Array(&variant.Sizes),
+		&variant.Size,
+		pq.Array(&variant.Images),
+	)
+
 	if err != nil {
 		return nil, err
 	}
 
-	return product, nil
-}
-
-// GetProductVariantByID ..
-func (p *PostgresDatastore) GetProductVariantByID(productVariantID, size string) (product *models.ProductVariant, err error) {
-	id, err := strconv.Atoi(productVariantID)
-	query := fmt.Sprintf(`SELECT * FROM products.get_product_variant_by_id(%d, '%s');`, id, size)
-
-	product = &models.ProductVariant{}
-
-	err = p.QueryRow(query).Scan(
-		&product.ID,
-		&product.ProductID,
-		&product.Name,
-		&product.Description,
-		&product.PriceOverride,
-		&product.Attributes,
-		pq.Array(&product.Sizes),
-		&product.Size,
-		pq.Array(&product.Images))
-	if err != nil {
-		return nil, err
-	}
-
-	return product, nil
+	return variant, nil
 }
 
 // CloseDB ..
 func (p *PostgresDatastore) CloseDB() {
 	p.DB.Close()
+}
+
+// GetCategories ..
+func (p *PostgresDatastore) GetCategories(categoryID string) (models.Categories, error) {
+	query := fmt.Sprintf(`SELECT * FROM products.get_categories(%s);`, categoryID)
+
+	categories := models.Categories{}
+
+	err := p.QueryRow(query).Scan(
+		&categories.Name,
+		&categories.Category,
+	)
+
+	if err != nil {
+		return categories, err
+	}
+
+	return categories, nil
 }

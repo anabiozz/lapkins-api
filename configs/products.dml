@@ -10,11 +10,11 @@ VALUES ('authors', 'авторы'),
 ('frame', 'рамка');
 
 -- product_class
-INSERT INTO products.product_class (name, sku_part)
-VALUES ('postcards', 'PSTCRD'), 
-('posters', 'PSTR'), 
-('badges', 'BDGS'), 
-('table lamps', 'TBL-LMP');
+INSERT INTO products.product_class (name, display, sku_part)
+VALUES ('postcards', 'открытки', 'PSTCRD'), 
+('posters', 'постеры', 'PSTR'), 
+('badges', 'бэджи', 'BDGS'), 
+('table lamps', 'настольные лампы', 'TBL-LMP');
 
 -- attribute_choice_value
 INSERT INTO products.attribute_choice_value (display, attribute_id)
@@ -31,18 +31,18 @@ VALUES ('Анастасия Кондратьева', 1),
 ('пластик', 7);
 
 -- category
-INSERT INTO products.category (name, parent_id)
-VALUES ('wallart', NULL), 
-('stationery', NULL), 
-('gifts', NULL), 
-('home', NULL),
-('posters', 1),
-('framed-posters-plastic', 1),
-('framed-posters-wood', 1),
-('postcards', 2),
-('notebooks', 2),
-('diaries', 2),
-('calendars', 2);
+INSERT INTO products.category (name, display, parent_id)
+VALUES ('wallart', 'декор', NULL), 
+('stationery', 'канцелярия', NULL), 
+('gifts', 'подарки', NULL), 
+('home', 'дом', NULL),
+('posters-without-frame', 'постеры без рамки', 1),
+('framed-posters-plastic', 'постеры с пластиковой рамкой', 1),
+('framed-posters-wood', 'постеры с деревянной рамкой', 1),
+('postcards', 'открытки', 2),
+('notebooks', 'тетради', 2),
+('diaries', 'ежеднивники', 2),
+('calendars', 'календари', 2);
 
 -- product_class_product_attribute
 INSERT INTO products.product_class_product_attribute (product_class_id, product_attribute_id)
