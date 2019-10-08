@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/anabiozz/lapkin-project/lapkin-api/common"
@@ -21,7 +20,7 @@ func GetCategories(env *common.Env) http.HandlerFunc {
 			json.NewEncoder(w).Encode(err)
 		}
 
-		log.Println(categories)
+		// log.Println(categories)
 
 		json.NewEncoder(w).Encode(categories)
 	})

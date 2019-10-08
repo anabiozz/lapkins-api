@@ -10,6 +10,5 @@ type Category struct {
 
 // Categories ..
 type Categories struct {
-	Name     string          `json:"name"`
-	Category json.RawMessage `json:"categories"`
+	Categories json.RawMessage `json:"categories"`
 }

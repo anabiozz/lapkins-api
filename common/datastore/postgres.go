@@ -102,8 +102,7 @@ func (p *PostgresDatastore) GetCategories(categoryID string) (models.Categories,
 	categories := models.Categories{}
 
 	err := p.QueryRow(query).Scan(
-		&categories.Name,
-		&categories.Category,
+		&categories.Categories,
 	)
 
 	if err != nil {

@@ -42,7 +42,8 @@ VALUES ('wallart', 'декор', NULL),
 ('postcards', 'открытки', 2),
 ('notebooks', 'тетради', 2),
 ('diaries', 'ежеднивники', 2),
-('calendars', 'календари', 2);
+('calendars', 'календари', 2),
+('canvas', 'картина  на холсте', 1);
 
 -- product_class_product_attribute
 INSERT INTO products.product_class_product_attribute (product_class_id, product_attribute_id)
@@ -108,6 +109,12 @@ VALUES (
 			'Et deserunt labore excepteur id eiusmod reprehenderit do nostrud cupidatat consectetur laboris culpa.', 
 			600, 
 			2
+		),
+		(
+			'9-cnvs-veselye', 
+			'Et deserunt labore excepteur id eiusmod reprehenderit do nostrud cupidatat consectetur laboris culpa.', 
+			1000, 
+			5
 		);
 
 INSERT INTO products.product_variant (name, price_override, product_id, attributes)
@@ -302,6 +309,17 @@ VALUES (
 				"print type": ["digital printing"], 
 				"materials": ["300 g/m² Munken Lynx Rough paper (woodfree)"]
 			}'
+		),
+		(
+			'картина на холсте веселье 300x450', 
+			1000, 
+			9, 
+			'{
+				"authors": ["Анастасия Кондратьева"], 
+				"finish": ["semi-gloss"], 
+				"print type": ["digital printing"], 
+				"materials": ["300 g/m² Munken Lynx Rough paper (woodfree)"]
+			}'
 		);
 
 -- product_categories
@@ -313,7 +331,8 @@ VALUES (1, 5),
 (5, 7), 
 (6, 6), 
 (7, 7), 
-(8, 6);
+(8, 6),
+(9, 12);
 
 -- size
 INSERT INTO products."size" (x, y)
