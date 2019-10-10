@@ -27,6 +27,9 @@ func NewPostgresDatastore() (*PostgresDatastore, error) {
 	if err := envconfig.Process("", &db); err != nil {
 		logger.Fatal(err)
 	}
+
+	logger.Info(db.DBinfo)
+
 	connection, err := sql.Open("postgres", db.DBinfo)
 	if err != nil {
 		return nil, err
