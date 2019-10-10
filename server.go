@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/anabiozz/lapkin-project/lapkin-api/api"
+	"github.com/anabiozz/lapkin-project/lapkin-api/api/cart"
 	"github.com/anabiozz/lapkin-project/lapkin-api/common"
 	"github.com/anabiozz/lapkin-project/lapkin-api/common/datastore"
 	"github.com/anabiozz/lapkin-project/lapkin-api/middleware"
@@ -40,6 +41,12 @@ func main() {
 	apiRouter.Handle("/get-products", middleware.Cors(api.GetProducts(&env)))
 	apiRouter.Handle("/get-variant", middleware.Cors(api.GetVariant(&env)))
 	apiRouter.Handle("/get-categories", middleware.Cors(api.GetCategories(&env)))
+
+	cartRouter := apiRouter.PathPrefix("/cart/").Subrouter()
+	cartRouter.Handle("/add-product", middleware.Cors(cart.AddProduct(&env)))
+	cartRouter.Handle("/change-quantity", middleware.Cors(cart.ChangeQuantity(&env)))
+	cartRouter.Handle("/remove-product", middleware.Cors(cart.RemoveProduct(&env)))
+	cartRouter.Handle("/get-cart", middleware.Cors(cart.GetCart(&env)))
 
 	srv := &http.Server{
 		Handler:      router,

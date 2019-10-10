@@ -28,8 +28,6 @@ func NewPostgresDatastore() (*PostgresDatastore, error) {
 		logger.Fatal(err)
 	}
 
-	logger.Info(db.DBinfo)
-
 	connection, err := sql.Open("postgres", db.DBinfo)
 	if err != nil {
 		return nil, err
@@ -75,7 +73,7 @@ func (p *PostgresDatastore) GetVariant(variantID, size string) (*models.Variant,
 	variant := &models.Variant{}
 
 	err := p.QueryRow(query).Scan(
-		&variant.ID,
+		&variant.VariantID,
 		&variant.ProductID,
 		&variant.Name,
 		&variant.Description,
@@ -113,4 +111,74 @@ func (p *PostgresDatastore) GetCategories(categoryID string) (models.Categories,
 	}
 
 	return categories, nil
+}
+
+// AddProduct ..
+func (p *PostgresDatastore) AddProduct(variant []byte) (cartSession string, err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.add_product('%s');`, variant)
+	err = p.QueryRow(query).Scan(
+		&cartSession,
+	)
+	if err != nil {
+		return "", err
+	}
+	return cartSession, nil
+}
+
+// ChangeQuantity ..
+func (p *PostgresDatastore) ChangeQuantity(variantID string, cartSession string, newQuantety string) (err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.change_product(%s, %s, %s);`, variantID, cartSession, newQuantety)
+	err = p.QueryRow(query).Scan(nil)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// RemoveProduct ..
+func (p *PostgresDatastore) RemoveProduct(cartSession string, variant *models.Variant) (err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.remove_product(%s);`, variant)
+	err = p.QueryRow(query).Scan(nil)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetCart ..
+func (p *PostgresDatastore) GetCart(cartSession string) (cartItems []*models.Variant, err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.get_cart(%s);`, cartSession)
+
+	variant := &models.Variant{}
+
+	rows, err := p.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+
+		err = rows.Scan(
+			variant.VariantID,
+			variant.Attributes,
+			variant.Description,
+			variant.Images,
+			variant.Name,
+			variant.PriceOverride,
+			variant.ProductID,
+			variant.Quantity,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		cartItems = append(cartItems, variant)
+	}
+
+	if err != nil {
+		return cartItems, err
+	}
+
+	return cartItems, nil
 }

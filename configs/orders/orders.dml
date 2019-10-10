@@ -1,0 +1,11 @@
+INSERT INTO orders.order_status (status)
+VALUES ('in process'), ('cancelled'), ('completed'), ('out of stock');
+
+INSERT INTO orders.shipping_status (status)
+VALUES ('pickup'), ('fedex'), ('ups');
+
+INSERT INTO orders.payment_method (status)
+VALUES ('credit card'), ('debit card'), ('cash');
+
+INSERT INTO orders.invoice_status (status)
+VALUES ('issued'), ('paid');
