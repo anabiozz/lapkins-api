@@ -2,10 +2,12 @@ package cart
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
 	"github.com/anabiozz/lapkin-project/lapkin-api/common"
+	"github.com/anabiozz/lapkin-project/lapkin-api/models"
 	"github.com/anabiozz/logger"
 )
 
@@ -21,17 +23,13 @@ func AddProduct(env *common.Env) http.HandlerFunc {
 			return
 		}
 
-		var raw map[string]interface{}
-		json.Unmarshal(respBody, &raw)
+		cartItem := models.CartItem{}
 
-		marshaledVariant, err := json.Marshal(raw["product"])
-		if err != nil {
-			logger.Info(err)
-			json.NewEncoder(w).Encode(logger.Return(err))
-			return
-		}
+		json.Unmarshal(respBody, &cartItem)
 
-		cartSession, err := env.DB.AddProduct(marshaledVariant)
+		fmt.Println(cartItem)
+
+		cartSession, err := env.DB.AddProduct(cartItem.VariantID, cartItem.СartSession, cartItem.CustomeriD)
 		if err != nil {
 			logger.Info(err)
 			w.WriteHeader(http.StatusNotFound)

@@ -12,7 +12,8 @@ type Datastore interface {
 	GetVariant(productVariantID, size string) (product *models.Variant, err error)
 	GetCategories(categoryID string) (categories models.Categories, err error)
 
-	AddProduct(variant []byte) (cartSession string, err error)
+	CreateSession() (cartSession string, err error)
+	AddProduct(variantID, сartSession, customerID int) (cartSession string, err error)
 	ChangeQuantity(variantID string, cartSession string, newQuantety string) (err error)
 	RemoveProduct(cartSession string, variant *models.Variant) (err error)
 	GetCart(cartSession string) (cartItems []*models.Variant, err error)

@@ -113,9 +113,21 @@ func (p *PostgresDatastore) GetCategories(categoryID string) (models.Categories,
 	return categories, nil
 }
 
+// CreateSession ..
+func (p *PostgresDatastore) CreateSession() (cartSession string, err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.create_session();`)
+	err = p.QueryRow(query).Scan(
+		&cartSession,
+	)
+	if err != nil {
+		return "", err
+	}
+	return cartSession, nil
+}
+
 // AddProduct ..
-func (p *PostgresDatastore) AddProduct(variant []byte) (cartSession string, err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.add_product('%s');`, variant)
+func (p *PostgresDatastore) AddProduct(variantID, сartSession, customerID int) (cartSession string, err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.add_product(%d, %d, %d);`, variantID, сartSession, customerID)
 	err = p.QueryRow(query).Scan(
 		&cartSession,
 	)
