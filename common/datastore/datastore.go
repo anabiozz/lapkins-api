@@ -3,7 +3,7 @@ package datastore
 import (
 	"errors"
 
-	"github.com/anabiozz/lapkin-project/lapkin-api/models"
+	"github.com/anabiozz/lapkins-api/models"
 )
 
 // Datastore ...

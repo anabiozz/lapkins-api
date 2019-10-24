@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/anabiozz/lapkin-project/lapkin-api/common"
-	"github.com/anabiozz/lapkin-project/lapkin-api/models"
+	"github.com/anabiozz/lapkins-api/common"
+	"github.com/anabiozz/lapkins-api/models"
 	"github.com/anabiozz/logger"
 )
 

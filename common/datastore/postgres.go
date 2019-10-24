@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/anabiozz/lapkin-project/lapkin-api/models"
+	"github.com/anabiozz/lapkins-api/models"
 	"github.com/anabiozz/logger"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/lib/pq"

@@ -5,11 +5,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/anabiozz/lapkin-project/lapkin-api/api"
-	"github.com/anabiozz/lapkin-project/lapkin-api/api/cart"
-	"github.com/anabiozz/lapkin-project/lapkin-api/common"
-	"github.com/anabiozz/lapkin-project/lapkin-api/common/datastore"
-	"github.com/anabiozz/lapkin-project/lapkin-api/middleware"
+	"github.com/anabiozz/lapkins-api/api"
+	"github.com/anabiozz/lapkins-api/api/cart"
+	"github.com/anabiozz/lapkins-api/common"
+	"github.com/anabiozz/lapkins-api/common/datastore"
+	"github.com/anabiozz/lapkins-api/middleware"
 	"github.com/anabiozz/logger"
 	"github.com/gorilla/mux"
 
