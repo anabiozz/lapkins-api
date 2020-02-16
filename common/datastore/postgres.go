@@ -54,8 +54,7 @@ func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Pr
 			&product.ID,
 			&product.Name,
 			&product.Description,
-			&product.Price,
-			&product.Size)
+			&product.Price)
 		if err != nil {
 			return nil, err
 		}
@@ -68,7 +67,7 @@ func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Pr
 
 // GetVariant ..
 func (p *PostgresDatastore) GetVariant(variantID, size string) (*models.Variant, error) {
-	query := fmt.Sprintf(`SELECT * FROM products.get_variant(%s, '%s');`, variantID, size)
+	query := fmt.Sprintf(`SELECT * FROM products.get_variant(%s);`, variantID)
 
 	variant := &models.Variant{}
 
@@ -78,10 +77,9 @@ func (p *PostgresDatastore) GetVariant(variantID, size string) (*models.Variant,
 		&variant.Name,
 		&variant.Description,
 		&variant.PriceOverride,
-		&variant.Attributes,
 		pq.Array(&variant.Sizes),
-		&variant.Size,
 		pq.Array(&variant.Images),
+		pq.Array(&variant.Attributes),
 	)
 
 	if err != nil {

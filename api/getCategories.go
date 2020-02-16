@@ -20,8 +20,6 @@ func GetCategories(env *common.Env) http.HandlerFunc {
 			json.NewEncoder(w).Encode(err)
 		}
 
-		// log.Println(categories)
-
 		json.NewEncoder(w).Encode(categories)
 	})
 }

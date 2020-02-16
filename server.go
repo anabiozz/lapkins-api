@@ -41,6 +41,7 @@ func main() {
 	apiRouter.Handle("/get-products", middleware.Cors(api.GetProducts(&env)))
 	apiRouter.Handle("/get-variant", middleware.Cors(api.GetVariant(&env)))
 	apiRouter.Handle("/get-categories", middleware.Cors(api.GetCategories(&env)))
+	apiRouter.Handle("/create-user-session", middleware.Cors(cart.CreateSession(&env)))
 
 	cartRouter := apiRouter.PathPrefix("/cart/").Subrouter()
 	cartRouter.Handle("/add-product", middleware.Cors(cart.AddProduct(&env)))
