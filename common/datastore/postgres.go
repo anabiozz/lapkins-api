@@ -73,8 +73,8 @@ func (p *PostgresDatastore) GetProducts(subjectID string) (products []models.Pro
 }
 
 // GetVariant ..
-func (p *PostgresDatastore) GetVariant(variantID, size string) (*models.Variant, error) {
-	query := fmt.Sprintf(`SELECT * FROM new_products.get_variant(%s);`, variantID)
+func (p *PostgresDatastore) GetVariant(variantID, sizeOptionID string) (*models.Variant, error) {
+	query := fmt.Sprintf(`SELECT * FROM new_products.get_variant(%s, %s);`, variantID, sizeOptionID)
 
 	variant := &models.Variant{}
 
@@ -90,6 +90,7 @@ func (p *PostgresDatastore) GetVariant(variantID, size string) (*models.Variant,
 		pq.Array(&variant.Images),
 		pq.Array(&variant.Attributes),
 		&variant.Price,
+		pq.Array(&variant.Sizes),
 	)
 
 	if err != nil {
