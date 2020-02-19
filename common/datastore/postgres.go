@@ -38,9 +38,9 @@ func NewPostgresDatastore() (*PostgresDatastore, error) {
 }
 
 // GetProducts ..
-func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Product, err error) {
-	id, err := strconv.Atoi(productsID)
-	query := fmt.Sprintf(`SELECT * FROM products.get_products(%d);`, id)
+func (p *PostgresDatastore) GetProducts(subjectID string) (products []models.Product, err error) {
+	id, err := strconv.Atoi(subjectID)
+	query := fmt.Sprintf(`SELECT * FROM new_products.get_products(%d);`, id)
 	rows, err := p.Query(query)
 	if err != nil {
 		return nil, err
@@ -54,7 +54,14 @@ func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Pr
 			&product.ID,
 			&product.Name,
 			&product.Description,
-			&product.Price)
+			&product.Brand,
+			&product.Subject,
+			&product.Season,
+			&product.Kind,
+			&product.PhotoCount,
+			&product.Article,
+			&product.Price,
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -67,7 +74,7 @@ func (p *PostgresDatastore) GetProducts(productsID string) (products []models.Pr
 
 // GetVariant ..
 func (p *PostgresDatastore) GetVariant(variantID, size string) (*models.Variant, error) {
-	query := fmt.Sprintf(`SELECT * FROM products.get_variant(%s);`, variantID)
+	query := fmt.Sprintf(`SELECT * FROM new_products.get_variant(%s);`, variantID)
 
 	variant := &models.Variant{}
 
@@ -147,7 +154,7 @@ func (p *PostgresDatastore) ChangeQuantity(variantID string, cartSession string,
 
 // RemoveProduct ..
 func (p *PostgresDatastore) RemoveProduct(cartSession string, variant *models.Variant) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.remove_product(%s);`, variant)
+	query := fmt.Sprintf(`SELECT * FROM cart.remove_product(%v);`, variant)
 	err = p.QueryRow(query).Scan(nil)
 	if err != nil {
 		return err
