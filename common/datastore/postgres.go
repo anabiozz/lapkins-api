@@ -83,10 +83,13 @@ func (p *PostgresDatastore) GetVariant(variantID, size string) (*models.Variant,
 		&variant.ProductID,
 		&variant.Name,
 		&variant.Description,
-		&variant.PriceOverride,
-		pq.Array(&variant.Sizes),
+		&variant.Brand,
+		&variant.Subject,
+		&variant.Season,
+		&variant.Kind,
 		pq.Array(&variant.Images),
 		pq.Array(&variant.Attributes),
+		&variant.Price,
 	)
 
 	if err != nil {
@@ -182,9 +185,8 @@ func (p *PostgresDatastore) GetCart(cartSession string) (cartItems []*models.Var
 			variant.Description,
 			variant.Images,
 			variant.Name,
-			variant.PriceOverride,
+			variant.Price,
 			variant.ProductID,
-			variant.Quantity,
 		)
 		if err != nil {
 			return nil, err
