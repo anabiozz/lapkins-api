@@ -29,13 +29,13 @@ func AddProduct(env *common.Env) http.HandlerFunc {
 
 		fmt.Println(cartItem)
 
-		cartSession, err := env.DB.AddProduct(cartItem.VariantID, cartItem.СartSession, cartItem.CustomeriD)
+		err = env.DB.AddProduct(cartItem.VariationID, cartItem.СartSession)
 		if err != nil {
 			logger.Info(err)
 			w.WriteHeader(http.StatusNotFound)
 			json.NewEncoder(w).Encode(err)
 		}
 
-		json.NewEncoder(w).Encode(cartSession)
+		json.NewEncoder(w).Encode(true)
 	})
 }

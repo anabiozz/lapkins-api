@@ -64,9 +64,9 @@ type Item struct {
 	Value string `json:"value"`
 }
 
-// Variant ..
-type Variant struct {
-	VariantID   int       `json:"variant_id"`
+// Variation ..
+type Variation struct {
+	ID          int       `json:"variation_id"`
 	ProductID   int       `json:"product_id"`
 	Name        string    `json:"name"`
 	Description string    `json:"decription"`

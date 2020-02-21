@@ -14,17 +14,17 @@ func ChangeQuantity(env *common.Env) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		variant := &models.Variant{}
+		variation := &models.Variation{}
 
 		decoder := json.NewDecoder(r.Body)
-		err := decoder.Decode(variant)
+		err := decoder.Decode(variation)
 		if err != nil {
 			logger.Info(err)
 			json.NewEncoder(w).Encode(logger.Return(err))
 			return
 		}
 
-		err = env.DB.ChangeQuantity(r.URL.Query().Get("variant_id"), r.URL.Query().Get("cart_session"), r.URL.Query().Get("new_quantety"))
+		err = env.DB.ChangeQuantity(r.URL.Query().Get("variation_id"), r.URL.Query().Get("cart_session"), r.URL.Query().Get("new_quantity"))
 		if err != nil {
 			logger.Info(err)
 			w.WriteHeader(http.StatusNotFound)

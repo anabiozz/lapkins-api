@@ -39,7 +39,7 @@ func main() {
 	// API handlers
 	apiRouter := router.PathPrefix("/api/").Subrouter()
 	apiRouter.Handle("/get-products", middleware.Cors(api.GetProducts(&env)))
-	apiRouter.Handle("/get-variant", middleware.Cors(api.GetVariant(&env)))
+	apiRouter.Handle("/get-variation", middleware.Cors(api.GetVariation(&env)))
 	apiRouter.Handle("/get-categories", middleware.Cors(api.GetCategories(&env)))
 	apiRouter.Handle("/create-user-session", middleware.Cors(cart.CreateSession(&env)))
 

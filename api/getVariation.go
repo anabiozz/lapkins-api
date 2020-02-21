@@ -8,12 +8,12 @@ import (
 	"github.com/anabiozz/logger"
 )
 
-// GetVariant ...
-func GetVariant(env *common.Env) http.HandlerFunc {
+// GetVariation ...
+func GetVariation(env *common.Env) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		product, err := env.DB.GetVariant(r.URL.Query().Get("variant_id"), r.URL.Query().Get("size_option_id"))
+		product, err := env.DB.GetVariation(r.URL.Query().Get("variation_id"), r.URL.Query().Get("size_option_id"))
 		if err != nil {
 			logger.Info(err)
 			w.WriteHeader(http.StatusNotFound)
