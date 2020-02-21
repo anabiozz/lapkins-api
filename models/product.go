@@ -58,6 +58,12 @@ func (j *JSONRaw) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// Item ..
+type Item struct {
+	Key   int    `json:"key"`
+	Value string `json:"value"`
+}
+
 // Variant ..
 type Variant struct {
 	VariantID   int       `json:"variant_id"`
@@ -72,4 +78,5 @@ type Variant struct {
 	Attributes  []JSONRaw `json:"attributes"`
 	Sizes       []JSONRaw `json:"sizes"`
 	Price       string    `json:"price"`
+	Size        int       `json:"size"`
 }

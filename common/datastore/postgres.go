@@ -91,6 +91,7 @@ func (p *PostgresDatastore) GetVariant(variantID, sizeOptionID string) (*models.
 		pq.Array(&variant.Attributes),
 		&variant.Price,
 		pq.Array(&variant.Sizes),
+		&variant.Size,
 	)
 
 	if err != nil {
