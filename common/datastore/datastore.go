@@ -13,10 +13,11 @@ type Datastore interface {
 	GetCategories(categoryID string) (categories models.Categories, err error)
 
 	CreateSession() (cartSession string, err error)
-	AddProduct(variationID int, сartSession string) (err error)
-	ChangeQuantity(variationID string, cartSession string, newQuantety string) (err error)
-	RemoveProduct(cartSession string, variation *models.Variation) (err error)
-	GetCart(cartSession string) (cartItems []*models.Variation, err error)
+	AddProduct(variationID int, сartSession string, sizeOptionID int) (err error)
+	IncreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error)
+	DecreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error)
+	RemoveProduct(variationID int, cartSession string, sizeOptionID int) (err error)
+	LoadCart(cartSession string) (cartItems []models.CartItemResponse, err error)
 
 	CloseDB()
 }

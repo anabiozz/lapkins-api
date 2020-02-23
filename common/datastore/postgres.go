@@ -38,7 +38,6 @@ func NewPostgresDatastore() (*PostgresDatastore, error) {
 
 // GetProducts ..
 func (p *PostgresDatastore) GetProducts(subjectURL string) (products []models.Product, err error) {
-	fmt.Println(subjectURL)
 	query := fmt.Sprintf(`SELECT * FROM new_products.get_products('%s');`, subjectURL)
 	rows, err := p.Query(query)
 	if err != nil {
@@ -90,7 +89,7 @@ func (p *PostgresDatastore) GetVariation(variationID, sizeOptionID string) (*mod
 		pq.Array(&variation.Attributes),
 		&variation.Price,
 		pq.Array(&variation.Sizes),
-		&variation.Size,
+		&variation.SizeOptionID,
 	)
 
 	if err != nil {
@@ -135,8 +134,8 @@ func (p *PostgresDatastore) CreateSession() (cartSession string, err error) {
 }
 
 // AddProduct ..
-func (p *PostgresDatastore) AddProduct(variationID int, сartSession string) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.add_product(%d, '%s');`, variationID, сartSession)
+func (p *PostgresDatastore) AddProduct(variationID int, cartSession string, sizeOptionID int) (err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
 	_, err = p.Exec(query)
 	if err != nil {
 		return err
@@ -144,10 +143,20 @@ func (p *PostgresDatastore) AddProduct(variationID int, сartSession string) (er
 	return nil
 }
 
-// ChangeQuantity ..
-func (p *PostgresDatastore) ChangeQuantity(variationID string, cartSession string, newQuantety string) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.change_product(%s, %s, %s);`, variationID, cartSession, newQuantety)
-	err = p.QueryRow(query).Scan(nil)
+// IncreaseProductQuantity ..
+func (p *PostgresDatastore) IncreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	_, err = p.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DecreaseProductQuantity ..
+func (p *PostgresDatastore) DecreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.decrease_product_quantity(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	_, err = p.Exec(query)
 	if err != nil {
 		return err
 	}
@@ -155,20 +164,18 @@ func (p *PostgresDatastore) ChangeQuantity(variationID string, cartSession strin
 }
 
 // RemoveProduct ..
-func (p *PostgresDatastore) RemoveProduct(cartSession string, variation *models.Variation) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.remove_product(%v);`, variation)
-	err = p.QueryRow(query).Scan(nil)
+func (p *PostgresDatastore) RemoveProduct(variationID int, cartSession string, sizeOptionID int) (err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.remove_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	_, err = p.Exec(query)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-// GetCart ..
-func (p *PostgresDatastore) GetCart(cartSession string) (cartItems []*models.Variation, err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.get_cart(%s);`, cartSession)
-
-	variation := &models.Variation{}
+// LoadCart ..
+func (p *PostgresDatastore) LoadCart(cartSession string) (cartItems []models.CartItemResponse, err error) {
+	query := fmt.Sprintf(`SELECT * FROM cart.load_cart('%s');`, cartSession)
 
 	rows, err := p.Query(query)
 	if err != nil {
@@ -176,22 +183,24 @@ func (p *PostgresDatastore) GetCart(cartSession string) (cartItems []*models.Var
 	}
 	defer rows.Close()
 
+	cartItem := models.CartItemResponse{}
 	for rows.Next() {
 
 		err = rows.Scan(
-			variation.ID,
-			variation.Attributes,
-			variation.Description,
-			variation.Images,
-			variation.Name,
-			variation.Price,
-			variation.ProductID,
+			&cartItem.ID,
+			&cartItem.Name,
+			&cartItem.Brand,
+			&cartItem.Price,
+			&cartItem.PricePerItem,
+			&cartItem.Size,
+			&cartItem.Quantity,
+			&cartItem.SizeOptionID,
 		)
 		if err != nil {
 			return nil, err
 		}
 
-		cartItems = append(cartItems, variation)
+		cartItems = append(cartItems, cartItem)
 	}
 
 	if err != nil {

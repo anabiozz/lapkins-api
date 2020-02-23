@@ -8,7 +8,7 @@ import (
 
 // Product ..
 type Product struct {
-	ID          int    `json:"id"`
+	ID          int    `json:"variation_id"`
 	Name        string `json:"name"`
 	Description string `json:"decription"`
 	Brand       string `json:"brand"`
@@ -66,17 +66,17 @@ type Item struct {
 
 // Variation ..
 type Variation struct {
-	ID          int       `json:"variation_id"`
-	ProductID   int       `json:"product_id"`
-	Name        string    `json:"name"`
-	Description string    `json:"decription"`
-	Brand       string    `json:"brand"`
-	Subject     string    `json:"subject"`
-	Season      string    `json:"season"`
-	Kind        string    `json:"kind"`
-	Images      []string  `json:"images"`
-	Attributes  []JSONRaw `json:"attributes"`
-	Sizes       []JSONRaw `json:"sizes"`
-	Price       string    `json:"price"`
-	Size        int       `json:"size"`
+	ID           int       `json:"variation_id"`
+	ProductID    int       `json:"product_id"`
+	Name         string    `json:"name"`
+	Description  string    `json:"decription"`
+	Brand        string    `json:"brand"`
+	Subject      string    `json:"subject"`
+	Season       string    `json:"season"`
+	Kind         string    `json:"kind"`
+	Images       []string  `json:"images"`
+	Attributes   []JSONRaw `json:"attributes"`
+	Sizes        []JSONRaw `json:"sizes"`
+	Price        string    `json:"price"`
+	SizeOptionID int       `json:"size_option_id"`
 }

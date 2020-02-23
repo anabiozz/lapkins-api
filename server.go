@@ -45,10 +45,10 @@ func main() {
 
 	cartRouter := apiRouter.PathPrefix("/cart/").Subrouter()
 	cartRouter.Handle("/add-product", middleware.Cors(cart.AddProduct(&env)))
-	cartRouter.Handle("/change-quantity", middleware.Cors(cart.ChangeQuantity(&env)))
+	cartRouter.Handle("/increase-product-quantity", middleware.Cors(cart.IncreaseProductQuantity(&env)))
+	cartRouter.Handle("/decrease-product-quantity", middleware.Cors(cart.DecreaseProductQuantity(&env)))
 	cartRouter.Handle("/remove-product", middleware.Cors(cart.RemoveProduct(&env)))
-	cartRouter.Handle("/get-cart", middleware.Cors(cart.GetCart(&env)))
-	cartRouter.Handle("/create-cart-session", middleware.Cors(cart.CreateSession(&env)))
+	cartRouter.Handle("/load-cart", middleware.Cors(cart.LoadCart(&env)))
 
 	srv := &http.Server{
 		Handler:      router,

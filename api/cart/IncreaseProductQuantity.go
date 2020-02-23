@@ -2,31 +2,32 @@ package cart
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	"github.com/anabiozz/lapkins-api/common"
-	"github.com/anabiozz/lapkins-api/models"
 	"github.com/anabiozz/logger"
 )
 
-// AddProduct ...
-func AddProduct(env *common.Env) http.HandlerFunc {
+// IncreaseProductQuantity ...
+func IncreaseProductQuantity(env *common.Env) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		respBody, err := ioutil.ReadAll(r.Body)
+		variationID, err := strconv.Atoi(r.URL.Query().Get("variation_id"))
 		if err != nil {
-			logger.Error(err)
+			logger.Info(err)
+			json.NewEncoder(w).Encode(logger.Return(err))
+			return
+		}
+		sizeOptionID, err := strconv.Atoi(r.URL.Query().Get("size_option_id"))
+		if err != nil {
+			logger.Info(err)
 			json.NewEncoder(w).Encode(logger.Return(err))
 			return
 		}
 
-		cartItem := models.CartItem{}
-
-		json.Unmarshal(respBody, &cartItem)
-
-		err = env.DB.AddProduct(cartItem.VariationID, cartItem.СartSession, cartItem.SizeOptionID)
+		err = env.DB.IncreaseProductQuantity(variationID, r.URL.Query().Get("cart_session"), sizeOptionID)
 		if err != nil {
 			logger.Info(err)
 			w.WriteHeader(http.StatusNotFound)

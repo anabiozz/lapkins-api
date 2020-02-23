@@ -8,12 +8,12 @@ import (
 	"github.com/anabiozz/logger"
 )
 
-// GetCart ...
-func GetCart(env *common.Env) http.HandlerFunc {
+// LoadCart ...
+func LoadCart(env *common.Env) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		cart, err := env.DB.GetCart(r.URL.Query().Get("cart_session"))
+		cart, err := env.DB.LoadCart(r.URL.Query().Get("cart_session"))
 		if err != nil {
 			logger.Info(err)
 			w.WriteHeader(http.StatusNotFound)
