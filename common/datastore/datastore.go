@@ -8,11 +8,10 @@ import (
 
 // Datastore ...
 type Datastore interface {
-	GetProducts(productsID string) (products []models.Product, err error)
+	GetProducts(categoryURL string) (products []models.Product, err error)
 	GetVariation(variationID, size string) (product *models.Variation, err error)
-	GetCategories(categoryID string) (categories models.Categories, err error)
+	GetCategories(categoryURL string) (categories []models.Category, err error)
 
-	CreateSession() (cartSession string, err error)
 	AddProduct(variationID int, сartSession string, sizeOptionID int) (err error)
 	IncreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error)
 	DecreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error)

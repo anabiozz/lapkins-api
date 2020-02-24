@@ -37,8 +37,8 @@ func NewPostgresDatastore() (*PostgresDatastore, error) {
 }
 
 // GetProducts ..
-func (p *PostgresDatastore) GetProducts(subjectURL string) (products []models.Product, err error) {
-	query := fmt.Sprintf(`SELECT * FROM new_products.get_products('%s');`, subjectURL)
+func (p *PostgresDatastore) GetProducts(categoryURL string) (products []models.Product, err error) {
+	query := fmt.Sprintf(`SELECT * FROM products_v2.get_products('%s');`, categoryURL)
 	rows, err := p.Query(query)
 	if err != nil {
 		return nil, err
@@ -59,6 +59,7 @@ func (p *PostgresDatastore) GetProducts(subjectURL string) (products []models.Pr
 			&product.PhotoCount,
 			&product.Article,
 			&product.Price,
+			&product.CategiryDescription,
 		)
 		if err != nil {
 			return nil, err
@@ -72,7 +73,7 @@ func (p *PostgresDatastore) GetProducts(subjectURL string) (products []models.Pr
 
 // GetVariation ..
 func (p *PostgresDatastore) GetVariation(variationID, sizeOptionID string) (*models.Variation, error) {
-	query := fmt.Sprintf(`SELECT * FROM new_products.get_variation(%s, %s);`, variationID, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM products_v2.get_variation(%s, %s);`, variationID, sizeOptionID)
 
 	variation := &models.Variation{}
 
@@ -105,32 +106,31 @@ func (p *PostgresDatastore) CloseDB() {
 }
 
 // GetCategories ..
-func (p *PostgresDatastore) GetCategories(categoryID string) (models.Categories, error) {
-	query := fmt.Sprintf(`SELECT * FROM products.get_categories(%s);`, categoryID)
-
-	categories := models.Categories{}
-
-	err := p.QueryRow(query).Scan(
-		&categories.Categories,
-	)
-
+func (p *PostgresDatastore) GetCategories(categoryURL string) (categories []models.Category, err error) {
+	query := fmt.Sprintf(`SELECT * FROM products_v2.get_categories('%s');`, categoryURL)
+	rows, err := p.Query(query)
 	if err != nil {
-		return categories, err
+		return nil, err
+	}
+	defer rows.Close()
+
+	category := models.Category{}
+	for rows.Next() {
+
+		err = rows.Scan(
+			&category.ID,
+			&category.Name,
+			&category.Description,
+			&category.URL,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		categories = append(categories, category)
 	}
 
 	return categories, nil
-}
-
-// CreateSession ..
-func (p *PostgresDatastore) CreateSession() (cartSession string, err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.create_session();`)
-	err = p.QueryRow(query).Scan(
-		&cartSession,
-	)
-	if err != nil {
-		return "", err
-	}
-	return cartSession, nil
 }
 
 // AddProduct ..

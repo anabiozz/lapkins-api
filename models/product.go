@@ -8,16 +8,17 @@ import (
 
 // Product ..
 type Product struct {
-	ID          int    `json:"variation_id"`
-	Name        string `json:"name"`
-	Description string `json:"decription"`
-	Brand       string `json:"brand"`
-	Subject     string `json:"subject"`
-	Season      string `json:"season"`
-	Kind        string `json:"kind"`
-	PhotoCount  string `json:"photo_count"`
-	Article     string `json:"article"`
-	Price       string `json:"price"`
+	ID                  int    `json:"variation_id"`
+	Name                string `json:"name"`
+	Description         string `json:"decription"`
+	Brand               string `json:"brand"`
+	Subject             string `json:"subject"`
+	Season              string `json:"season"`
+	Kind                string `json:"kind"`
+	PhotoCount          string `json:"photo_count"`
+	Article             string `json:"article"`
+	Price               string `json:"price"`
+	CategiryDescription string `json:"category_descrption"`
 }
 
 //JSONRaw ...

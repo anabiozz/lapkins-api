@@ -13,7 +13,7 @@ func GetCategories(env *common.Env) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		categories, err := env.DB.GetCategories(r.URL.Query().Get("category_id"))
+		categories, err := env.DB.GetCategories(r.URL.Query().Get("category_url"))
 		if err != nil {
 			logger.Info(err)
 			w.WriteHeader(http.StatusNotFound)
