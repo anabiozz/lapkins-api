@@ -48,6 +48,7 @@ func main() {
 	cartRouter.Handle("/decrease-product-quantity", middleware.Cors(cart.DecreaseProductQuantity(&env)))
 	cartRouter.Handle("/remove-product", middleware.Cors(cart.RemoveProduct(&env)))
 	cartRouter.Handle("/load-cart", middleware.Cors(cart.LoadCart(&env)))
+	cartRouter.Handle("/create-order", middleware.Cors(cart.CreateOrder(&env)))
 
 	srv := &http.Server{
 		Handler:      router,
