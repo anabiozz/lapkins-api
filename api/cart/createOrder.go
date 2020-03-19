@@ -26,12 +26,12 @@ func CreateOrder(env *common.Env) http.HandlerFunc {
 
 		json.Unmarshal(respBody, &cartItem)
 
-		err = env.DB.CreateOrder(cartItem.VariationID, cartItem.СartSession, cartItem.SizeOptionID)
-		if err != nil {
-			logger.Info(err)
-			w.WriteHeader(http.StatusNotFound)
-			json.NewEncoder(w).Encode(err)
-		}
+		//err = env.DB.CreateOrder(cartItem.VariationID, cartItem.СartSession, cartItem.SizeOptionID)
+		//if err != nil {
+		//	logger.Info(err)
+		//	w.WriteHeader(http.StatusNotFound)
+		//	json.NewEncoder(w).Encode(err)
+		//}
 
 		json.NewEncoder(w).Encode(true)
 	})

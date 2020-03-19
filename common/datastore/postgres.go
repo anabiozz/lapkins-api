@@ -38,7 +38,7 @@ func NewPostgresDatastore() (*PostgresDatastore, error) {
 
 // GetProducts ..
 func (p *PostgresDatastore) GetProducts(categoryURL string) (products []models.Product, err error) {
-	query := fmt.Sprintf(`SELECT * FROM products_v2.get_products('%s');`, categoryURL)
+	query := fmt.Sprintf(`SELECT * FROM products.get_products('%s');`, categoryURL)
 	rows, err := p.Query(query)
 	if err != nil {
 		return nil, err
@@ -73,7 +73,7 @@ func (p *PostgresDatastore) GetProducts(categoryURL string) (products []models.P
 
 // GetVariation ..
 func (p *PostgresDatastore) GetVariation(variationID, sizeOptionID string) (*models.Variation, error) {
-	query := fmt.Sprintf(`SELECT * FROM products_v2.get_variation(%s, %s);`, variationID, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM products.get_variation(%s, %s);`, variationID, sizeOptionID)
 
 	variation := &models.Variation{}
 
@@ -107,7 +107,7 @@ func (p *PostgresDatastore) CloseDB() {
 
 // GetCategories ..
 func (p *PostgresDatastore) GetCategories(categoryURL string) (categories []models.Category, err error) {
-	query := fmt.Sprintf(`SELECT * FROM products_v2.get_categories('%s');`, categoryURL)
+	query := fmt.Sprintf(`SELECT * FROM products.get_categories('%s');`, categoryURL)
 	rows, err := p.Query(query)
 	if err != nil {
 		return nil, err
