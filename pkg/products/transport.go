@@ -10,8 +10,8 @@ import (
 func MakeHandler(ctx context.Context, s Service, st Storager) *mux.Router {
 	router := mux.NewRouter()
 	products := router.PathPrefix("/products").Subrouter()
-	products.Handle("/get-products", Cors(s.GetProducts(st))).Methods("GET", "OPTIONS")
-	products.Handle("/get-variation", Cors(s.GetVariation(st))).Methods("GET", "OPTIONS")
+	products.Handle("/get-products", Cors(s.GetProducts(ctx, st))).Methods("GET", "OPTIONS")
+	products.Handle("/get-variation", Cors(s.GetVariation(ctx, st))).Methods("GET", "OPTIONS")
 	products.Handle("/get-categories", Cors(s.GetCategories(st))).Methods("GET", "OPTIONS")
 	return products
 }

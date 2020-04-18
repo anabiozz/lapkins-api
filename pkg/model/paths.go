@@ -1,4 +1,4 @@
-package storage
+package model
 
 // Paths ...
 type Paths struct {

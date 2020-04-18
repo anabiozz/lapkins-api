@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/anabiozz/lapkins-api/pkg/storage"
+	"github.com/anabiozz/lapkins-api/pkg/model"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/lib/pq"
 	log "github.com/sirupsen/logrus"
@@ -39,7 +39,7 @@ func NewStorage(cfg *Config) (*Storage, error) {
 }
 
 // GetProducts ..
-func (p *Storage) GetProducts(categoryURL string) (products []storage.Product, err error) {
+func (p *Storage) GetProducts(categoryURL string) (products []model.Product, err error) {
 	query := fmt.Sprintf(`SELECT * FROM products.get_products('%s');`, categoryURL)
 	rows, err := p.Query(query)
 	if err != nil {
@@ -47,7 +47,7 @@ func (p *Storage) GetProducts(categoryURL string) (products []storage.Product, e
 	}
 	defer rows.Close()
 
-	product := storage.Product{}
+	product := model.Product{}
 	for rows.Next() {
 
 		err = rows.Scan(
@@ -61,7 +61,7 @@ func (p *Storage) GetProducts(categoryURL string) (products []storage.Product, e
 			&product.PhotoCount,
 			&product.Article,
 			&product.Price,
-			&product.CategiryDescription,
+			&product.CategoryDescription,
 		)
 		if err != nil {
 			return nil, err
@@ -74,10 +74,10 @@ func (p *Storage) GetProducts(categoryURL string) (products []storage.Product, e
 }
 
 // GetVariation ..
-func (p *Storage) GetVariation(variationID, sizeOptionID string) (*storage.Variation, error) {
+func (p *Storage) GetVariation(variationID, sizeOptionID string) (*model.Variation, error) {
 	query := fmt.Sprintf(`SELECT * FROM products.get_variation(%s, %s);`, variationID, sizeOptionID)
 
-	variation := &storage.Variation{}
+	variation := &model.Variation{}
 
 	err := p.QueryRow(query).Scan(
 		&variation.ID,
@@ -108,7 +108,7 @@ func (p *Storage) CloseDB() {
 }
 
 // GetCategories ..
-func (p *Storage) GetCategories(categoryURL string) (categories []storage.Category, err error) {
+func (p *Storage) GetCategories(categoryURL string) (categories []model.Category, err error) {
 	query := fmt.Sprintf(`SELECT * FROM products.get_categories('%s');`, categoryURL)
 	rows, err := p.Query(query)
 	if err != nil {
@@ -116,7 +116,7 @@ func (p *Storage) GetCategories(categoryURL string) (categories []storage.Catego
 	}
 	defer rows.Close()
 
-	category := storage.Category{}
+	category := model.Category{}
 	for rows.Next() {
 
 		err = rows.Scan(
@@ -137,7 +137,7 @@ func (p *Storage) GetCategories(categoryURL string) (categories []storage.Catego
 
 // AddProduct ..
 func (p *Storage) AddProduct(variationID int, cartSession string, sizeOptionID int) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM carts.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
 	_, err = p.Exec(query)
 	if err != nil {
 		return err
@@ -147,7 +147,7 @@ func (p *Storage) AddProduct(variationID int, cartSession string, sizeOptionID i
 
 // IncreaseProductQuantity ..
 func (p *Storage) IncreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM carts.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
 	_, err = p.Exec(query)
 	if err != nil {
 		return err
@@ -157,7 +157,7 @@ func (p *Storage) IncreaseProductQuantity(variationID int, cartSession string, s
 
 // DecreaseProductQuantity ..
 func (p *Storage) DecreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.decrease_product_quantity(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM carts.decrease_product_quantity(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
 	_, err = p.Exec(query)
 	if err != nil {
 		return err
@@ -167,7 +167,7 @@ func (p *Storage) DecreaseProductQuantity(variationID int, cartSession string, s
 
 // RemoveProduct ..
 func (p *Storage) RemoveProduct(variationID int, cartSession string, sizeOptionID int) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.remove_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM carts.remove_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
 	_, err = p.Exec(query)
 	if err != nil {
 		return err
@@ -176,8 +176,8 @@ func (p *Storage) RemoveProduct(variationID int, cartSession string, sizeOptionI
 }
 
 // LoadCart ..
-func (p *Storage) LoadCart(cartSession string) (cartItems []storage.CartItemResponse, err error) {
-	query := fmt.Sprintf(`SELECT * FROM cart.load_cart('%s');`, cartSession)
+func (p *Storage) LoadCart(cartSession string) (cartItems []model.CartItemResponse, err error) {
+	query := fmt.Sprintf(`SELECT * FROM carts.load_cart('%s');`, cartSession)
 
 	rows, err := p.Query(query)
 	if err != nil {
@@ -185,7 +185,7 @@ func (p *Storage) LoadCart(cartSession string) (cartItems []storage.CartItemResp
 	}
 	defer rows.Close()
 
-	cartItem := storage.CartItemResponse{}
+	cartItem := model.CartItemResponse{}
 	for rows.Next() {
 
 		err = rows.Scan(

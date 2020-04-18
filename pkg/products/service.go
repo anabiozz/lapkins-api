@@ -1,34 +1,32 @@
 package products
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
-	"github.com/anabiozz/lapkins-api/pkg/storage"
-	"github.com/anabiozz/logger"
-	log "github.com/sirupsen/logrus"
+	"github.com/anabiozz/lapkins-api/pkg/model"
+	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/log/level"
 )
 
 type Storager interface {
-	GetProducts(categoryURL string) (products []storage.Product, err error)
-	GetVariation(variationID, size string) (product *storage.Variation, err error)
-	GetCategories(categoryURL string) (categories []storage.Category, err error)
+	GetProducts(ctx context.Context, category string) (products []*model.CatalogProduct, err error)
+	GetVariation(tx context.Context, sku string) (product *model.DescriptionProduct, err error)
+	GetCategories(categoryURL string) (categories []model.Category, err error)
 }
 
 type Service interface {
 	GetCategories(storager Storager) http.HandlerFunc
-	GetProducts(storager Storager) http.HandlerFunc
-	GetVariation(storager Storager) http.HandlerFunc
+	GetProducts(ctx context.Context, storager Storager) http.HandlerFunc
+	GetVariation(ctx context.Context, storager Storager) http.HandlerFunc
 }
 
 type BasicService struct {
-	logger *log.Logger
+	logger log.Logger
 }
 
-func NewService(logger *log.Logger) *BasicService {
-	if logger == nil {
-		logger = log.New()
-	}
+func NewService(logger log.Logger) *BasicService {
 	return &BasicService{logger: logger}
 }
 
@@ -38,7 +36,7 @@ func (s *BasicService) GetCategories(st Storager) http.HandlerFunc {
 
 		categories, err := st.GetCategories(r.URL.Query().Get("category_url"))
 		if err != nil {
-			logger.Info(err)
+			level.Error(s.logger).Log("err", err)
 			w.WriteHeader(http.StatusNotFound)
 			json.NewEncoder(w).Encode(err)
 		}
@@ -47,13 +45,13 @@ func (s *BasicService) GetCategories(st Storager) http.HandlerFunc {
 	})
 }
 
-func (s *BasicService) GetProducts(st Storager) http.HandlerFunc {
+func (s *BasicService) GetProducts(ctx context.Context, st Storager) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		products, err := st.GetProducts(r.URL.Query().Get("category_url"))
+		products, err := st.GetProducts(ctx, r.URL.Query().Get("category"))
 		if err != nil {
-			logger.Info(err)
+			level.Error(s.logger).Log("err", err)
 			w.WriteHeader(http.StatusNotFound)
 			json.NewEncoder(w).Encode(err)
 		}
@@ -62,13 +60,13 @@ func (s *BasicService) GetProducts(st Storager) http.HandlerFunc {
 	})
 }
 
-func (s *BasicService) GetVariation(st Storager) http.HandlerFunc {
+func (s *BasicService) GetVariation(ctx context.Context, st Storager) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		product, err := st.GetVariation(r.URL.Query().Get("variation_id"), r.URL.Query().Get("size_option_id"))
+		product, err := st.GetVariation(ctx, r.URL.Query().Get("sku"))
 		if err != nil {
-			logger.Info(err)
+			level.Error(s.logger).Log("err", err)
 			w.WriteHeader(http.StatusNotFound)
 			json.NewEncoder(w).Encode(err)
 		}
