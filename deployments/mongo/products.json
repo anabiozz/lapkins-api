@@ -1,0 +1,851 @@
+[
+  {
+    "category": "posters-without-frame",
+    "name": "Постер 'Веселье'",
+    "description": "description description description description description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"semi-gloss"},
+      {"key":"Покрытие","value":"300 g/m² Munken Lynx Rough paper (woodfree)"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da01",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00ff44ff",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1500,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00ff4493",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 600,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1800,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "posters-without-frame",
+    "name": "Постер 'Смысл'",
+    "description": "description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"gloss"},
+      {"key":"Покрытие","value":"240 g/m² pure white paper"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da02",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da03",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "posters-without-frame",
+    "name": "Постер 'Веселье'",
+    "description": "description description description description description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"semi-gloss"},
+      {"key":"Покрытие","value":"300 g/m² Munken Lynx Rough paper (woodfree)"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da04",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da05",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "posters-without-frame",
+    "name": "Постер 'Смысл'",
+    "description": "description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"gloss"},
+      {"key":"Покрытие","value":"240 g/m² pure white paper"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da06",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da07",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "posters-without-frame",
+    "name": "Постер 'Веселье'",
+    "description": "description description description description description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"semi-gloss"},
+      {"key":"Покрытие","value":"300 g/m² Munken Lynx Rough paper (woodfree)"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da08",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da09",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "posters-without-frame",
+    "name": "Постер 'Смысл'",
+    "description": "description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"gloss"},
+      {"key":"Покрытие","value":"240 g/m² pure white paper"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da10",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da11",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "framed-posters-plastic",
+    "name": "Постер 'Веселье'",
+    "description": "description description description description description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"semi-gloss"},
+      {"key":"Покрытие","value":"300 g/m² Munken Lynx Rough paper (woodfree)"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da12",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da13",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "framed-posters-plastic",
+    "name": "Постер 'Смысл'",
+    "description": "description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"gloss"},
+      {"key":"Покрытие","value":"240 g/m² pure white paper"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da14",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da15",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "framed-posters-wood",
+    "name": "Постер 'Веселье'",
+    "description": "description description description description description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"semi-gloss"},
+      {"key":"Покрытие","value":"300 g/m² Munken Lynx Rough paper (woodfree)"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da16",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da17",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "framed-posters-wood",
+    "name": "Постер 'Смысл'",
+    "description": "description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"gloss"},
+      {"key":"Покрытие","value":"240 g/m² pure white paper"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da18",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da19",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "framed-posters-wood",
+    "name": "Постер 'Веселье'",
+    "description": "description description description description description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"semi-gloss"},
+      {"key":"Покрытие","value":"300 g/m² Munken Lynx Rough paper (woodfree)"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da20",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da21",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "framed-posters-wood",
+    "name": "Постер 'Смысл'",
+    "description": "description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"gloss"},
+      {"key":"Покрытие","value":"240 g/m² pure white paper"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da22",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da23",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "postcards",
+    "name": "Открытка 'Веселье'",
+    "description": "description description description description description description description description description description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"matte"},
+      {"key":"Покрытие","value":"300 g/m² Munken Lynx Rough paper (woodfree)"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da24",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da25",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  },
+  {
+    "category": "postcards",
+    "name": "Открытка 'Смысл'",
+    "description": "description description description description description",
+    "brand": "Anastasia Kondratieva",
+    "season":"круглогодичный",
+    "kind":"Унисекс",
+    "attributes":[
+      {"key":"Автор","value":"Анастасия Кондратьева"},
+      {"key":"Материалы","value":"semi-gloss"},
+      {"key":"Покрытие","value":"300 g/m² Munken Lynx Rough paper (woodfree)"}
+    ],
+    "variations": [
+      {
+        "sku": "00e8da26",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 250,
+          "height": 600,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      },
+      {
+        "sku": "00e8da27",
+        "weight": {
+          "value": "0.15",
+          "unit": "kg"
+        },
+        "dimensions": {
+          "width": 400,
+          "height": 400,
+          "depth": 1,
+          "unit": "mm"
+        },
+        "pricing": {
+          "list": 1200,
+          "retail": 1100,
+          "savings": 100,
+          "pct_savings": 8
+        },
+        "photos": [
+          "path to photo"
+        ]
+      }
+    ]
+  }
+]
+

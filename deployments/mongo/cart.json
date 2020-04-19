@@ -1,0 +1,9 @@
+{
+ "state": "active",
+  "modifiedOn": new Date(),
+  "products": [{
+    "quantity": 1,
+    "name": "JC Sneaker",
+    "price": 100
+  }]
+}

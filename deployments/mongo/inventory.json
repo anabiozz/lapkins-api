@@ -1,0 +1,7 @@
+{
+  "quantity": 999,
+  "reservations": [{
+      "quantity": 1,
+      "createdOn": new Date(),
+    }]
+}

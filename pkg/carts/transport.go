@@ -34,13 +34,13 @@ func decodeAddProductRequest(_ context.Context, r *http.Request) (interface{}, e
 	token, err := cookies.GetCookieValue(r, "token")
 	if err != nil {
 		if err == http.ErrNoCookie {
-			tmpCartSession, err := cookies.GetCookieValue(r, "tmp-cart-session")
+			tmpUserID, err := cookies.GetCookieValue(r, "tmp-user-id")
 			if err != nil {
 				if err != http.ErrNoCookie {
 					return nil, err
 				}
 			}
-			req.User.TmpID = tmpCartSession
+			req.User.TmpID = tmpUserID
 		} else {
 			return nil, err
 		}
@@ -65,7 +65,7 @@ func encodeAddProductResponse(ctx context.Context, w http.ResponseWriter, respon
 	if res.User.ID == "" && res.User.TmpID != "" {
 		http.SetCookie(w, &http.Cookie{
 			Path:    "/",
-			Name:    "tmp-cart-session",
+			Name:    "tmp-user-id",
 			Value:   res.User.TmpID,
 			Expires: time.Now().Add(168 * time.Hour),
 		})
@@ -74,7 +74,7 @@ func encodeAddProductResponse(ctx context.Context, w http.ResponseWriter, respon
 	if res.User.ID != "" && res.User.TmpID != "" {
 		http.SetCookie(w, &http.Cookie{
 			Path:    "/",
-			Name:    "tmp-cart-session",
+			Name:    "tmp-user-id",
 			Value:   "",
 			Expires: time.Unix(0, 0),
 		})

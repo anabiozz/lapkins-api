@@ -1,0 +1,10 @@
+{
+  "total": 100,
+  "shipping": {},
+  "payment": {},
+  "products": [{
+     "quantity": 1,
+     "name": "JC Sneaker",
+     "price": 100
+  }]
+}
