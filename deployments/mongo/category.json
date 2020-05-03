@@ -1,0 +1,65 @@
+[
+  {
+    "_id": "wallart",
+    "ancestors" : ["posters-without-frame", "framed-posters-plastic", "framed-posters-wood"],
+    "description": "Описание Декор",
+    "parent" : null,
+    "name": "Декор"
+  },
+  {
+    "_id": "posters-without-frame",
+    "ancestors" : [],
+    "description": "Описание Постеры без рамки",
+    "parent" : "wallart",
+    "name": "Постеры без рамки"
+  },
+  {
+    "_id": "framed-posters-plastic",
+    "ancestors" : [],
+    "description": "Описание Постеры с пластиковой рамкой",
+    "parent" : "wallart",
+    "name": "Постеры с пластиковой рамкой"
+  },
+  {
+    "_id": "framed-posters-wood",
+    "ancestors" : [],
+    "description": "Описание Постеры с деревянной рамкой",
+    "parent" : "wallart",
+    "name": "Постеры с деревянной рамкой"
+  },
+  {
+    "_id": "stationery",
+    "ancestors" : ["postcards", "notebooks", "diaries", "calendars"],
+    "description": "Описание Канцелярия",
+    "parent" : null,
+    "name": "Канцелярия"
+  },
+  {
+    "_id": "postcards",
+    "ancestors" : [],
+    "description": "Описание Открытки",
+    "parent" : "stationery",
+    "name": "Открытки"
+  },
+  {
+    "_id": "notebooks",
+    "ancestors" : [],
+    "description": "Описание Тетради",
+    "parent" : "stationery",
+    "name": "Тетради"
+  },
+  {
+    "_id": "diaries",
+    "ancestors" : [],
+    "description": "Описание Дневники",
+    "parent" : "stationery",
+    "name": "Дневники"
+  },
+  {
+    "_id": "calendars",
+    "ancestors" : [],
+    "description": "Описание Календари",
+    "parent" : "stationery",
+    "name": "Календари"
+  }
+]

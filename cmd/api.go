@@ -72,8 +72,22 @@ func main() {
 		ReqMetrics:  reqMetrics,
 	})
 
-	productsSvc := products.NewService(logger)
-	productHandler := products.MakeHandler(ctx, productsSvc, storage)
+	productsSvc, err := products.NewService(products.ServiceConfig{
+		Logger:  logger,
+		Storage: storage,
+	})
+	if err != nil {
+		level.Error(logger).Log("msg", "failed to initialize products service", "err", err)
+		os.Exit(1)
+	}
+
+	productsHandler := products.MakeHandler(products.HandlerConfig{
+		Svc:         productsSvc,
+		Logger:      logger,
+		EnableAuth:  false,
+		RateLimiter: rate.NewLimiter(rate.Every(100*time.Nanosecond), 100),
+		ReqMetrics:  reqMetrics,
+	})
 
 	usersSvc, err := users.NewService(users.ServiceConfig{
 		Logger:  logger,
@@ -93,7 +107,7 @@ func main() {
 
 	m := http.NewServeMux()
 	m.Handle("/api/v1/carts/", http.StripPrefix("/api/v1/carts", cors(cartsHandler)))
-	m.Handle("/api/v1/products/", http.StripPrefix("/api/v1", productHandler))
+	m.Handle("/api/v1/products/", http.StripPrefix("/api/v1/products", cors(productsHandler)))
 	m.Handle("/api/v1/users/", http.StripPrefix("/api/v1/users", cors(usersHandler)))
 	m.Handle("/metrics", promhttp.Handler())
 
@@ -137,7 +151,7 @@ func main() {
 
 func cors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, X_Requested-With, Accept, Z-Key")

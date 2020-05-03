@@ -38,8 +38,8 @@ func NewStorage(cfg *Config) (*Storage, error) {
 	}, nil
 }
 
-// GetProducts ..
-func (p *Storage) GetProducts(categoryURL string) (products []model.Product, err error) {
+// GetCatalog ..
+func (p *Storage) GetCatalog(categoryURL string) (products []model.Product, err error) {
 	query := fmt.Sprintf(`SELECT * FROM products.get_products('%s');`, categoryURL)
 	rows, err := p.Query(query)
 	if err != nil {

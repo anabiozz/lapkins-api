@@ -48,7 +48,7 @@ func MakeHandler(cfg HandlerConfig) http.Handler {
 
 	addProductEndpoint := makeAddProductEndpoint(svc)
 	addProductEndpoint = applyMiddlewares(addProductEndpoint, cfg)
-	router.Path("/add-product").Methods(http.MethodPost).Handler(kithttp.NewServer(
+	router.Path("/add").Methods(http.MethodPost).Handler(kithttp.NewServer(
 		addProductEndpoint,
 		decodeAddProductRequest,
 		encodeAddProductResponse,
@@ -57,7 +57,7 @@ func MakeHandler(cfg HandlerConfig) http.Handler {
 
 	getHeaderCartInfoEndpoint := makeGetHeaderCartInfo(svc)
 	getHeaderCartInfoEndpoint = applyMiddlewares(getHeaderCartInfoEndpoint, cfg)
-	router.Path("/load-header-cart-info").Methods(http.MethodGet).Handler(kithttp.NewServer(
+	router.Path("/get-summary").Methods(http.MethodGet).Handler(kithttp.NewServer(
 		getHeaderCartInfoEndpoint,
 		decodeGetHeaderCartInfoRequest,
 		encodeGetHeaderCartInfoResponse,
@@ -66,7 +66,7 @@ func MakeHandler(cfg HandlerConfig) http.Handler {
 
 	getCartEndpoint := makeGetCart(svc)
 	getCartEndpoint = applyMiddlewares(getCartEndpoint, cfg)
-	router.Path("/load-cart").Methods(http.MethodGet).Handler(kithttp.NewServer(
+	router.Path("/get").Methods(http.MethodGet).Handler(kithttp.NewServer(
 		getCartEndpoint,
 		decodeGetCartRequest,
 		encodeGetCartResponse,
@@ -75,7 +75,7 @@ func MakeHandler(cfg HandlerConfig) http.Handler {
 
 	increaseProductQtyEndpoint := makeIncreaseProductQty(svc)
 	increaseProductQtyEndpoint = applyMiddlewares(increaseProductQtyEndpoint, cfg)
-	router.Path("/increase-product-quantity").Methods(http.MethodPut).Handler(kithttp.NewServer(
+	router.Path("/increase").Methods(http.MethodPut).Handler(kithttp.NewServer(
 		increaseProductQtyEndpoint,
 		decodeIncreaseProductQtyRequest,
 		encodeIncreaseProductQtyResponse,
@@ -84,10 +84,19 @@ func MakeHandler(cfg HandlerConfig) http.Handler {
 
 	decreaseProductQtyEndpoint := makeDecreaseProductQty(svc)
 	decreaseProductQtyEndpoint = applyMiddlewares(decreaseProductQtyEndpoint, cfg)
-	router.Path("/decrease-product-quantity").Methods(http.MethodPut).Handler(kithttp.NewServer(
+	router.Path("/decrease").Methods(http.MethodPut).Handler(kithttp.NewServer(
 		decreaseProductQtyEndpoint,
 		decodeDecreaseProductQtyRequest,
 		encodeDecreaseProductQtyResponse,
+		opts...,
+	))
+
+	removeProductEndpoint := makeRemoveProduct(svc)
+	removeProductEndpoint = applyMiddlewares(removeProductEndpoint, cfg)
+	router.Path("/remove").Methods(http.MethodDelete).Handler(kithttp.NewServer(
+		removeProductEndpoint,
+		decodeRemoveProductRequest,
+		encodeRemoveProductResponse,
 		opts...,
 	))
 

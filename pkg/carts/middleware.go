@@ -88,9 +88,9 @@ func (mw *loggingMiddleware) LoadCart(ctx context.Context, userID string) ([]*mo
 	return cartProducts, err
 }
 
-func (mw *loggingMiddleware) RemoveProduct(ctx context.Context) error {
+func (mw *loggingMiddleware) RemoveProduct(ctx context.Context, userID string, sku string) error {
 	begin := time.Now()
-	err := mw.next.RemoveProduct(ctx)
+	err := mw.next.RemoveProduct(ctx, userID, sku)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -188,9 +188,9 @@ func (mw *instrumentingMiddleware) LoadCart(ctx context.Context, userID string) 
 	return cartProducts, err
 }
 
-func (mw *instrumentingMiddleware) RemoveProduct(ctx context.Context) error {
+func (mw *instrumentingMiddleware) RemoveProduct(ctx context.Context, userID string, sku string) error {
 	begin := time.Now()
-	err := mw.next.RemoveProduct(ctx)
+	err := mw.next.RemoveProduct(ctx, userID, sku)
 	labels := []string{"method", "RemoveProduct", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
 	return err
@@ -229,8 +229,8 @@ func (mw *authMiddleware) LoadCart(ctx context.Context, userID string) ([]*model
 	return mw.next.LoadCart(ctx, userID)
 }
 
-func (mw *authMiddleware) RemoveProduct(ctx context.Context) error {
-	return mw.next.RemoveProduct(ctx)
+func (mw *authMiddleware) RemoveProduct(ctx context.Context, userID string, sku string) error {
+	return mw.next.RemoveProduct(ctx, userID, sku)
 }
 
 func (mw *authMiddleware) GetHeaderCartInfo(ctx context.Context, userID string) (*model.HeaderCartInfo, error) {

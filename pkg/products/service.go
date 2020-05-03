@@ -2,75 +2,121 @@ package products
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
 
 	"github.com/anabiozz/lapkins-api/pkg/model"
 	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/level"
 )
 
-type Storager interface {
-	GetProducts(ctx context.Context, category string) (products []*model.CatalogProduct, err error)
-	GetVariation(tx context.Context, sku string) (product *model.DescriptionProduct, err error)
-	GetCategories(categoryURL string) (categories []model.Category, err error)
+type Storage interface {
+	GetCatalog(ctx context.Context, category string) ([]*model.CatalogProduct, error)
+	GetProduct(ctx context.Context, sku string) (*model.Product, error)
+	GetCategory(ctx context.Context, category string) ([]*model.Category, error)
+	GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error)
+	AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error
+	RemoveAttribute(ctx context.Context, sku string, attribute string) error
+	AddCategory(ctx context.Context, sku string) error
+	RemoveCategory(ctx context.Context, sku string) error
 }
 
 type Service interface {
-	GetCategories(storager Storager) http.HandlerFunc
-	GetProducts(ctx context.Context, storager Storager) http.HandlerFunc
-	GetVariation(ctx context.Context, storager Storager) http.HandlerFunc
+	GetCategory(ctx context.Context, category string) ([]*model.Category, error)
+	GetCatalog(ctx context.Context, category string) ([]*model.CatalogProduct, error)
+	GetProduct(ctx context.Context, sku string) (*model.Product, error)
+	GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error)
+	AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error
+	RemoveAttribute(ctx context.Context, sku string, attribute string) error
+	AddCategory(ctx context.Context, sku string) error
+	RemoveCategory(ctx context.Context, sku string) error
 }
 
 type BasicService struct {
-	logger log.Logger
+	logger  log.Logger
+	storage Storage
 }
 
-func NewService(logger log.Logger) *BasicService {
-	return &BasicService{logger: logger}
+type ServiceConfig struct {
+	Logger  log.Logger
+	Storage Storage
 }
 
-func (s *BasicService) GetCategories(st Storager) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+func NewService(cfg ServiceConfig) (*BasicService, error) {
+	logger := cfg.Logger
+	if logger == nil {
+		logger = log.NewNopLogger()
+	}
 
-		categories, err := st.GetCategories(r.URL.Query().Get("category_url"))
-		if err != nil {
-			level.Error(s.logger).Log("err", err)
-			w.WriteHeader(http.StatusNotFound)
-			json.NewEncoder(w).Encode(err)
-		}
+	if cfg.Storage == nil {
+		return nil, errBadRequest("storage must be provided")
+	}
 
-		json.NewEncoder(w).Encode(categories)
-	})
+	svc := &BasicService{
+		logger:  logger,
+		storage: cfg.Storage,
+	}
+
+	return svc, nil
 }
 
-func (s *BasicService) GetProducts(ctx context.Context, st Storager) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-
-		products, err := st.GetProducts(ctx, r.URL.Query().Get("category"))
-		if err != nil {
-			level.Error(s.logger).Log("err", err)
-			w.WriteHeader(http.StatusNotFound)
-			json.NewEncoder(w).Encode(err)
-		}
-
-		json.NewEncoder(w).Encode(products)
-	})
+func (s *BasicService) GetCategory(ctx context.Context, category string) ([]*model.Category, error) {
+	categories, err := s.storage.GetCategory(ctx, category)
+	if err != nil {
+		return nil, err
+	}
+	return categories, nil
 }
 
-func (s *BasicService) GetVariation(ctx context.Context, st Storager) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+func (s *BasicService) GetCatalog(ctx context.Context, category string) ([]*model.CatalogProduct, error) {
+	products, err := s.storage.GetCatalog(ctx, category)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
+}
 
-		product, err := st.GetVariation(ctx, r.URL.Query().Get("sku"))
-		if err != nil {
-			level.Error(s.logger).Log("err", err)
-			w.WriteHeader(http.StatusNotFound)
-			json.NewEncoder(w).Encode(err)
-		}
+func (s *BasicService) GetProduct(ctx context.Context, sku string) (*model.Product, error) {
+	product, err := s.storage.GetProduct(ctx, sku)
+	if err != nil {
+		return nil, err
+	}
+	return product, nil
+}
 
-		json.NewEncoder(w).Encode(product)
-	})
+func (s *BasicService) GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error) {
+	products, err := s.storage.GetProductsByCategory(ctx, category)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
+func (s *BasicService) AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error {
+	err := s.storage.AddAttribute(ctx, sku, attribute)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *BasicService) RemoveAttribute(ctx context.Context, sku string, attribute string) error {
+	err := s.storage.RemoveAttribute(ctx, sku, attribute)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *BasicService) AddCategory(ctx context.Context, sku string) error {
+	err := s.storage.AddCategory(ctx, sku)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *BasicService) RemoveCategory(ctx context.Context, sku string) error {
+	err := s.storage.RemoveCategory(ctx, sku)
+	if err != nil {
+		return err
+	}
+	return nil
 }

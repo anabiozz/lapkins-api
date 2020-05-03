@@ -8,15 +8,18 @@ type CatalogProduct struct {
 	Price int    `json:"price"`
 }
 
-type DescriptionProduct struct {
-	Name        string      `json:"name"`
-	Description string      `json:"description"`
-	Brand       string      `json:"brand"`
-	Season      string      `json:"season"`
-	Kind        string      `json:"kind"`
-	Sizes       []*Size     `json:"sizes"`
-	Attributes  []Attribute `json:"attributes"`
-	Variation   *Variation  `json:"variation"`
+type SKUProduct struct {
+	Category    string       `json:"category"`
+	Name        string       `json:"name"`
+	Description string       `json:"description"`
+	Brand       string       `json:"brand"`
+	Season      string       `json:"season"`
+	Kind        string       `json:"kind"`
+	Attributes  []*Attribute `json:"attributes"`
+	Sizes       []*Size      `json:"sizes"`
+	Variation   *Variation   `json:"variation"`
+	CreatedOn   time.Time    `json:"createdOn"`
+	ModifiedOn  time.Time    `json:"modifiedOn"`
 }
 
 // Product ..
@@ -26,9 +29,10 @@ type Product struct {
 	Brand       string       `json:"brand"`
 	Season      string       `json:"season"`
 	Kind        string       `json:"kind"`
-	Attributes  []Attribute  `json:"attributes"`
-	Sizes       []Size       `json:"sizes"`
+	Attributes  []*Attribute `json:"attributes"`
+	Sizes       []*Size      `json:"sizes"`
 	Variations  []*Variation `json:"variations"`
+	Category    string       `json:"category"`
 	CreatedOn   time.Time    `json:"createdOn"`
 	ModifiedOn  time.Time    `json:"modifiedOn"`
 }
@@ -45,11 +49,11 @@ type Size struct {
 
 // Variation ..
 type Variation struct {
-	SKU        string     `json:"sku"`
-	Weight     Weight     `json:"weight"`
-	Dimensions Dimensions `json:"dimensions"`
-	Pricing    Pricing    `json:"pricing"`
-	Photos     []string   `json:"photos"`
+	SKU        string      `json:"sku"`
+	Weight     *Weight     `json:"weight"`
+	Dimensions *Dimensions `json:"dimensions"`
+	Pricing    *Pricing    `json:"pricing"`
+	Photos     []string    `json:"photos"`
 }
 
 type Weight struct {
@@ -70,47 +74,3 @@ type Pricing struct {
 	Savings    int `json:"savings"`
 	PctSavings int `json:"pct_savings"`
 }
-
-////JSONRaw ...
-//type JSONRaw json.RawMessage
-//
-////Value ...
-//func (j JSONRaw) Value() (driver.Value, error) {
-//	byteArr := []byte(j)
-//
-//	return driver.Value(byteArr), nil
-//}
-//
-////Scan ...
-//func (j *JSONRaw) Scan(src interface{}) error {
-//	asBytes, ok := src.([]byte)
-//	if !ok {
-//		return error(errors.New("scan source was not []bytes"))
-//	}
-//	err := json.Unmarshal(asBytes, &j)
-//	if err != nil {
-//		return error(errors.New("scan could not unmarshal to []string"))
-//	}
-//
-//	return nil
-//}
-//
-////MarshalJSON ...
-//func (j *JSONRaw) MarshalJSON() ([]byte, error) {
-//	return *j, nil
-//}
-//
-////UnmarshalJSON ...
-//func (j *JSONRaw) UnmarshalJSON(data []byte) error {
-//	if j == nil {
-//		return errors.New("json.RawMessage: UnmarshalJSON on nil pointer")
-//	}
-//	*j = append((*j)[0:0], data...)
-//	return nil
-//}
-//
-//// Item ..
-//type Item struct {
-//	Key   int    `json:"key"`
-//	Value string `json:"value"`
-//}

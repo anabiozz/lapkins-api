@@ -64,7 +64,6 @@ func makeGetCart(s Service) endpoint.Endpoint {
 type increaseProductQtyRequest struct {
 	UserID string `json:"user_id"`
 	SKU    string `json:"sku"`
-	Err    error  `json:"err"`
 }
 
 type increaseProductQtyResponse struct {
@@ -82,7 +81,6 @@ func makeIncreaseProductQty(s Service) endpoint.Endpoint {
 type decreaseProductQtyRequest struct {
 	UserID string `json:"user_id"`
 	SKU    string `json:"sku"`
-	Err    error  `json:"err"`
 }
 
 type decreaseProductQtyResponse struct {
@@ -94,5 +92,22 @@ func makeDecreaseProductQty(s Service) endpoint.Endpoint {
 		req := request.(decreaseProductQtyRequest)
 		err = s.DecreaseProductQuantity(ctx, req.UserID, req.SKU)
 		return decreaseProductQtyResponse{Err: err}, nil
+	}
+}
+
+type removeProductRequest struct {
+	UserID string `json:"user_id"`
+	SKU    string `json:"sku"`
+}
+
+type removeProductResponse struct {
+	Err error `json:"err"`
+}
+
+func makeRemoveProduct(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		req := request.(removeProductRequest)
+		err = s.RemoveProduct(ctx, req.UserID, req.SKU)
+		return removeProductResponse{Err: err}, nil
 	}
 }

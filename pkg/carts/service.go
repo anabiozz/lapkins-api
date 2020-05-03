@@ -11,7 +11,7 @@ type Storage interface {
 	AddProduct(ctx context.Context, sku string, user *model.CartUser) (*model.CartUser, error)
 	IncreaseProductQuantity(ctx context.Context, userID string, sku string) error
 	DecreaseProductQuantity(ctx context.Context, userID string, sku string) error
-	RemoveProduct(variationID int, cartSession string, sizeOptionID int) error
+	RemoveProduct(ctx context.Context, userID string, sku string) error
 	LoadCart(ctx context.Context, userID string) ([]*model.CartProduct, error)
 	GetHeaderCartInfo(ctx context.Context, userID string) (*model.HeaderCartInfo, error)
 }
@@ -22,7 +22,7 @@ type Service interface {
 	DecreaseProductQuantity(ctx context.Context, userID string, sku string) error
 	IncreaseProductQuantity(ctx context.Context, userID string, sku string) error
 	LoadCart(ctx context.Context, userID string) ([]*model.CartProduct, error)
-	RemoveProduct(ctx context.Context) error
+	RemoveProduct(ctx context.Context, userID string, sku string) error
 	GetHeaderCartInfo(ctx context.Context, userID string) (*model.HeaderCartInfo, error)
 }
 
@@ -105,7 +105,13 @@ func (s *BasicService) LoadCart(ctx context.Context, userID string) ([]*model.Ca
 
 }
 
-func (s *BasicService) RemoveProduct(ctx context.Context) error {
+func (s *BasicService) RemoveProduct(ctx context.Context, userID string, sku string) error {
+	if userID == "" {
+		return errBadRequest("%s", "provided user id is empty")
+	}
+	err := s.storage.RemoveProduct(ctx, userID, sku)
+	if err != nil {
+		return err
+	}
 	return nil
-
 }

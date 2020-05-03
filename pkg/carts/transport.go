@@ -170,15 +170,25 @@ func encodeDecreaseProductQtyResponse(ctx context.Context, w http.ResponseWriter
 	return json.NewEncoder(w).Encode(true)
 }
 
-//
-//func MakeHandler(ctx context.Context, s Service, st Storager) *mux.Router {
-//	router := mux.NewRouter()
-//	carts := router.PathPrefix("/carts").Subrouter()
-//	carts.Handle("/add-product", Cors(s.AddProduct(ctx, st))).Methods("POST", "OPTIONS")
-//	carts.Handle("/increase-product-quantity", Cors(s.IncreaseProductQuantity(st))).Methods("PUT", "OPTIONS")
-//	carts.Handle("/decrease-product-quantity", Cors(s.DecreaseProductQuantity(st))).Methods("PUT", "OPTIONS")
-//	carts.Handle("/remove-product", Cors(s.RemoveProduct(st))).Methods("DELETE", "OPTIONS")
-//	carts.Handle("/load-carts", Cors(s.LoadCart(st))).Methods("GET", "OPTIONS")
-//	carts.Handle("/create-order", Cors(s.CreateOrder(st))).Methods("POST", "OPTIONS")
-//	return carts
-//}
+func decodeRemoveProductRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	req := removeProductRequest{}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		return nil, errBadRequest("failed to decode JSON request: %v", err)
+	}
+	userID, err := auth.GetUserID(r)
+	if err != nil {
+		return nil, errBadRequest("%s", err)
+	}
+	req.UserID = userID
+	return req, nil
+}
+
+func encodeRemoveProductResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+	res := response.(removeProductResponse)
+	if res.Err != nil {
+		encodeError(ctx, res.Err, w)
+		return nil
+	}
+	w.Header().Set("Content-Type", "application/json")
+	return json.NewEncoder(w).Encode(true)
+}

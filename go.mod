@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/VividCortex/gohistogram v1.0.0 // indirect
 	github.com/anabiozz/logger v0.0.0-20180903082027-c49d8712c761
+	github.com/dachad/tcpgoon v0.0.0-20180314144945-c81ad5c57fa7 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-kit/kit v0.10.0
 	github.com/golang/protobuf v1.3.5 // indirect

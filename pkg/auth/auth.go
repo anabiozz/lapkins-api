@@ -37,7 +37,6 @@ func Check(token string) (*Claims, error) {
 }
 
 func GetUserID(r *http.Request) (string, error) {
-	var userID string
 	token, err := stripBearerPrefixFromTokenString(r.Header.Get("Authorization"))
 	if err != nil {
 		return "", err
@@ -63,9 +62,9 @@ func GetUserID(r *http.Request) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		userID = claim.UserID
+		return claim.UserID, nil
 	}
-	return userID, nil
+	return "", nil
 }
 
 func GetToken(r *http.Request) (string, error) {
