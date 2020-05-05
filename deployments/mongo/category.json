@@ -63,3 +63,5 @@
     "name": "Календари"
   }
 ]
+
+//db.categories.createIndex( { ancestors: 1 } )

@@ -88,9 +88,9 @@ func (mw *loggingMiddleware) GetProductsByCategory(ctx context.Context, category
 	return products, err
 }
 
-func (mw *loggingMiddleware) AddAttribute(ctx context.Context, sku string) error {
+func (mw *loggingMiddleware) AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error {
 	begin := time.Now()
-	err := mw.next.AddAttribute(ctx, sku)
+	err := mw.next.AddAttribute(ctx, sku, attribute)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -106,9 +106,9 @@ func (mw *loggingMiddleware) AddAttribute(ctx context.Context, sku string) error
 	return err
 }
 
-func (mw *loggingMiddleware) RemoveAttribute(ctx context.Context, sku string) error {
+func (mw *loggingMiddleware) RemoveAttribute(ctx context.Context, sku string, attribute string) error {
 	begin := time.Now()
-	err := mw.next.RemoveAttribute(ctx, sku)
+	err := mw.next.RemoveAttribute(ctx, sku, attribute)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -124,9 +124,9 @@ func (mw *loggingMiddleware) RemoveAttribute(ctx context.Context, sku string) er
 	return err
 }
 
-func (mw *loggingMiddleware) AddCategory(ctx context.Context, sku string) error {
+func (mw *loggingMiddleware) AddCategory(ctx context.Context, sku string, category *model.Category) error {
 	begin := time.Now()
-	err := mw.next.AddCategory(ctx, sku)
+	err := mw.next.AddCategory(ctx, sku, category)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -142,9 +142,9 @@ func (mw *loggingMiddleware) AddCategory(ctx context.Context, sku string) error 
 	return err
 }
 
-func (mw *loggingMiddleware) RemoveCategory(ctx context.Context, sku string) error {
+func (mw *loggingMiddleware) RemoveCategory(ctx context.Context, sku string, category *model.Category) error {
 	begin := time.Now()
-	err := mw.next.RemoveCategory(ctx, sku)
+	err := mw.next.RemoveCategory(ctx, sku, category)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -198,33 +198,33 @@ func (mw *instrumentingMiddleware) GetProductsByCategory(ctx context.Context, ca
 	return products, err
 }
 
-func (mw *instrumentingMiddleware) AddAttribute(ctx context.Context, sku string) error {
+func (mw *instrumentingMiddleware) AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error {
 	begin := time.Now()
-	err := mw.next.AddAttribute(ctx, sku)
+	err := mw.next.AddAttribute(ctx, sku, attribute)
 	labels := []string{"method", "AddAttribute", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
 	return err
 }
 
-func (mw *instrumentingMiddleware) RemoveAttribute(ctx context.Context, sku string) error {
+func (mw *instrumentingMiddleware) RemoveAttribute(ctx context.Context, sku string, attribute string) error {
 	begin := time.Now()
-	err := mw.next.RemoveAttribute(ctx, sku)
+	err := mw.next.RemoveAttribute(ctx, sku, attribute)
 	labels := []string{"method", "RemoveAttribute", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
 	return err
 }
 
-func (mw *instrumentingMiddleware) AddCategory(ctx context.Context, sku string) error {
+func (mw *instrumentingMiddleware) AddCategory(ctx context.Context, sku string, category *model.Category) error {
 	begin := time.Now()
-	err := mw.next.AddCategory(ctx, sku)
+	err := mw.next.AddCategory(ctx, sku, category)
 	labels := []string{"method", "AddCategory", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
 	return err
 }
 
-func (mw *instrumentingMiddleware) RemoveCategory(ctx context.Context, sku string) error {
+func (mw *instrumentingMiddleware) RemoveCategory(ctx context.Context, sku string, category *model.Category) error {
 	begin := time.Now()
-	err := mw.next.RemoveCategory(ctx, sku)
+	err := mw.next.RemoveCategory(ctx, sku, category)
 	labels := []string{"method", "RemoveCategory", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
 	return err
@@ -251,18 +251,18 @@ func (mw *authMiddleware) GetProductsByCategory(ctx context.Context, category st
 	return mw.next.GetProductsByCategory(ctx, category)
 }
 
-func (mw *authMiddleware) AddAttribute(ctx context.Context, sku string) error {
-	return mw.next.AddAttribute(ctx, sku)
+func (mw *authMiddleware) AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error {
+	return mw.next.AddAttribute(ctx, sku, attribute)
 }
 
-func (mw *authMiddleware) RemoveAttribute(ctx context.Context, sku string) error {
-	return mw.next.RemoveAttribute(ctx, sku)
+func (mw *authMiddleware) RemoveAttribute(ctx context.Context, sku string, attribute string) error {
+	return mw.next.RemoveAttribute(ctx, sku, attribute)
 }
 
-func (mw *authMiddleware) AddCategory(ctx context.Context, sku string) error {
-	return mw.next.AddCategory(ctx, sku)
+func (mw *authMiddleware) AddCategory(ctx context.Context, sku string, category *model.Category) error {
+	return mw.next.AddCategory(ctx, sku, category)
 }
 
-func (mw *authMiddleware) RemoveCategory(ctx context.Context, sku string) error {
-	return mw.next.RemoveCategory(ctx, sku)
+func (mw *authMiddleware) RemoveCategory(ctx context.Context, sku string, category *model.Category) error {
+	return mw.next.RemoveCategory(ctx, sku, category)
 }

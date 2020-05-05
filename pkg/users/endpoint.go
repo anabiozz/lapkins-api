@@ -25,19 +25,21 @@ func makeRegisterEndpoint(s Service) endpoint.Endpoint {
 }
 
 type loginRequest struct {
-	Input *model.UserInput
+	Input     *model.UserInput
+	TmpUserID string `json:"tmp_user_id"`
 }
 
 type loginResponse struct {
-	User *model.UserOutput
-	Err  error
+	User                 *model.UserOutput
+	UnsetTmpUserIDCookie bool `json:"unset_tmp_user_id_cookie"`
+	Err                  error
 }
 
 func makeLoginEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(loginRequest)
-		user, err := s.Login(ctx, req.Input)
-		return loginResponse{User: user, Err: err}, nil
+		user, unsetTmpUserIDCookie, err := s.Login(ctx, req.Input, req.TmpUserID)
+		return loginResponse{User: user, UnsetTmpUserIDCookie: unsetTmpUserIDCookie, Err: err}, nil
 	}
 }
 

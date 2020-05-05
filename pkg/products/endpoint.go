@@ -76,7 +76,8 @@ func makeGetProductsByCategoryEndpoint(s Service) endpoint.Endpoint {
 }
 
 type addAttributeRequest struct {
-	SKU string
+	SKU       string
+	Attribute *model.Attribute
 }
 
 type addAttributeResponse struct {
@@ -86,13 +87,14 @@ type addAttributeResponse struct {
 func makeAddAttributeEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(addAttributeRequest)
-		err = s.AddAttribute(ctx, req.SKU)
+		err = s.AddAttribute(ctx, req.SKU, req.Attribute)
 		return addAttributeResponse{Err: err}, nil
 	}
 }
 
 type removeAttributeRequest struct {
-	SKU string
+	SKU       string
+	Attribute string
 }
 
 type removeAttributeResponse struct {
@@ -102,13 +104,14 @@ type removeAttributeResponse struct {
 func makeRemoveAttributeEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(removeAttributeRequest)
-		err = s.RemoveAttribute(ctx, req.SKU)
+		err = s.RemoveAttribute(ctx, req.SKU, req.Attribute)
 		return removeAttributeResponse{Err: err}, nil
 	}
 }
 
 type addCategoryRequest struct {
-	SKU string
+	SKU      string
+	Category *model.Category
 }
 
 type addCategoryResponse struct {
@@ -118,13 +121,14 @@ type addCategoryResponse struct {
 func makeAddCategoryEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(addCategoryRequest)
-		err = s.AddCategory(ctx, req.SKU)
+		err = s.AddCategory(ctx, req.SKU, req.Category)
 		return addCategoryResponse{Err: err}, nil
 	}
 }
 
 type removeCategoryRequest struct {
-	SKU string
+	SKU      string
+	Category *model.Category
 }
 
 type removeCategoryResponse struct {
@@ -134,7 +138,7 @@ type removeCategoryResponse struct {
 func makeRemoveCategoryEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(removeCategoryRequest)
-		err = s.RemoveCategory(ctx, req.SKU)
+		err = s.RemoveCategory(ctx, req.SKU, req.Category)
 		return removeCategoryResponse{Err: err}, nil
 	}
 }

@@ -14,8 +14,8 @@ type Storage interface {
 	GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error)
 	AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error
 	RemoveAttribute(ctx context.Context, sku string, attribute string) error
-	AddCategory(ctx context.Context, sku string) error
-	RemoveCategory(ctx context.Context, sku string) error
+	AddCategory(ctx context.Context, sku string, category *model.Category) error
+	RemoveCategory(ctx context.Context, sku string, category *model.Category) error
 }
 
 type Service interface {
@@ -25,8 +25,8 @@ type Service interface {
 	GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error)
 	AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error
 	RemoveAttribute(ctx context.Context, sku string, attribute string) error
-	AddCategory(ctx context.Context, sku string) error
-	RemoveCategory(ctx context.Context, sku string) error
+	AddCategory(ctx context.Context, sku string, category *model.Category) error
+	RemoveCategory(ctx context.Context, sku string, category *model.Category) error
 }
 
 type BasicService struct {
@@ -105,16 +105,16 @@ func (s *BasicService) RemoveAttribute(ctx context.Context, sku string, attribut
 	return nil
 }
 
-func (s *BasicService) AddCategory(ctx context.Context, sku string) error {
-	err := s.storage.AddCategory(ctx, sku)
+func (s *BasicService) AddCategory(ctx context.Context, sku string, category *model.Category) error {
+	err := s.storage.AddCategory(ctx, sku, category)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *BasicService) RemoveCategory(ctx context.Context, sku string) error {
-	err := s.storage.RemoveCategory(ctx, sku)
+func (s *BasicService) RemoveCategory(ctx context.Context, sku string, category *model.Category) error {
+	err := s.storage.RemoveCategory(ctx, sku, category)
 	if err != nil {
 		return err
 	}

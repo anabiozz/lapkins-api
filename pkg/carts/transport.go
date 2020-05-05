@@ -8,7 +8,6 @@ import (
 
 	"github.com/anabiozz/lapkins-api/pkg/auth"
 	"github.com/anabiozz/lapkins-api/pkg/cookies"
-	"github.com/anabiozz/lapkins-api/pkg/model"
 )
 
 // encodeError writes a Service error to the given http.ResponseWriter.
@@ -27,30 +26,26 @@ func encodeError(ctx context.Context, err error, w http.ResponseWriter) {
 }
 
 func decodeAddProductRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	req := addProductRequest{User: &model.CartUser{}}
+	req := addProductRequest{}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		return nil, errBadRequest("failed to decode JSON request: %v", err)
 	}
-	token, err := cookies.GetCookieValue(r, "token")
+	userID, isLoggedIn, err := auth.GetUserID(r)
 	if err != nil {
-		if err == http.ErrNoCookie {
-			tmpUserID, err := cookies.GetCookieValue(r, "tmp-user-id")
-			if err != nil {
-				if err != http.ErrNoCookie {
-					return nil, err
-				}
-			}
-			req.User.TmpID = tmpUserID
-		} else {
+		return nil, err
+	}
+	req.UserID = userID
+	if userID != "" && isLoggedIn {
+		req.IsLoggedIn = true
+	}
+	tmpUserID, err := cookies.GetCookieValue(r, "tmp-user-id")
+	if err != nil {
+		if err != http.ErrNoCookie {
 			return nil, err
 		}
 	}
-	if token != "" {
-		claim, err := auth.Check(token)
-		if err != nil {
-			return nil, err
-		}
-		req.User.ID = claim.UserID
+	if tmpUserID != "" {
+		req.IsTmpUserIDSet = true
 	}
 	return req, nil
 }
@@ -62,21 +57,12 @@ func encodeAddProductResponse(ctx context.Context, w http.ResponseWriter, respon
 		return nil
 	}
 
-	if res.User.ID == "" && res.User.TmpID != "" {
+	if res.SetTmpUserIDCookie {
 		http.SetCookie(w, &http.Cookie{
 			Path:    "/",
 			Name:    "tmp-user-id",
-			Value:   res.User.TmpID,
+			Value:   res.UserID,
 			Expires: time.Now().Add(168 * time.Hour),
-		})
-	}
-
-	if res.User.ID != "" && res.User.TmpID != "" {
-		http.SetCookie(w, &http.Cookie{
-			Path:    "/",
-			Name:    "tmp-user-id",
-			Value:   "",
-			Expires: time.Unix(0, 0),
 		})
 	}
 
@@ -86,7 +72,7 @@ func encodeAddProductResponse(ctx context.Context, w http.ResponseWriter, respon
 
 func decodeGetHeaderCartInfoRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	req := getHeaderCartInfoRequest{}
-	userID, err := auth.GetUserID(r)
+	userID, _, err := auth.GetUserID(r)
 	if err != nil {
 		return nil, errBadRequest("%s", err)
 	}
@@ -106,7 +92,7 @@ func encodeGetHeaderCartInfoResponse(ctx context.Context, w http.ResponseWriter,
 
 func decodeGetCartRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	req := getCartRequest{}
-	userID, err := auth.GetUserID(r)
+	userID, _, err := auth.GetUserID(r)
 	if err != nil {
 		return nil, errBadRequest("%s", err)
 	}
@@ -129,7 +115,7 @@ func decodeIncreaseProductQtyRequest(_ context.Context, r *http.Request) (interf
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		return nil, errBadRequest("failed to decode JSON request: %v", err)
 	}
-	userID, err := auth.GetUserID(r)
+	userID, _, err := auth.GetUserID(r)
 	if err != nil {
 		return nil, errBadRequest("%s", err)
 	}
@@ -152,7 +138,7 @@ func decodeDecreaseProductQtyRequest(_ context.Context, r *http.Request) (interf
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		return nil, errBadRequest("failed to decode JSON request: %v", err)
 	}
-	userID, err := auth.GetUserID(r)
+	userID, _, err := auth.GetUserID(r)
 	if err != nil {
 		return nil, errBadRequest("%s", err)
 	}
@@ -175,7 +161,7 @@ func decodeRemoveProductRequest(_ context.Context, r *http.Request) (interface{}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		return nil, errBadRequest("failed to decode JSON request: %v", err)
 	}
-	userID, err := auth.GetUserID(r)
+	userID, _, err := auth.GetUserID(r)
 	if err != nil {
 		return nil, errBadRequest("%s", err)
 	}

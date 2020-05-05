@@ -13,47 +13,42 @@ import (
 )
 
 // AddProduct ..
-func (s *Storage) AddProduct(ctx context.Context, sku string, user *model.CartUser) (*model.CartUser, error) {
-
+func (s *Storage) AddProduct(ctx context.Context, sku string, userID string, isLoggedIn bool, isTmpUserIDSet bool) (bool, string, error) {
 	if sku == "" {
-		return nil, errors.New("sku should not be empty")
+		return false, "", errors.New("sku should not be empty")
 	}
 
 	var err error
-	cart := &model.Cart{}
-	cartProduct := &model.CartProduct{}
-	var objID primitive.ObjectID
-	var switchID bool
+	var setTmpUserIDCookie bool
+	var cartID primitive.ObjectID
+	var cartType string
 
-	if user.ID == "" && user.TmpID == "" {
+	switch true {
+	// Когда не зарегался и добавляю в корзину первый товар
+	case userID == "" && !isLoggedIn:
 		s.mu.Lock()
-		objID = primitive.NewObjectIDFromTimestamp(time.Now())
-		user.TmpID = objID.Hex()
+		cartID = primitive.NewObjectIDFromTimestamp(time.Now())
+		userID = cartID.Hex()
+		setTmpUserIDCookie = true
+		cartType = "tmp"
 		s.mu.Unlock()
-	} else if user.ID != "" && user.TmpID != "" {
-		switchID = true
-		objID, err = primitive.ObjectIDFromHex(user.TmpID)
-		if err != nil {
-			return nil, err
+	case userID != "":
+		if isLoggedIn {
+			cartType = "logged_in"
 		}
-	} else if user.ID != "" {
-		objID, err = primitive.ObjectIDFromHex(user.ID)
+		cartID, err = primitive.ObjectIDFromHex(userID)
 		if err != nil {
-			return nil, err
-		}
-	} else if user.TmpID != "" {
-		objID, err = primitive.ObjectIDFromHex(user.TmpID)
-		if err != nil {
-			return nil, err
+			return false, "", err
 		}
 	}
 
+	cart := &model.Cart{}
 	product := &model.Product{}
 	variation := &model.Variation{}
 
 	err = s.db.Collection("products").FindOne(ctx, bson.D{{"variations.sku", sku}}).Decode(product)
 	if err != nil {
-		return nil, err
+		return false, "", err
 	}
 
 	for _, v := range product.Variations {
@@ -62,10 +57,16 @@ func (s *Storage) AddProduct(ctx context.Context, sku string, user *model.CartUs
 		}
 	}
 
-	err = s.db.Collection("carts").FindOne(ctx, bson.D{{"_id", objID}, {"status", "active"}, {"products.sku", sku}}).Decode(cart)
+	err = s.db.Collection("carts").FindOne(ctx, bson.D{{"_id", cartID}, {"status", "active"}, {"products.sku", sku}}).Decode(cart)
 	if err != nil {
 		if err.Error() == "mongo: no documents in result" {
 
+			if isLoggedIn && isTmpUserIDSet {
+
+			}
+
+			// Корзина не найдена
+			cartProduct := &model.CartProduct{}
 			cartProduct.Name = product.Name
 			cartProduct.Price = variation.Pricing.Retail
 			cartProduct.Quantity = 1
@@ -74,13 +75,14 @@ func (s *Storage) AddProduct(ctx context.Context, sku string, user *model.CartUs
 			cartProduct.UpdatedAt = time.Now()
 			cartProduct.CreatedAt = time.Now()
 
-			filter := bson.D{{"_id", objID}, {"status", "active"}}
+			filter := bson.D{{"_id", cartID}, {"status", "active"}}
 			update := bson.D{
 				{
 					"$set",
 					bson.D{
 						{"updated_at", time.Now()},
 						{"created_at", time.Now()},
+						{"type", cartType},
 					},
 				},
 				{
@@ -93,52 +95,36 @@ func (s *Storage) AddProduct(ctx context.Context, sku string, user *model.CartUs
 			opts := options.Update().SetUpsert(true)
 			_, err := s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
 			if err != nil {
-				return nil, err
+				return false, "", err
 			}
 		}
 	} else {
 
-		if switchID {
-			newID, err := primitive.ObjectIDFromHex(user.ID)
-			if err != nil {
-				return nil, err
-			}
-			cart.ID = newID
-			_, err = s.db.Collection("carts").InsertOne(ctx, cart)
-			if err != nil {
-				return nil, err
-			}
-			_, err = s.db.Collection("carts").DeleteOne(ctx, bson.D{{"_id", objID}, {"status", "active"}})
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			filter := bson.D{{"_id", cart.ID}, {"status", "active"}, {"products.sku", sku}}
-			update := bson.D{
-				{
-					"$set",
-					bson.D{
-						{"updated_at", time.Now()},
-						{"products.$.updated_at", time.Now()},
-					},
+		filter := bson.D{{"_id", cart.ID}, {"status", "active"}, {"products.sku", sku}}
+		update := bson.D{
+			{
+				"$set",
+				bson.D{
+					{"updated_at", time.Now()},
+					{"products.$.updated_at", time.Now()},
 				},
-				{
-					"$inc",
-					bson.D{
-						{"products.$.quantity", 1},
-					},
+			},
+			{
+				"$inc",
+				bson.D{
+					{"products.$.quantity", 1},
 				},
-			}
+			},
+		}
 
-			opts := options.Update().SetUpsert(true)
-			_, err := s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
-			if err != nil {
-				return nil, err
-			}
+		opts := options.Update().SetUpsert(true)
+		_, err := s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
+		if err != nil {
+			return false, "", err
 		}
 	}
 
-	return user, nil
+	return setTmpUserIDCookie, userID, nil
 }
 
 func (s Storage) GetHeaderCartInfo(ctx context.Context, userID string) (*model.HeaderCartInfo, error) {

@@ -19,10 +19,7 @@ type Claims struct {
 }
 
 func Check(token string) (*Claims, error) {
-	token, err := stripBearerPrefixFromTokenString(token)
-	if err != nil {
-		return nil, err
-	}
+	token = stripBearerPrefixFromTokenString(token)
 	claims := &Claims{}
 	tkn, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
 		return JwtKey, nil
@@ -36,56 +33,47 @@ func Check(token string) (*Claims, error) {
 	return tkn.Claims.(*Claims), nil
 }
 
-func GetUserID(r *http.Request) (string, error) {
-	token, err := stripBearerPrefixFromTokenString(r.Header.Get("Authorization"))
+func GetUserID(r *http.Request) (string, bool, error) {
+	token, err := GetToken(r)
 	if err != nil {
-		return "", err
-	}
-	if token == "" {
-		token, err = cookies.GetCookieValue(r, "token")
-		if err != nil {
-			if err == http.ErrNoCookie {
-				tmpUserID, err := cookies.GetCookieValue(r, "tmp-user-id")
-				if err != nil {
-					if err != http.ErrNoCookie {
-						return "", err
-					}
+		if err == http.ErrNoCookie {
+			userID, err := cookies.GetCookieValue(r, "tmp-user-id")
+			if err != nil {
+				if err == http.ErrNoCookie {
+					return "", false, nil
 				}
-				return tmpUserID, nil
-			} else {
-				return "", err
+				return "", false, err
 			}
+			return userID, false, nil
+		} else {
+			return "", false, err
 		}
 	}
 	if token != "" {
 		claim, err := Check(token)
 		if err != nil {
-			return "", err
+			return "", false, err
 		}
-		return claim.UserID, nil
+		return claim.UserID, true, nil
 	}
-	return "", nil
+	return "", false, nil
 }
 
 func GetToken(r *http.Request) (string, error) {
-	token, err := stripBearerPrefixFromTokenString(r.Header.Get("Authorization"))
-	if err != nil {
-		return "", err
-	}
+	token := stripBearerPrefixFromTokenString(r.Header.Get("Authorization"))
 	if token == "" {
-		token, err = cookies.GetCookieValue(r, "token")
+		token, err := cookies.GetCookieValue(r, "token")
 		if err != nil {
-			if err != http.ErrNoCookie {
-				return "", err
-			}
+			return "", err
 		}
+		return token, nil
 	}
 	return token, nil
 }
 
-func stripBearerPrefixFromTokenString(token string) (string, error) {
+func stripBearerPrefixFromTokenString(token string) string {
 	if len(token) > 6 && strings.ToUpper(token[0:7]) == "BEARER " {
-		return token[7:], nil
+		return token[7:]
 	}
-	return token, nil
+	return token
 }

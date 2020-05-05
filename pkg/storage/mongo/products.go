@@ -115,25 +115,17 @@ func (s *Storage) GetProductsByCategory(ctx context.Context, category string) ([
 	return products, nil
 }
 
-func (s *Storage) AddAttribute(ctx context.Context, sku string, attribute model.Attribute) error {
-	fmt.Println("AddAttribute")
+func (s *Storage) AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error {
 	filter := bson.D{{"status", "active"}, {"products.sku", sku}}
 	update := bson.D{
 		{
-			"$set",
+			"$push",
 			bson.D{
-				{"products.$.updated_at", time.Now()},
-			},
-		},
-		{
-			"$inc",
-			bson.D{
-				{"products.$.quantity", 1},
+				{"products", attribute},
 			},
 		},
 	}
-	opts := options.Update().SetUpsert(true)
-	_, err = s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
+	_, err := s.db.Collection("carts").UpdateOne(ctx, filter, update, nil)
 	if err != nil {
 		return err
 	}
@@ -141,16 +133,40 @@ func (s *Storage) AddAttribute(ctx context.Context, sku string, attribute model.
 }
 
 func (s *Storage) RemoveAttribute(ctx context.Context, sku string, attribute string) error {
-	fmt.Println("RemoveAttribute")
+	filter := bson.D{{"status", "active"}, {"products.sku", sku}}
+	update := bson.D{
+		{
+			"$pull",
+			bson.D{
+				{"products", attribute},
+			},
+		},
+	}
+	_, err := s.db.Collection("carts").UpdateOne(ctx, filter, update, nil)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-func (s *Storage) AddCategory(ctx context.Context, sku string) error {
-	fmt.Println("AddCategory")
-	return nil
-}
-
-func (s *Storage) RemoveCategory(ctx context.Context, sku string) error {
-	fmt.Println("RemoveCategory")
-	return nil
-}
+//func (s *Storage) AddCategory(ctx context.Context, sku string, category model.Category) error {
+//	filter := bson.D{{"status", "active"}, {"products.sku", sku}}
+//	update := bson.D{
+//		{
+//			"$push",
+//			bson.D{
+//				{"products", category},
+//			},
+//		},
+//	}
+//	_, err := s.db.Collection("carts").UpdateOne(ctx, filter, update, nil)
+//	if err != nil {
+//		return err
+//	}
+//	return nil
+//}
+//
+//func (s *Storage) RemoveCategory(ctx context.Context, sku string) error {
+//	fmt.Println("RemoveCategory")
+//	return nil
+//}

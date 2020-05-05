@@ -34,9 +34,9 @@ func (mw *loggingMiddleware) Register(ctx context.Context, input *model.UserInpu
 	return uInfo, err
 }
 
-func (mw *loggingMiddleware) Login(ctx context.Context, input *model.UserInput) (*model.UserOutput, error) {
+func (mw *loggingMiddleware) Login(ctx context.Context, input *model.UserInput, tmpUserID string) (*model.UserOutput, bool, error) {
 	begin := time.Now()
-	uInfo, err := mw.next.Login(ctx, input)
+	uInfo, unsetTmpUserIDCookie, err := mw.next.Login(ctx, input, tmpUserID)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -49,7 +49,7 @@ func (mw *loggingMiddleware) Login(ctx context.Context, input *model.UserInput) 
 		"err", err,
 		"took", duration,
 	)
-	return uInfo, err
+	return uInfo, unsetTmpUserIDCookie, err
 }
 
 func (mw *loggingMiddleware) RefreshToken(ctx context.Context, token string) (*model.UserOutput, error) {
@@ -102,12 +102,12 @@ func (mw *instrumentingMiddleware) Register(ctx context.Context, input *model.Us
 	return resp, err
 }
 
-func (mw *instrumentingMiddleware) Login(ctx context.Context, input *model.UserInput) (*model.UserOutput, error) {
+func (mw *instrumentingMiddleware) Login(ctx context.Context, input *model.UserInput, tmpUserID string) (*model.UserOutput, bool, error) {
 	begin := time.Now()
-	resp, err := mw.next.Login(ctx, input)
+	resp, unsetTmpUserIDCookie, err := mw.next.Login(ctx, input, tmpUserID)
 	labels := []string{"method", "Login", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
-	return resp, err
+	return resp, unsetTmpUserIDCookie, err
 }
 
 func (mw *instrumentingMiddleware) RefreshToken(ctx context.Context, token string) (*model.UserOutput, error) {
@@ -135,8 +135,8 @@ func (mw *authMiddleware) Register(ctx context.Context, input *model.UserInput) 
 	return mw.next.Register(ctx, input)
 }
 
-func (mw *authMiddleware) Login(ctx context.Context, input *model.UserInput) (*model.UserOutput, error) {
-	return mw.next.Login(ctx, input)
+func (mw *authMiddleware) Login(ctx context.Context, input *model.UserInput, tmpUserID string) (*model.UserOutput, bool, error) {
+	return mw.next.Login(ctx, input, tmpUserID)
 }
 
 func (mw *authMiddleware) RefreshToken(ctx context.Context, token string) (*model.UserOutput, error) {

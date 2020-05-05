@@ -10,6 +10,7 @@ import (
 type Cart struct {
 	ID        primitive.ObjectID `bson:"_id" json:"id,omitempty"`
 	Status    string             `bson:"status" json:"status"`
+	Type      string             `bson:"type" json:"type"`
 	Products  []*CartProduct     `bson:"products" json:"products"`
 	CreatedAt time.Time          `bson:"created_at,omitempty" json:"created_at,omitempty"`
 	UpdatedAt time.Time          `bson:"updated_at,omitempty" json:"updated_at,omitempty"`

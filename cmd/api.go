@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/anabiozz/lapkins-api/pkg/carts"
+	"github.com/anabiozz/lapkins-api/pkg/orders"
 	"github.com/anabiozz/lapkins-api/pkg/products"
 	"github.com/anabiozz/lapkins-api/pkg/storage/mongo"
 	"github.com/anabiozz/lapkins-api/pkg/users"
@@ -105,10 +106,27 @@ func main() {
 		ReqMetrics:  reqMetrics,
 	})
 
+	ordersSvc, err := orders.NewService(orders.ServiceConfig{
+		Logger:  logger,
+		Storage: storage,
+	})
+	if err != nil {
+		level.Error(logger).Log("msg", "failed to initialize users service", "err", err)
+		os.Exit(1)
+	}
+
+	ordersHandler := orders.MakeHandler(orders.HandlerConfig{
+		Svc:         ordersSvc,
+		Logger:      logger,
+		RateLimiter: rate.NewLimiter(rate.Every(100*time.Nanosecond), 100),
+		ReqMetrics:  reqMetrics,
+	})
+
 	m := http.NewServeMux()
 	m.Handle("/api/v1/carts/", http.StripPrefix("/api/v1/carts", cors(cartsHandler)))
 	m.Handle("/api/v1/products/", http.StripPrefix("/api/v1/products", cors(productsHandler)))
 	m.Handle("/api/v1/users/", http.StripPrefix("/api/v1/users", cors(usersHandler)))
+	m.Handle("/api/v1/orders/", http.StripPrefix("/api/v1/orders", cors(ordersHandler)))
 	m.Handle("/metrics", promhttp.Handler())
 
 	okHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

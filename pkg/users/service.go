@@ -15,14 +15,14 @@ import (
 
 type Service interface {
 	Register(ctx context.Context, input *model.UserInput) (*model.UserOutput, error)
-	Login(ctx context.Context, input *model.UserInput) (*model.UserOutput, error)
+	Login(ctx context.Context, input *model.UserInput, tmpUserID string) (*model.UserOutput, bool, error)
 	RefreshToken(ctx context.Context, token string) (*model.UserOutput, error)
 	GetUsers(ctx context.Context) ([]*model.User, error)
 }
 
 type Storage interface {
 	RegisterUser(ctx context.Context, user *model.User) (string, error)
-	GetUserBySubject(ctx context.Context, email string, phone int64) (*model.User, error)
+	Login(ctx context.Context, email string, phone int64, tmpUserID string) (*model.User, error)
 	GetUsers(ctx context.Context) ([]*model.User, error)
 }
 
@@ -87,21 +87,21 @@ func (s *BasicService) Register(ctx context.Context, input *model.UserInput) (*m
 	return userOutput, nil
 }
 
-func (s *BasicService) Login(ctx context.Context, input *model.UserInput) (*model.UserOutput, error) {
+func (s *BasicService) Login(ctx context.Context, input *model.UserInput, tmpUserID string) (*model.UserOutput, bool, error) {
 
 	err := input.Validate()
 	if err != nil {
-		return nil, errBadRequest("validation error: %v", err)
+		return nil, false, errBadRequest("validation error: %v", err)
 	}
 
-	result, err := s.storage.GetUserBySubject(ctx, input.Email, input.Phone)
+	result, err := s.storage.Login(ctx, input.Email, input.Phone, tmpUserID)
 	if err != nil {
-		return nil, errBadRequest("%s", err)
+		return nil, false, errBadRequest("%s", err)
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(input.Password))
 	if err != nil {
-		return nil, errUnauthorized("%s", err)
+		return nil, false, errUnauthorized("%s", err)
 	}
 
 	var claimSubject string
@@ -123,14 +123,19 @@ func (s *BasicService) Login(ctx context.Context, input *model.UserInput) (*mode
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenString, err := token.SignedString(auth.JwtKey)
 	if err != nil {
-		return nil, errInternal("%s", err)
+		return nil, false, errInternal("%s", err)
 	}
 
 	userOutput := &model.UserOutput{}
 	userOutput.ID = result.ID.Hex()
 	userOutput.Token = tokenString
 
-	return userOutput, nil
+	var unsetTmpUserIDCookie bool
+	if tmpUserID != "" {
+		unsetTmpUserIDCookie = true
+	}
+
+	return userOutput, unsetTmpUserIDCookie, nil
 }
 
 func (s *BasicService) RefreshToken(ctx context.Context, token string) (*model.UserOutput, error) {

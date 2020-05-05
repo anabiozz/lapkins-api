@@ -16,9 +16,9 @@ type loggingMiddleware struct {
 	next Service
 }
 
-func (mw *loggingMiddleware) AddProduct(ctx context.Context, sku string, user *model.CartUser) (*model.CartUser, error) {
+func (mw *loggingMiddleware) AddProduct(ctx context.Context, sku string, userID string, isLoggedIn bool, isTmpUserIDSet bool) (bool, string, error) {
 	begin := time.Now()
-	user, err := mw.next.AddProduct(ctx, sku, user)
+	setTmpUserIDCookie, userID, err := mw.next.AddProduct(ctx, sku, userID, isLoggedIn, isTmpUserIDSet)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -31,7 +31,7 @@ func (mw *loggingMiddleware) AddProduct(ctx context.Context, sku string, user *m
 		"err", err,
 		"took", duration,
 	)
-	return user, err
+	return setTmpUserIDCookie, userID, err
 }
 
 func (mw *loggingMiddleware) CreateOrder(ctx context.Context) error {
@@ -148,12 +148,12 @@ type instrumentingMiddleware struct {
 	reqDuration metrics.Histogram
 }
 
-func (mw *instrumentingMiddleware) AddProduct(ctx context.Context, sku string, user *model.CartUser) (*model.CartUser, error) {
+func (mw *instrumentingMiddleware) AddProduct(ctx context.Context, sku string, userID string, isLoggedIn bool, isTmpUserIDSet bool) (bool, string, error) {
 	begin := time.Now()
-	user, err := mw.next.AddProduct(ctx, sku, user)
+	setTmpUserIDCookie, userID, err := mw.next.AddProduct(ctx, sku, userID, isLoggedIn, isTmpUserIDSet)
 	labels := []string{"method", "AddProduct", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
-	return user, err
+	return setTmpUserIDCookie, userID, err
 }
 
 func (mw *instrumentingMiddleware) CreateOrder(ctx context.Context) error {
@@ -209,8 +209,8 @@ type authMiddleware struct {
 	next   Service
 }
 
-func (mw *authMiddleware) AddProduct(ctx context.Context, sku string, user *model.CartUser) (*model.CartUser, error) {
-	return mw.next.AddProduct(ctx, sku, user)
+func (mw *authMiddleware) AddProduct(ctx context.Context, sku string, userID string, isLoggedIn bool, isTmpUserIDSet bool) (bool, string, error) {
+	return mw.next.AddProduct(ctx, sku, userID, isLoggedIn, isTmpUserIDSet)
 }
 
 func (mw *authMiddleware) CreateOrder(ctx context.Context) error {

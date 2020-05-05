@@ -8,7 +8,7 @@ import (
 )
 
 type Storage interface {
-	AddProduct(ctx context.Context, sku string, user *model.CartUser) (*model.CartUser, error)
+	AddProduct(ctx context.Context, sku string, userID string, isLoggedIn bool, isTmpUserIDSet bool) (bool, string, error)
 	IncreaseProductQuantity(ctx context.Context, userID string, sku string) error
 	DecreaseProductQuantity(ctx context.Context, userID string, sku string) error
 	RemoveProduct(ctx context.Context, userID string, sku string) error
@@ -17,7 +17,7 @@ type Storage interface {
 }
 
 type Service interface {
-	AddProduct(ctx context.Context, sku string, user *model.CartUser) (*model.CartUser, error)
+	AddProduct(ctx context.Context, sku string, userID string, isLoggedIn bool, isTmpUserIDSet bool) (bool, string, error)
 	CreateOrder(ctx context.Context) error
 	DecreaseProductQuantity(ctx context.Context, userID string, sku string) error
 	IncreaseProductQuantity(ctx context.Context, userID string, sku string) error
@@ -65,12 +65,12 @@ func (s *BasicService) GetHeaderCartInfo(ctx context.Context, userID string) (*m
 	return info, nil
 }
 
-func (s *BasicService) AddProduct(ctx context.Context, sku string, user *model.CartUser) (*model.CartUser, error) {
-	user, err := s.storage.AddProduct(ctx, sku, user)
+func (s *BasicService) AddProduct(ctx context.Context, sku string, userID string, isLoggedIn bool, isTmpUserIDSet bool) (bool, string, error) {
+	setTmpUserIDCookie, userID, err := s.storage.AddProduct(ctx, sku, userID, isLoggedIn, isTmpUserIDSet)
 	if err != nil {
-		return nil, errBadRequest("%s", err)
+		return false, "", errBadRequest("%s", err)
 	}
-	return user, nil
+	return setTmpUserIDCookie, userID, nil
 }
 
 func (s *BasicService) CreateOrder(ctx context.Context) error {

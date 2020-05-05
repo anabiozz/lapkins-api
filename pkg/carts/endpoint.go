@@ -8,20 +8,23 @@ import (
 )
 
 type addProductRequest struct {
-	SKU  string          `json:"sku"`
-	User *model.CartUser `json:"user"`
+	SKU            string `json:"sku"`
+	UserID         string `json:"user_id"`
+	IsLoggedIn     bool   `json:"is_logged_in"`
+	IsTmpUserIDSet bool   `json:"is_tmp_user_id_set"`
 }
 
 type addProductResponse struct {
-	User *model.CartUser `json:"user,omitempty"`
-	Err  error           `json:"err"`
+	Err                error  `json:"err"`
+	UserID             string `json:"user_id"`
+	SetTmpUserIDCookie bool   `json:"set_tmp_user_id_cookie"`
 }
 
 func makeAddProductEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(addProductRequest)
-		user, err := s.AddProduct(ctx, req.SKU, req.User)
-		return addProductResponse{Err: err, User: user}, nil
+		setTmpUserIDCookie, userID, err := s.AddProduct(ctx, req.SKU, req.UserID, req.IsLoggedIn, req.IsTmpUserIDSet)
+		return addProductResponse{Err: err, SetTmpUserIDCookie: setTmpUserIDCookie, UserID: userID}, nil
 	}
 }
 

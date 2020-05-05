@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/anabiozz/lapkins-api/pkg/auth"
+	"github.com/anabiozz/lapkins-api/pkg/cookies"
 	"github.com/anabiozz/lapkins-api/pkg/model"
 )
 
@@ -53,6 +55,13 @@ func decodeLoginRequest(_ context.Context, r *http.Request) (interface{}, error)
 	if err := json.NewDecoder(r.Body).Decode(req.Input); err != nil {
 		return nil, errBadRequest("failed to decode JSON request: %v", err)
 	}
+	tmpUserID, err := cookies.GetCookieValue(r, "tmp-user-id")
+	if err != nil {
+		if err != http.ErrNoCookie {
+			return nil, err
+		}
+	}
+	req.TmpUserID = tmpUserID
 	return req, nil
 }
 
@@ -62,12 +71,23 @@ func encodeLoginResponse(ctx context.Context, w http.ResponseWriter, response in
 		encodeError(ctx, res.Err, w)
 		return nil
 	}
+
 	http.SetCookie(w, &http.Cookie{
 		Path:    "/",
 		Name:    "token",
 		Value:   res.User.Token,
 		Expires: res.User.ExpirationTime,
 	})
+
+	if res.UnsetTmpUserIDCookie {
+		http.SetCookie(w, &http.Cookie{
+			Path:    "/",
+			Name:    "tmp-user-id",
+			Value:   "",
+			Expires: time.Unix(0, 0),
+		})
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	return json.NewEncoder(w).Encode(res.User)
 }

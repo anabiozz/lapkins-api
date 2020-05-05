@@ -1,6 +1,6 @@
 [
   {
-    "category": "posters-without-frame",
+    "category": ["posters-without-frame"],
     "name": "Постер 'Веселье'",
     "description": "description description description description description",
     "brand": "Anastasia Kondratieva",
@@ -81,7 +81,7 @@
     ]
   },
   {
-    "category": "posters-without-frame",
+    "category": ["posters-without-frame"],
     "name": "Постер 'Смысл'",
     "description": "description",
     "brand": "Anastasia Kondratieva",
@@ -140,7 +140,7 @@
     ]
   },
   {
-    "category": "posters-without-frame",
+    "category": ["posters-without-frame"],
     "name": "Постер 'qwesad'",
     "description": "description description description description description",
     "brand": "Anastasia Kondratieva",
@@ -199,7 +199,7 @@
     ]
   },
   {
-    "category": "posters-without-frame",
+    "category": ["posters-without-frame"],
     "name": "Постер 'mkmlk'",
     "description": "description",
     "brand": "Anastasia Kondratieva",
@@ -258,7 +258,7 @@
     ]
   },
   {
-    "category": "posters-without-frame",
+    "category": ["posters-without-frame"],
     "name": "Постер 'oidjda'",
     "description": "description description description description description",
     "brand": "Anastasia Kondratieva",
@@ -317,7 +317,7 @@
     ]
   },
   {
-    "category": "posters-without-frame",
+    "category": ["posters-without-frame"],
     "name": "Постер 'dasgt'",
     "description": "description",
     "brand": "Anastasia Kondratieva",
@@ -376,7 +376,7 @@
     ]
   },
   {
-    "category": "framed-posters-plastic",
+    "category": ["framed-posters-plastic"],
     "name": "Постер ',mnxczs'",
     "description": "description description description description description",
     "brand": "Anastasia Kondratieva",
@@ -435,7 +435,7 @@
     ]
   },
   {
-    "category": "framed-posters-plastic",
+    "category": ["framed-posters-plastic"],
     "name": "Постер 'ydyasgtd'",
     "description": "description",
     "brand": "Anastasia Kondratieva",
@@ -494,7 +494,7 @@
     ]
   },
   {
-    "category": "framed-posters-wood",
+    "category": ["framed-posters-wood"],
     "name": "Постер 'sdawevcsd'",
     "description": "description description description description description",
     "brand": "Anastasia Kondratieva",
@@ -553,7 +553,7 @@
     ]
   },
   {
-    "category": "framed-posters-wood",
+    "category": ["framed-posters-wood"],
     "name": "Постер 'uhuhsduia'",
     "description": "description",
     "brand": "Anastasia Kondratieva",
@@ -612,7 +612,7 @@
     ]
   },
   {
-    "category": "framed-posters-wood",
+    "category": ["framed-posters-wood"],
     "name": "Постер 'm,xnzcz'",
     "description": "description description description description description",
     "brand": "Anastasia Kondratieva",
@@ -671,7 +671,7 @@
     ]
   },
   {
-    "category": "framed-posters-wood",
+    "category": ["framed-posters-wood"],
     "name": "Постер 'bhsbuca'",
     "description": "description",
     "brand": "Anastasia Kondratieva",
@@ -730,7 +730,7 @@
     ]
   },
   {
-    "category": "postcards",
+    "category": ["postcards"],
     "name": "Открытка ';.saddsa'",
     "description": "description description description description description description description description description description",
     "brand": "Anastasia Kondratieva",
@@ -789,7 +789,7 @@
     ]
   },
   {
-    "category": "postcards",
+    "category": ["postcards"],
     "name": "Открытка 'scisjcai'",
     "description": "description description description description description",
     "brand": "Anastasia Kondratieva",
