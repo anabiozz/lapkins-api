@@ -1,0 +1,65 @@
+{
+  "name": "Women's Kate Ivory Peep-Toe Stiletto Heel",
+  "lname": "women's kate ivory peep-toe stiletto heel",
+  "desc": [
+    {
+      "lang": "en",
+      "value": "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out."
+    }
+  ],
+  "category": "/Декор/Постеры",
+  "brand": {
+    "id": 1,
+    "country": {
+      "name": "Россия"
+    },
+    "img": {
+      "src": "http://i.sears.com/s/i/bl/image/spin_prod_metadata_168138610"
+    },
+    "name": "Anastasia Kondratieva"
+  },
+  "shipping": {
+    "dimensions": {
+      "height": "13.0",
+      "length": "1.8",
+      "width": "26.8"
+    },
+    "weight": "1.75"
+  },
+  "attributes":[
+    {
+      "name":"Автор",
+      "value": "Анастасия Кондратьева"
+    },
+    {
+      "name": "Материалы",
+      "value": "semi-gloss"
+    },
+    {
+      "name": "Покрытие",
+      "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+    }
+  ],
+  "variations": [
+    {
+      "name": "size",
+      "isHide": false
+    },
+    {
+      "name": "frame",
+      "isHide": false
+    },
+    {
+      "name": "mat",
+      "isHide": false
+    },
+    {
+      "name": "paper",
+      "isHide": false
+    },
+    {
+      "name": "finish",
+      "isHide": false
+    }
+  ]
+}

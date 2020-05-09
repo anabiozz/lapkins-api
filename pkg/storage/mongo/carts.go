@@ -3,7 +3,6 @@ package mongo
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/anabiozz/lapkins-api/pkg/model"
@@ -44,18 +43,18 @@ func (s *Storage) AddProduct(ctx context.Context, sku string, userID string, isL
 
 	cart := &model.Cart{}
 	product := &model.Product{}
-	variation := &model.Variation{}
+	//variation := &model.Variation{}
 
 	err = s.db.Collection("products").FindOne(ctx, bson.D{{"variations.sku", sku}}).Decode(product)
 	if err != nil {
 		return false, "", err
 	}
 
-	for _, v := range product.Variations {
-		if v.SKU == sku {
-			variation = v
-		}
-	}
+	//for _, v := range product.Variations {
+	//	if v.SKU == sku {
+	//		variation = v
+	//	}
+	//}
 
 	err = s.db.Collection("carts").FindOne(ctx, bson.D{{"_id", cartID}, {"status", "active"}, {"products.sku", sku}}).Decode(cart)
 	if err != nil {
@@ -68,10 +67,10 @@ func (s *Storage) AddProduct(ctx context.Context, sku string, userID string, isL
 			// Корзина не найдена
 			cartProduct := &model.CartProduct{}
 			cartProduct.Name = product.Name
-			cartProduct.Price = variation.Pricing.Retail
+			//cartProduct.Price = variation.Pricing.Retail
 			cartProduct.Quantity = 1
 			cartProduct.SKU = sku
-			cartProduct.Size = fmt.Sprintf("%dx%d", variation.Dimensions.Width, variation.Dimensions.Height)
+			//cartProduct.Size = fmt.Sprintf("%dx%d", variation.Dimensions.Width, variation.Dimensions.Height)
 			cartProduct.UpdatedAt = time.Now()
 			cartProduct.CreatedAt = time.Now()
 

@@ -48,7 +48,7 @@ func MakeHandler(cfg HandlerConfig) http.Handler {
 
 	getCatalogEndpoint := makeGetCatalogEndpoint(svc)
 	getCatalogEndpoint = applyMiddlewares(getCatalogEndpoint, cfg)
-	router.Path("/get-catalog").Methods(http.MethodGet).Handler(kithttp.NewServer(
+	router.Path("/catalog").Methods(http.MethodGet).Handler(kithttp.NewServer(
 		getCatalogEndpoint,
 		decodeGetCatalogRequest,
 		encodeGetCatalogResponse,

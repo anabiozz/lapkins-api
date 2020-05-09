@@ -26,20 +26,26 @@ type SKUProduct struct {
 type Product struct {
 	Name        string       `json:"name"`
 	Description string       `json:"description"`
-	Brand       string       `json:"brand"`
-	Season      string       `json:"season"`
-	Kind        string       `json:"kind"`
+	Brand       *Brand       `json:"brand"`
 	Attributes  []*Attribute `json:"attributes"`
-	Sizes       []*Size      `json:"sizes"`
 	Variations  []*Variation `json:"variations"`
-	Category    string       `json:"category"`
 	CreatedOn   time.Time    `json:"createdOn"`
 	ModifiedOn  time.Time    `json:"modifiedOn"`
 }
 
+type Brand struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
 type Attribute struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
+	Name string `json:"name"`
+	Ext  *Ext   `json:"ext"`
+}
+
+type Ext struct {
+	Name   string `json:"name"`
+	IsHide bool   `json:"is_hide"`
 }
 
 type Size struct {
@@ -49,11 +55,9 @@ type Size struct {
 
 // Variation ..
 type Variation struct {
-	SKU        string      `json:"sku"`
-	Weight     *Weight     `json:"weight"`
-	Dimensions *Dimensions `json:"dimensions"`
-	Pricing    *Pricing    `json:"pricing"`
-	Photos     []string    `json:"photos"`
+	Name   string `json:"name"`
+	Exts   []*Ext `json:"exts"`
+	IsHide bool   `json:"is_hide"`
 }
 
 type Weight struct {

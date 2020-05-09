@@ -1,0 +1,45 @@
+[
+  {
+    "_id": "05458452563",
+    "name": "Size:250x400,Frame:без рамки,Mat:без паспарту,Paper:glossy photo paper,Finish:300 g/m² Munken Lynx Rough paper (woodfree)",
+    "lname": "width:medium,color:ivory,shoe size:6.5",
+    "productId": "054VA72303012P",
+    "assets": {
+      "imgs": [
+        {
+          "width": "1900",
+          "height": "1900",
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512"
+        },
+        {
+          "width": "1900",
+          "height": "1900",
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612"
+        }
+      ]
+    },
+    "attrs": [
+      {
+        "name": "Size",
+        "value": "250x400"
+      },
+      {
+        "name": "Frame",
+        "family": "без рамки",
+        "value": "без рамки"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
+        "value": "glossy photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  }
+]

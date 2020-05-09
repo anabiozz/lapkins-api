@@ -1,0 +1,59 @@
+{
+  "id": 1,
+  "name": "Неоновая вывеска",
+  "description": "description description description description description",
+  "brand": {
+    "country": {
+      "id": 1,
+      "name": "Россия"
+    },
+    "id": 1,
+    "name": "Anastasia Kondratieva"
+  },
+  "subject": {
+    "parentId": 1,
+    "id": 2,
+    "name": "Открытки"
+  },
+  "subjects": [
+    {
+      "id": 1,
+      "name": "Канцелярия"
+    },
+    {
+      "parentId": 1,
+      "id": 2,
+      "name": "Открытки"
+    }
+  ],
+  "attributes":[
+    {
+      "name":"Автор",
+      "ext":{
+        "name": "Анастасия Кондратьева"
+      }
+    },
+    {
+      "name": "Материалы",
+      "ext":{
+        "name": "semi-gloss"
+      }
+    },
+    {
+      "name": "Покрытие",
+      "ext":{
+        "name": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    },
+    {
+      "name": "Размер",
+      "ext":{
+        "name": "105х148"
+      },
+      "meas": {
+        "name": "mm"
+      }
+    }
+  ],
+  "variations": []
+}

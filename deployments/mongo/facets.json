@@ -1,0 +1,68 @@
+[
+  {
+    "_id": "size=250x400",
+    "name": "Size",
+    "value": "250x400",
+    "count": 14
+  },
+  {
+    "_id": "size size=400x400",
+    "name": "Size",
+    "value": "400x400",
+    "count": 14
+  },
+  {
+    "_id": "size size=600x600",
+    "name": "Size",
+    "value": "600x600",
+    "count": 14
+  },
+  {
+    "_id": "frame type=без рамки",
+    "name": "Frame Type",
+    "value": "без рамки",
+    "count": 14
+  },
+  {
+    "_id": "frame type=деревянная рамка",
+    "name": "Frame Type",
+    "value": "деревянная рамка",
+    "count": 14
+  },
+  {
+    "_id": "frame type=пластиковая рамка",
+    "name": "Frame Type",
+    "value": "пластиковая рамка",
+    "count": 14
+  },
+  {
+    "_id": "mat type=без паспарту",
+    "name": "Mat Type",
+    "value": "без паспарту",
+    "count": 14
+  },
+  {
+    "_id": "mat type=белый",
+    "name": "Mat Type",
+    "value": "белый",
+    "count": 14
+  },
+  {
+    "_id": "paper=luster photo paper",
+    "name": "Paper",
+    "value": "luster photo paper",
+    "count": 14
+  },
+  {
+    "_id": "paper=glossy photo paper",
+    "name": "Paper",
+    "value": "glossy photo paper",
+    "count": 14
+  },
+  {
+    "_id": "finish=300 g/m² Munken Lynx Rough paper (woodfree)",
+    "name": "Finish",
+    "value": "300 g/m² Munken Lynx Rough paper (woodfree)",
+    "count": 14
+  }
+]

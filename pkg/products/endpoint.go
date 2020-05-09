@@ -12,8 +12,8 @@ type getCatalogRequest struct {
 }
 
 type getCatalogResponse struct {
-	Products []*model.CatalogProduct `json:"products"`
-	Err      error                   `json:"err"`
+	Products []*model.Product `json:"products"`
+	Err      error            `json:"err"`
 }
 
 func makeGetCatalogEndpoint(s Service) endpoint.Endpoint {

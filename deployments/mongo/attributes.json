@@ -1,11 +1,20 @@
 [
   {
-    "attribute": "Автор"
+    "_id": "автор=анастасия кондратьева",
+    "name": "Автор",
+    "value": "анастасия кондратьева",
+    "count": 14
   },
   {
-    "attribute": "Материалы"
+    "_id": "материалы=semi-gloss",
+    "name": "Материалы",
+    "value": "semi-gloss",
+    "count": 14
   },
   {
-    "attribute": "Покрытие"
-  }
+    "_id": "покрытие=300 g/m² Munken Lynx Rough paper (woodfree)",
+    "name": "Покрытие",
+    "value": "300 g/m² Munken Lynx Rough paper (woodfree)",
+    "count": 14
+  },
 ]

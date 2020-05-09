@@ -1,0 +1,1 @@
+//db.categories.createIndex( { ancestors: 1 } )
