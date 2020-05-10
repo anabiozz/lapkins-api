@@ -12,11 +12,11 @@ type Order struct {
 }
 
 type Shipping struct {
-	ID         string    `bson:"_id" json:"id,omitempty"`
-	Name       string    `json:"name"`
-	Address    string    `json:"address"`
-	CreatedOn  time.Time `json:"createdOn"`
-	ModifiedOn time.Time `json:"modifiedOn"`
+	Dimensions *Dimensions `json:"dimensions"`
+	Weight     *Weight     `json:"weight"`
+	Address    string      `json:"address"`
+	CreatedOn  time.Time   `json:"createdOn"`
+	ModifiedOn time.Time   `json:"modifiedOn"`
 }
 
 type Payment struct {

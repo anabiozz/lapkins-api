@@ -8,18 +8,19 @@ import (
 )
 
 type getCatalogRequest struct {
-	Category string
+	Department string
+	Category   string
 }
 
 type getCatalogResponse struct {
-	Products []*model.Product `json:"products"`
-	Err      error            `json:"err"`
+	Products []*model.CatalogProduct `json:"products"`
+	Err      error                   `json:"err"`
 }
 
 func makeGetCatalogEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(getCatalogRequest)
-		products, err := s.GetCatalog(ctx, req.Category)
+		products, err := s.GetCatalog(ctx, req.Department, req.Category)
 		return getCatalogResponse{Err: err, Products: products}, nil
 	}
 }

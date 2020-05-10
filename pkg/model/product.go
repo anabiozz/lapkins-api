@@ -1,11 +1,14 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type CatalogProduct struct {
-	SKU   string `json:"sku"`
-	Name  string `json:"name"`
-	Price int    `json:"price"`
+	LName     string  `json:"lname"`
+	Name      string  `json:"name"`
+	Price     float64 `json:"price"`
+	Thumbnail string  `json:"thumbnail"`
 }
 
 type SKUProduct struct {
@@ -24,28 +27,39 @@ type SKUProduct struct {
 
 // Product ..
 type Product struct {
-	Name        string       `json:"name"`
-	Description string       `json:"description"`
-	Brand       *Brand       `json:"brand"`
-	Attributes  []*Attribute `json:"attributes"`
-	Variations  []*Variation `json:"variations"`
-	CreatedOn   time.Time    `json:"createdOn"`
-	ModifiedOn  time.Time    `json:"modifiedOn"`
+	ID           string         `bson:"_id" json:"id,omitempty"`
+	Name         string         `json:"name"`
+	LName        string         `json:"lname"`
+	Descriptions []*Description `json:"desc"`
+	Brand        *Brand         `json:"brand"`
+	Variations   []*Variation   `json:"variations"`
+	CreatedOn    time.Time      `json:"createdOn"`
+	ModifiedOn   time.Time      `json:"modifiedOn"`
 }
 
 type Brand struct {
-	ID   int    `json:"id"`
+	Country *Country `json:"country"`
+	Img     *Img     `json:"img"`
+	Name    string   `json:"name"`
+}
+
+type Description struct {
+	Lang  string `json:"lang"`
+	Value string `json:"value"`
+}
+
+type Img struct {
+	Src   string `json:"src"`
+	Title string `json:"title"`
+}
+
+type Country struct {
 	Name string `json:"name"`
 }
 
 type Attribute struct {
-	Name string `json:"name"`
-	Ext  *Ext   `json:"ext"`
-}
-
-type Ext struct {
-	Name   string `json:"name"`
-	IsHide bool   `json:"is_hide"`
+	Name  string `json:"name"`
+	Value string `json:"value"`
 }
 
 type Size struct {
@@ -55,9 +69,19 @@ type Size struct {
 
 // Variation ..
 type Variation struct {
-	Name   string `json:"name"`
-	Exts   []*Ext `json:"exts"`
-	IsHide bool   `json:"is_hide"`
+	Shipping   *Shipping    `json:"shipping"`
+	Pricing    *Pricing     `json:"pricing"`
+	Assets     *Assets      `json:"assets"`
+	Attributes []*Attribute `json:"attributes"`
+}
+
+type Assets struct {
+	Thumbnail *Thumbnail `json:"thumbnail"`
+	Imgs      []*Img     `json:"imgs"`
+}
+
+type Thumbnail struct {
+	Src string `json:"src"`
 }
 
 type Weight struct {
@@ -66,15 +90,18 @@ type Weight struct {
 }
 
 type Dimensions struct {
-	Width  int    `json:"width"`
-	Height int    `json:"height"`
-	Depth  int    `json:"depth"`
+	Width  string `json:"width"`
+	Height string `json:"height"`
+	Length string `json:"length"`
 	Unit   string `json:"unit"`
 }
 
 type Pricing struct {
-	List       int `json:"list"`
-	Retail     int `json:"retail"`
-	Savings    int `json:"savings"`
-	PctSavings int `json:"pct_savings"`
+	Price float64 `json:"price"`
+	Sale  *Sale   `json:"sale"`
+}
+
+type Sale struct {
+	SalePrice   float64 `json:"sale_price"`
+	SaleEndDate string  `json:"sale_end_date"`
 }

@@ -8,7 +8,7 @@ import (
 )
 
 type Storage interface {
-	GetCatalog(ctx context.Context, category string) ([]*model.Product, error)
+	GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error)
 	GetProduct(ctx context.Context, sku string) (*model.Product, error)
 	GetCategory(ctx context.Context, category string) ([]*model.Category, error)
 	GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error)
@@ -20,7 +20,7 @@ type Storage interface {
 
 type Service interface {
 	GetCategory(ctx context.Context, category string) ([]*model.Category, error)
-	GetCatalog(ctx context.Context, category string) ([]*model.Product, error)
+	GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error)
 	GetProduct(ctx context.Context, sku string) (*model.Product, error)
 	GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error)
 	AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error
@@ -65,8 +65,8 @@ func (s *BasicService) GetCategory(ctx context.Context, category string) ([]*mod
 	return categories, nil
 }
 
-func (s *BasicService) GetCatalog(ctx context.Context, category string) ([]*model.Product, error) {
-	products, err := s.storage.GetCatalog(ctx, category)
+func (s *BasicService) GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error) {
+	products, err := s.storage.GetCatalog(ctx, department, category)
 	if err != nil {
 		return nil, err
 	}

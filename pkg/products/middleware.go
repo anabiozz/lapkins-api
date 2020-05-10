@@ -16,9 +16,9 @@ type loggingMiddleware struct {
 	next Service
 }
 
-func (mw *loggingMiddleware) GetCatalog(ctx context.Context, category string) ([]*model.Product, error) {
+func (mw *loggingMiddleware) GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error) {
 	begin := time.Now()
-	products, err := mw.next.GetCatalog(ctx, category)
+	products, err := mw.next.GetCatalog(ctx, department, category)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -166,9 +166,9 @@ type instrumentingMiddleware struct {
 	reqDuration metrics.Histogram
 }
 
-func (mw *instrumentingMiddleware) GetCatalog(ctx context.Context, category string) ([]*model.Product, error) {
+func (mw *instrumentingMiddleware) GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error) {
 	begin := time.Now()
-	products, err := mw.next.GetCatalog(ctx, category)
+	products, err := mw.next.GetCatalog(ctx, department, category)
 	labels := []string{"method", "GetCatalog", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
 	return products, err
@@ -235,8 +235,8 @@ type authMiddleware struct {
 	next   Service
 }
 
-func (mw *authMiddleware) GetCatalog(ctx context.Context, category string) ([]*model.Product, error) {
-	return mw.next.GetCatalog(ctx, category)
+func (mw *authMiddleware) GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error) {
+	return mw.next.GetCatalog(ctx, department, category)
 }
 
 func (mw *authMiddleware) GetProduct(ctx context.Context, sku string) (*model.Product, error) {

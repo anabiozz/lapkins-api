@@ -23,7 +23,8 @@ func encodeError(ctx context.Context, err error, w http.ResponseWriter) {
 
 func decodeGetCatalogRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	req := getCatalogRequest{}
-	req.Category = r.URL.Query().Get("subject")
+	req.Department = r.URL.Query().Get("dep")
+	req.Category = r.URL.Query().Get("category")
 	return req, nil
 }
 

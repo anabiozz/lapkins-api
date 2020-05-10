@@ -1,14 +1,13 @@
 [
   {
-    "_id": 1,
-    "url": "wall-art",
+    "_id": "wall-art",
     "description": [
       {
         "lang": "ru",
         "value": "Описание Декор"
       }
     ],
-    "parent" : null,
+    "parents" : null,
     "name": [
       {
         "lang": "ru",
@@ -18,16 +17,15 @@
     "facets": []
   },
   {
-    "_id": 2,
-    "url": "posters-without-frame",
+    "_id": "posters-without-frame",
     "description": [
       {
         "lang": "ru",
         "value": "Описание Постеры без рамки"
       }
     ],
-    "parent" : [
-      1
+    "parents" : [
+      "wall-art"
     ],
     "name": [
       {
@@ -44,16 +42,15 @@
     ]
   },
   {
-    "_id": 3,
-    "url": "framed-posters-plastic",
+    "_id": "framed-posters-plastic",
     "description": [
       {
         "lang": "ru",
         "value": "Описание Постеры с пластиковой рамкой"
       }
     ],
-    "parent" : [
-      1
+    "parents" : [
+      "wall-art"
     ],
     "name": [
       {
@@ -70,16 +67,15 @@
     ]
   },
   {
-    "_id": 4,
-    "url": "framed-posters-wood",
+    "_id": "framed-posters-wood",
     "description": [
       {
         "lang": "ru",
         "value": "Описание Постеры с деревянной рамкой"
       }
     ],
-    "parent" : [
-      1
+    "parents" : [
+      "wall-art"
     ],
     "name": [
       {
@@ -96,34 +92,32 @@
     ]
   },
   {
-    "_id": 5,
-    "url": "stationery",
+    "_id": "stationery",
     "description": [
       {
         "lang": "ru",
         "value": "Описание Канцелярия"
       }
     ],
-    "parent" : null,
+    "parents" : null,
     "name": [
       {
         "lang": "ru",
         "value": "Канцелярия"
       }
     ],
-    "facets": null
+    "facets": []
   },
   {
-    "_id": 6,
-    "url": "stationery",
+    "_id": "postcards",
     "description": [
       {
         "lang": "ru",
         "value": "Описание Открытки"
       }
     ],
-    "parent" : [
-      5
+    "parents" : [
+      "stationery"
     ],
     "name": [
       {
@@ -131,19 +125,18 @@
         "value": "Открытки"
       }
     ],
-    "facets": null
+    "facets": []
   },
   {
-    "_id": 7,
-    "url": "stationery",
+    "_id": "notebooks",
     "description": [
       {
         "lang": "ru",
         "value": "Описание Тетради"
       }
     ],
-    "parent" : [
-      5
+    "parents" : [
+      "stationery"
     ],
     "name": [
       {
@@ -151,19 +144,18 @@
         "value": "Тетради"
       }
     ],
-    "facets": null
+    "facets": []
   },
   {
-    "_id": 8,
-    "url": "stationery",
+    "_id": "diaries",
     "description": [
       {
         "lang": "ru",
         "value": "Описание Дневники"
       }
     ],
-    "parent" : [
-      5
+    "parents" : [
+      "stationery"
     ],
     "name": [
       {
@@ -171,19 +163,18 @@
         "value": "Дневники"
       }
     ],
-    "facets": null
+    "facets": []
   },
   {
-    "_id": 9,
-    "url": "stationery",
+    "_id": "calendars",
     "description": [
       {
         "lang": "ru",
         "value": "Описание Календари"
       }
     ],
-    "parent" : [
-      5
+    "parents" : [
+      "stationery"
     ],
     "name": [
       {
@@ -191,7 +182,7 @@
         "value": "Календари"
       }
     ],
-    "facets": null
+    "facets": []
   }
 ]
 

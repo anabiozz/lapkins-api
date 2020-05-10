@@ -2,8 +2,7 @@ package mongo
 
 import (
 	"context"
-	"fmt"
-	"strconv"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"time"
 
 	"github.com/anabiozz/lapkins-api/pkg/model"
@@ -12,44 +11,43 @@ import (
 )
 
 // GetCatalog ..
-func (s *Storage) GetCatalog(ctx context.Context, category string) ([]*model.Product, error) {
-	var products []*model.Product
+func (s *Storage) GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error) {
+	var products []*model.CatalogProduct
 
-	findOptions := options.Find()
-	findOptions.SetSkip(0)
-	findOptions.SetLimit(10)
-
-	subjID, _ := strconv.Atoi(category)
-
-	cur, err := s.db.Collection("products").Find(ctx, bson.M{"subject.id": subjID}, nil)
+	productsCur, err := s.db.Collection("products").Find(ctx, bson.D{
+		{"dep", department},
+		{"variations.category", primitive.Regex{Pattern: category, Options: "i"}},
+	}, nil)
 	if err != nil {
 		return nil, err
 	}
-	defer cur.Close(ctx)
-	for cur.Next(ctx) {
+	defer productsCur.Close(ctx)
+	for productsCur.Next(ctx) {
 
 		product := &model.Product{}
-		//catalogProduct := &model.CatalogProduct{}
+		catalogProduct := &model.CatalogProduct{}
 
-		err := cur.Decode(&product)
+		err := productsCur.Decode(&product)
 		if err != nil {
 			return nil, err
 		}
 
-		fmt.Println(product)
+		var variation model.Variation
+		findOptions := options.FindOne()
+		findOptions.SetSkip(0)
+		findOptions.SetSort(bson.M{"pricing.price": 1})
+		err = s.db.Collection("variations").FindOne(ctx, bson.D{{"category", primitive.Regex{Pattern: category, Options: "i"}}, {"productId", product.ID}}, findOptions).Decode(&variation)
+		if err != nil {
+			return nil, err
+		}
+		catalogProduct.Name = product.Name
+		catalogProduct.LName = product.LName
+		catalogProduct.Price = variation.Pricing.Price
+		catalogProduct.Thumbnail = variation.Assets.Thumbnail.Src
 
-		//sort.SliceStable(product.Variations, func(i, j int) bool {
-		//	return product.Variations[i].Pricing.Retail < product.Variations[j].Pricing.Retail
-		//})
-
-		//catalogProduct.Name = product.Name
-		//catalogProduct.Price = product.Variations[0].Pricing.Retail
-		//catalogProduct.SKU = product.Variations[0].SKU
-
-		products = append(products, product)
-
+		products = append(products, catalogProduct)
 	}
-	if err := cur.Err(); err != nil {
+	if err := productsCur.Err(); err != nil {
 		return nil, err
 	}
 	return products, nil
@@ -102,9 +100,9 @@ func (s *Storage) GetProductsByCategory(ctx context.Context, category string) ([
 		for _, variation := range product.Variations {
 			skuproduct := &model.SKUProduct{}
 			//skuproduct.Season = product.Season
-			skuproduct.Description = product.Description
+			//skuproduct.Description = product.Descriptions
 			//skuproduct.Brand = product.Brand
-			skuproduct.Attributes = product.Attributes
+			//skuproduct.Attributes = product.Attributes
 			//skuproduct.Kind = product.Kind
 			skuproduct.ModifiedOn = time.Now()
 			//skuproduct.Category = product.Category
