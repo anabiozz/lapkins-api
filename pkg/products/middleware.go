@@ -34,9 +34,9 @@ func (mw *loggingMiddleware) GetCatalog(ctx context.Context, department string, 
 	return products, err
 }
 
-func (mw *loggingMiddleware) GetProduct(ctx context.Context, sku string) (*model.Product, error) {
+func (mw *loggingMiddleware) GetProduct(ctx context.Context, sku string, attr string) (*model.VariationProduct, error) {
 	begin := time.Now()
-	product, err := mw.next.GetProduct(ctx, sku)
+	product, err := mw.next.GetProduct(ctx, sku, attr)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -52,9 +52,9 @@ func (mw *loggingMiddleware) GetProduct(ctx context.Context, sku string) (*model
 	return product, err
 }
 
-func (mw *loggingMiddleware) GetCategory(ctx context.Context, category string) ([]*model.Category, error) {
+func (mw *loggingMiddleware) GetCategories(ctx context.Context) ([]*model.Category, error) {
 	begin := time.Now()
-	categories, err := mw.next.GetCategory(ctx, category)
+	categories, err := mw.next.GetCategories(ctx)
 	duration := time.Since(begin).Seconds()
 	lvl := level.Debug
 	if err != nil || duration > 1 {
@@ -88,7 +88,7 @@ func (mw *loggingMiddleware) GetProductsByCategory(ctx context.Context, category
 	return products, err
 }
 
-func (mw *loggingMiddleware) AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error {
+func (mw *loggingMiddleware) AddAttribute(ctx context.Context, sku string, attribute *model.NameValue) error {
 	begin := time.Now()
 	err := mw.next.AddAttribute(ctx, sku, attribute)
 	duration := time.Since(begin).Seconds()
@@ -174,17 +174,17 @@ func (mw *instrumentingMiddleware) GetCatalog(ctx context.Context, department st
 	return products, err
 }
 
-func (mw *instrumentingMiddleware) GetProduct(ctx context.Context, sku string) (*model.Product, error) {
+func (mw *instrumentingMiddleware) GetProduct(ctx context.Context, sku string, attr string) (*model.VariationProduct, error) {
 	begin := time.Now()
-	product, err := mw.next.GetProduct(ctx, sku)
+	product, err := mw.next.GetProduct(ctx, sku, attr)
 	labels := []string{"method", "GetProduct", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
 	return product, err
 }
 
-func (mw *instrumentingMiddleware) GetCategory(ctx context.Context, category string) ([]*model.Category, error) {
+func (mw *instrumentingMiddleware) GetCategories(ctx context.Context) ([]*model.Category, error) {
 	begin := time.Now()
-	categories, err := mw.next.GetCategory(ctx, category)
+	categories, err := mw.next.GetCategories(ctx)
 	labels := []string{"method", "GetCategory", "error", strconv.FormatBool(err != nil)}
 	mw.reqDuration.With(labels...).Observe(time.Since(begin).Seconds())
 	return categories, err
@@ -198,7 +198,7 @@ func (mw *instrumentingMiddleware) GetProductsByCategory(ctx context.Context, ca
 	return products, err
 }
 
-func (mw *instrumentingMiddleware) AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error {
+func (mw *instrumentingMiddleware) AddAttribute(ctx context.Context, sku string, attribute *model.NameValue) error {
 	begin := time.Now()
 	err := mw.next.AddAttribute(ctx, sku, attribute)
 	labels := []string{"method", "AddAttribute", "error", strconv.FormatBool(err != nil)}
@@ -239,19 +239,19 @@ func (mw *authMiddleware) GetCatalog(ctx context.Context, department string, cat
 	return mw.next.GetCatalog(ctx, department, category)
 }
 
-func (mw *authMiddleware) GetProduct(ctx context.Context, sku string) (*model.Product, error) {
-	return mw.next.GetProduct(ctx, sku)
+func (mw *authMiddleware) GetProduct(ctx context.Context, sku string, attr string) (*model.VariationProduct, error) {
+	return mw.next.GetProduct(ctx, sku, attr)
 }
 
-func (mw *authMiddleware) GetCategory(ctx context.Context, category string) ([]*model.Category, error) {
-	return mw.next.GetCategory(ctx, category)
+func (mw *authMiddleware) GetCategories(ctx context.Context) ([]*model.Category, error) {
+	return mw.next.GetCategories(ctx)
 }
 
 func (mw *authMiddleware) GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error) {
 	return mw.next.GetProductsByCategory(ctx, category)
 }
 
-func (mw *authMiddleware) AddAttribute(ctx context.Context, sku string, attribute *model.Attribute) error {
+func (mw *authMiddleware) AddAttribute(ctx context.Context, sku string, attribute *model.NameValue) error {
 	return mw.next.AddAttribute(ctx, sku, attribute)
 }
 

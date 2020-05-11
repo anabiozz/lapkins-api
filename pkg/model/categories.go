@@ -4,11 +4,19 @@ import "time"
 
 // Category ..
 type Category struct {
-	ID          string    `bson:"_id" json:"id,omitempty"`
-	Ancestors   []string  `json:"ancestors"`
-	Name        string    `json:"name"`
-	Description string    `json:"description"`
-	Parent      string    `json:"parent"`
-	CreatedOn   time.Time `json:"createdOn"`
-	ModifiedOn  time.Time `json:"modifiedOn"`
+	ID         string         `bson:"_id" json:"id,omitempty"`
+	Name       []*LangValue   `json:"name"`
+	Ancestors  []*Subcategory `json:"ancestors"`
+	CreatedOn  time.Time      `json:"createdOn"`
+	ModifiedOn time.Time      `json:"modifiedOn"`
+}
+
+type Subcategory struct {
+	ID          string       `bson:"_id" json:"id,omitempty"`
+	Name        []*LangValue `json:"name"`
+	Description []*LangValue `json:"description"`
+	Parents     []string     `json:"parents"`
+	Facets      []string     `json:"facets"`
+	CreatedOn   time.Time    `json:"createdOn"`
+	ModifiedOn  time.Time    `json:"modifiedOn"`
 }

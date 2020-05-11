@@ -9,18 +9,34 @@ import (
 )
 
 // GetCategories ..
-func (s *Storage) GetCategory(ctx context.Context, category string) ([]*model.Category, error) {
-	cursor, err := s.db.Collection("categories").Find(ctx, bson.D{{"parent", category}})
+func (s *Storage) GetCategories(ctx context.Context) ([]*model.Category, error) {
+	cursor, err := s.db.Collection("categories").Find(ctx, bson.D{{"parents", nil}})
 	if err != nil {
 		return nil, err
 	}
-	var categories []*model.Category
 	defer cursor.Close(ctx)
+	var categories []*model.Category
 	for cursor.Next(ctx) {
+
 		var category *model.Category
 		if err = cursor.Decode(&category); err != nil {
 			return nil, err
 		}
+
+		cursor, err := s.db.Collection("categories").Find(ctx, bson.D{{"parents", category.ID}})
+		if err != nil {
+			return nil, err
+		}
+		defer cursor.Close(ctx)
+
+		for cursor.Next(ctx) {
+			var subcategory *model.Subcategory
+			if err = cursor.Decode(&subcategory); err != nil {
+				return nil, err
+			}
+			category.Ancestors = append(category.Ancestors, subcategory)
+		}
+
 		categories = append(categories, category)
 	}
 	return categories, nil

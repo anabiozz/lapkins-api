@@ -57,19 +57,19 @@ func MakeHandler(cfg HandlerConfig) http.Handler {
 
 	getProductEndpoint := makeGetProductEndpoint(svc)
 	getProductEndpoint = applyMiddlewares(getProductEndpoint, cfg)
-	router.Path("/get-product").Methods(http.MethodGet).Handler(kithttp.NewServer(
+	router.Path("/product").Methods(http.MethodGet).Handler(kithttp.NewServer(
 		getProductEndpoint,
 		decodeGetProductRequest,
 		encodeGetProductResponse,
 		opts...,
 	))
 
-	getCategoryEndpoint := makeGetCategoryEndpoint(svc)
-	getCategoryEndpoint = applyMiddlewares(getCategoryEndpoint, cfg)
-	router.Path("/get-category").Methods(http.MethodGet).Handler(kithttp.NewServer(
-		getCategoryEndpoint,
-		decodeGetCategoryRequest,
-		encodeGetCategoryResponse,
+	getCategoriesEndpoint := makeGetCategoriesEndpoint(svc)
+	getCategoriesEndpoint = applyMiddlewares(getCategoriesEndpoint, cfg)
+	router.Path("/categories").Methods(http.MethodGet).Handler(kithttp.NewServer(
+		getCategoriesEndpoint,
+		decodeGetCategoriesRequest,
+		encodeGetCategoriesResponse,
 		opts...,
 	))
 

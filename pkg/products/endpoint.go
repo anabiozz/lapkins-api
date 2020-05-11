@@ -26,36 +26,34 @@ func makeGetCatalogEndpoint(s Service) endpoint.Endpoint {
 }
 
 type getProductRequest struct {
-	SKU string
+	SKU  string
+	Attr string
 }
 
 type getProductResponse struct {
-	Product *model.Product `json:"product"`
-	Err     error          `json:"err"`
+	Product *model.VariationProduct `json:"product"`
+	Err     error                   `json:"err"`
 }
 
 func makeGetProductEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(getProductRequest)
-		product, err := s.GetProduct(ctx, req.SKU)
+		product, err := s.GetProduct(ctx, req.SKU, req.Attr)
 		return getProductResponse{Err: err, Product: product}, nil
 	}
 }
 
-type getCategoryRequest struct {
-	Category string
-}
+type getCategoriesRequest struct{}
 
-type getCategoryResponse struct {
+type getCategoriesResponse struct {
 	Categories []*model.Category `json:"categories"`
 	Err        error             `json:"err"`
 }
 
-func makeGetCategoryEndpoint(s Service) endpoint.Endpoint {
+func makeGetCategoriesEndpoint(s Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(getCategoryRequest)
-		categories, err := s.GetCategory(ctx, req.Category)
-		return getCategoryResponse{Err: err, Categories: categories}, nil
+		categories, err := s.GetCategories(ctx)
+		return getCategoriesResponse{Err: err, Categories: categories}, nil
 	}
 }
 
@@ -78,7 +76,7 @@ func makeGetProductsByCategoryEndpoint(s Service) endpoint.Endpoint {
 
 type addAttributeRequest struct {
 	SKU       string
-	Attribute *model.Attribute
+	Attribute *model.NameValue
 }
 
 type addAttributeResponse struct {

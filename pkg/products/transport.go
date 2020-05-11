@@ -41,6 +41,7 @@ func encodeGetCatalogResponse(ctx context.Context, w http.ResponseWriter, respon
 func decodeGetProductRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	req := getProductRequest{}
 	req.SKU = r.URL.Query().Get("sku")
+	req.Attr = r.URL.Query().Get("attr")
 	return req, nil
 }
 
@@ -54,14 +55,13 @@ func encodeGetProductResponse(ctx context.Context, w http.ResponseWriter, respon
 	return json.NewEncoder(w).Encode(res.Product)
 }
 
-func decodeGetCategoryRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	req := getCategoryRequest{}
-	req.Category = r.URL.Query().Get("category")
+func decodeGetCategoriesRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	req := getCategoriesRequest{}
 	return req, nil
 }
 
-func encodeGetCategoryResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
-	res := response.(getCategoryResponse)
+func encodeGetCategoriesResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+	res := response.(getCategoriesResponse)
 	if res.Err != nil {
 		encodeError(ctx, res.Err, w)
 		return nil

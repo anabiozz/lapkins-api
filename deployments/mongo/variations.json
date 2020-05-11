@@ -14,7 +14,7 @@
         "unit": "cm"
       }
     },
-    "category": "/wallart/posters-without-frame",
+    "category": "/wall-art/posters-without-frame",
     "pricing": {
       "price": 69.99,
       "sale": {
@@ -55,7 +55,7 @@
       },
       {
         "name": "Paper",
-        "value": "glossy photo paper"
+        "value": "luster photo paper"
       },
       {
         "name": "Finish",
@@ -66,7 +66,7 @@
   {
     "_id": "2",
     "productId": "054VA72303012P",
-    "category": "/wallart/posters-without-frame",
+    "category": "/wall-art/posters-without-frame",
     "shipping": {
       "dimensions": {
         "height": "13.0",
@@ -119,7 +119,7 @@
       },
       {
         "name": "Paper",
-        "value": "glossy photo paper"
+        "value": "luster photo paper"
       },
       {
         "name": "Finish",
@@ -130,7 +130,7 @@
   {
     "_id": "3",
     "productId": "054VA72303012P",
-    "category": "/wallart/posters-without-frame",
+    "category": "/wall-art/posters-without-frame",
     "shipping": {
       "dimensions": {
         "height": "13.0",
@@ -183,7 +183,7 @@
       },
       {
         "name": "Paper",
-        "value": "glossy photo paper"
+        "value": "luster photo paper"
       },
       {
         "name": "Finish",
@@ -193,7 +193,7 @@
   },
   {
     "_id": "4",
-    "category": "/wallart/framed-posters-wood",
+    "category": "/wall-art/framed-posters-wood",
     "productId": "054VA72303012P",
     "shipping": {
       "dimensions": {
@@ -247,7 +247,7 @@
       },
       {
         "name": "Paper",
-        "value": "glossy photo paper"
+        "value": "luster photo paper"
       },
       {
         "name": "Finish",
@@ -257,7 +257,7 @@
   },
   {
     "_id": "5",
-    "category": "/wallart/framed-posters-wood",
+    "category": "/wall-art/framed-posters-wood",
     "productId": "054VA72303012P",
     "shipping": {
       "dimensions": {
@@ -311,7 +311,7 @@
       },
       {
         "name": "Paper",
-        "value": "glossy photo paper"
+        "value": "luster photo paper"
       },
       {
         "name": "Finish",
@@ -321,7 +321,7 @@
   },
   {
     "_id": "6",
-    "category": "/wallart/framed-posters-wood",
+    "category": "/wall-art/framed-posters-wood",
     "productId": "054VA72303012P",
     "shipping": {
       "dimensions": {
@@ -375,7 +375,7 @@
       },
       {
         "name": "Paper",
-        "value": "glossy photo paper"
+        "value": "luster photo paper"
       },
       {
         "name": "Finish",
@@ -385,7 +385,7 @@
   },
   {
     "_id": "7",
-    "category": "/wallart/framed-posters-plastic",
+    "category": "/wall-art/framed-posters-plastic",
     "productId": "054VA72303012P",
     "shipping": {
       "dimensions": {
@@ -439,7 +439,7 @@
       },
       {
         "name": "Paper",
-        "value": "glossy photo paper"
+        "value": "luster photo paper"
       },
       {
         "name": "Finish",
@@ -450,7 +450,7 @@
   {
     "_id": "8",
     "productId": "054VA72303012P",
-    "category": "/wallart/framed-posters-plastic",
+    "category": "/wall-art/framed-posters-plastic",
     "shipping": {
       "dimensions": {
         "height": "13.0",
@@ -503,7 +503,7 @@
       },
       {
         "name": "Paper",
-        "value": "glossy photo paper"
+        "value": "luster photo paper"
       },
       {
         "name": "Finish",
@@ -514,7 +514,7 @@
   {
     "_id": "9",
     "productId": "054VA72303012P",
-    "category": "/wallart/framed-posters-plastic",
+    "category": "/wall-art/framed-posters-plastic",
     "shipping": {
       "dimensions": {
         "height": "13.0",
@@ -567,7 +567,624 @@
       },
       {
         "name": "Paper",
+        "value": "luster photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  },
+  {
+    "_id": "10",
+    "productId": "054VA72303012P",
+    "category": "/stationery/postcards",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 54.99,
+      "sale": {
+        "salePrice": 39.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    }
+  },
+  {
+    "_id": "11",
+    "productId": "3",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "category": "/wall-art/posters-without-frame",
+    "pricing": {
+      "price": 69.99,
+      "sale": {
+        "salePrice": 142.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "name": "Size",
+        "value": "250x400"
+      },
+      {
+        "name": "Frame",
+        "family": "без рамки",
+        "value": "без рамки"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
         "value": "glossy photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  },
+  {
+    "_id": "12",
+    "productId": "3",
+    "category": "/wall-art/posters-without-frame",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 79.99,
+      "sale": {
+        "salePrice": 52.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "name": "Size",
+        "value": "400x400"
+      },
+      {
+        "name": "Frame",
+        "family": "без рамки",
+        "value": "без рамки"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
+        "value": "luster photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  },
+  {
+    "_id": "13",
+    "productId": "3",
+    "category": "/wall-art/posters-without-frame",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 49.99,
+      "sale": {
+        "salePrice": 62.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "name": "Size",
+        "value": "600x600"
+      },
+      {
+        "name": "Frame",
+        "family": "без рамки",
+        "value": "без рамки"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
+        "value": "luster photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  },
+  {
+    "_id": "14",
+    "category": "/wall-art/framed-posters-wood",
+    "productId": "3",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 79.99,
+      "sale": {
+        "salePrice": 52.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "name": "Size",
+        "value": "250x400"
+      },
+      {
+        "name": "Frame",
+        "family": "деревянная рамка",
+        "value": "деревянная рамка"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
+        "value": "luster photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  },
+  {
+    "_id": "15",
+    "category": "/wall-art/framed-posters-wood",
+    "productId": "3",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 79.99,
+      "sale": {
+        "salePrice": 52.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "name": "Size",
+        "value": "400x400"
+      },
+      {
+        "name": "Frame",
+        "family": "деревянная рамка",
+        "value": "деревянная рамка"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
+        "value": "luster photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  },
+  {
+    "_id": "16",
+    "category": "/wall-art/framed-posters-wood",
+    "productId": "3",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 99.99,
+      "sale": {
+        "salePrice": 72.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "name": "Size",
+        "value": "600x600"
+      },
+      {
+        "name": "Frame",
+        "family": "деревянная рамка",
+        "value": "деревянная рамка"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
+        "value": "luster photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  },
+  {
+    "_id": "17",
+    "category": "/wall-art/framed-posters-plastic",
+    "productId": "3",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 102.99,
+      "sale": {
+        "salePrice": 92.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "name": "Size",
+        "value": "250x400"
+      },
+      {
+        "name": "Frame",
+        "family": "пластиковая рамка",
+        "value": "пластиковая рамка"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
+        "value": "luster photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  },
+  {
+    "_id": "18",
+    "productId": "3",
+    "category": "/wall-art/framed-posters-plastic",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 107.99,
+      "sale": {
+        "salePrice": 90.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "name": "Size",
+        "value": "400x400"
+      },
+      {
+        "name": "Frame",
+        "family": "пластиковая рамка",
+        "value": "пластиковая рамка"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
+        "value": "luster photo paper"
+      },
+      {
+        "name": "Finish",
+        "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
+      }
+    ]
+  },
+  {
+    "_id": "19",
+    "productId": "3",
+    "category": "/wall-art/framed-posters-plastic",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 154.99,
+      "sale": {
+        "salePrice": 89.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    },
+    "attributes": [
+      {
+        "name": "Size",
+        "value": "600x600"
+      },
+      {
+        "name": "Frame",
+        "family": "пластиковая рамка",
+        "value": "пластиковая рамка"
+      },
+      {
+        "name": "Mat",
+        "value": "без паспарту"
+      },
+      {
+        "name": "Paper",
+        "value": "luster photo paper"
       },
       {
         "name": "Finish",

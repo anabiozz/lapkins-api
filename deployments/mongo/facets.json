@@ -1,68 +1,68 @@
 [
   {
     "_id": "size=250x400",
-    "name": "Size",
-    "value": "250x400",
-    "count": 14
+    "name": "size",
+    "display": "Размер",
+    "value": "250x400"
   },
   {
     "_id": "size=400x400",
-    "name": "Size",
-    "value": "400x400",
-    "count": 14
+    "name": "size",
+    "display": "Размер",
+    "value": "400x400"
   },
   {
     "_id": "size=600x600",
-    "name": "Size",
-    "value": "600x600",
-    "count": 14
+    "name": "size",
+    "display": "Размер",
+    "value": "600x600"
   },
   {
     "_id": "frame type=без рамки",
-    "name": "Frame Type",
-    "value": "без рамки",
-    "count": 14
+    "name": "frame type",
+    "display": "Тип Рамки",
+    "value": "без рамки"
   },
   {
     "_id": "frame type=деревянная рамка",
-    "name": "Frame Type",
-    "value": "деревянная рамка",
-    "count": 14
+    "name": "frame type",
+    "display": "Тип Рамки",
+    "value": "деревянная рамка"
   },
   {
     "_id": "frame type=пластиковая рамка",
-    "name": "Frame Type",
-    "value": "пластиковая рамка",
-    "count": 14
+    "name": "frame type",
+    "display": "Тип Рамки",
+    "value": "пластиковая рамка"
   },
   {
     "_id": "mat type=без паспарту",
-    "name": "Mat Type",
-    "value": "без паспарту",
-    "count": 14
+    "name": "mat type",
+    "display": "Паспарту",
+    "value": "без паспарту"
   },
   {
     "_id": "mat type=белый",
-    "name": "Mat Type",
-    "value": "белый",
-    "count": 14
+    "name": "mat type",
+    "display": "Паспарту",
+    "value": "белый"
   },
   {
     "_id": "paper=luster photo paper",
-    "name": "Paper",
-    "value": "luster photo paper",
-    "count": 14
+    "name": "paper",
+    "display": "Бумага",
+    "value": "luster photo paper"
   },
   {
     "_id": "paper=glossy photo paper",
-    "name": "Paper",
-    "value": "glossy photo paper",
-    "count": 14
+    "name": "paper",
+    "display": "Бумага",
+    "value": "glossy photo paper"
   },
   {
     "_id": "finish=300 g/m² Munken Lynx Rough paper (woodfree)",
-    "name": "Finish",
-    "value": "300 g/m² Munken Lynx Rough paper (woodfree)",
-    "count": 14
+    "name": "finish",
+    "display": "Покрытие",
+    "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
   }
 ]

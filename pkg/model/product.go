@@ -5,6 +5,7 @@ import (
 )
 
 type CatalogProduct struct {
+	ID        string  `json:"id,omitempty"`
 	LName     string  `json:"lname"`
 	Name      string  `json:"name"`
 	Price     float64 `json:"price"`
@@ -18,23 +19,52 @@ type SKUProduct struct {
 	Brand       string       `json:"brand"`
 	Season      string       `json:"season"`
 	Kind        string       `json:"kind"`
-	Attributes  []*Attribute `json:"attributes"`
+	Attributes  []*NameValue `json:"attributes"`
 	Sizes       []*Size      `json:"sizes"`
 	Variation   *Variation   `json:"variation"`
 	CreatedOn   time.Time    `json:"createdOn"`
 	ModifiedOn  time.Time    `json:"modifiedOn"`
 }
 
+type VariationProduct struct {
+	Name           string           `json:"name"`
+	Descriptions   []*LangValue     `json:"desc"`
+	Brand          *Brand           `json:"brand"`
+	VariationTypes []*VariationType `json:"variation_types"`
+	Variation      *Variation       `json:"variation"`
+	CreatedOn      time.Time        `json:"createdOn"`
+	ModifiedOn     time.Time        `json:"modifiedOn"`
+}
+
+type VariationType struct {
+	Name    string   `bson:"name" json:"name"`
+	Display string   `bson:"display" json:"display"`
+	Attrs   []string `bson:"attrs" json:"attrs"`
+}
+
 // Product ..
 type Product struct {
-	ID           string         `bson:"_id" json:"id,omitempty"`
-	Name         string         `json:"name"`
-	LName        string         `json:"lname"`
-	Descriptions []*Description `json:"desc"`
-	Brand        *Brand         `json:"brand"`
-	Variations   []*Variation   `json:"variations"`
-	CreatedOn    time.Time      `json:"createdOn"`
-	ModifiedOn   time.Time      `json:"modifiedOn"`
+	ID           string              `bson:"_id" json:"id,omitempty"`
+	Name         string              `json:"name"`
+	LName        string              `json:"lname"`
+	Descriptions []*LangValue        `bson:"desc" json:"desc"`
+	Brand        *Brand              `json:"brand"`
+	Attrs        []*ProductAttr      `json:"attrs"`
+	Variations   []*ProductVariation `json:"variations"`
+	CreatedOn    time.Time           `json:"createdOn"`
+	ModifiedOn   time.Time           `json:"modifiedOn"`
+}
+
+type ProductAttr struct {
+	Type string `json:"type"`
+	Name string `json:"name"`
+}
+
+type Facet struct {
+	ID      string `bson:"_id" json:"id,omitempty"`
+	Name    string `bson:"name" json:"name"`
+	Display string `bson:"display" json:"display"`
+	Value   string `bson:"value" json:"value"`
 }
 
 type Brand struct {
@@ -43,7 +73,7 @@ type Brand struct {
 	Name    string   `json:"name"`
 }
 
-type Description struct {
+type LangValue struct {
 	Lang  string `json:"lang"`
 	Value string `json:"value"`
 }
@@ -57,7 +87,7 @@ type Country struct {
 	Name string `json:"name"`
 }
 
-type Attribute struct {
+type NameValue struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
@@ -67,12 +97,18 @@ type Size struct {
 	Value string `json:"value"`
 }
 
+type ProductVariation struct {
+	ID         string   `bson:"_id" json:"id,omitempty"`
+	Imgs       []*Img   `bson:"imgs" json:"imgs"`
+	Attributes []string `bson:"attrs" json:"attrs"`
+}
+
 // Variation ..
 type Variation struct {
 	Shipping   *Shipping    `json:"shipping"`
 	Pricing    *Pricing     `json:"pricing"`
 	Assets     *Assets      `json:"assets"`
-	Attributes []*Attribute `json:"attributes"`
+	Attributes []*NameValue `json:"attributes"`
 }
 
 type Assets struct {

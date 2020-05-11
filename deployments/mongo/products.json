@@ -9,24 +9,44 @@
         "value": "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out."
       }
     ],
-    "dep": "wallart",
-    "category": "/wallart",
+    "dep": "wall-art",
     "brand": {
       "country": {
         "name": "Россия"
       },
       "name": "Anastasia Kondratieva"
     },
+    "attrs": [
+      {
+        "type": "RADIO",
+        "name": "size"
+      },
+      {
+        "type": "RADIO",
+        "name": "frame type"
+      },
+      {
+        "type": "RADIO",
+        "name": "mat type"
+      },
+      {
+        "type": "RADIO",
+        "name": "paper"
+      },
+      {
+        "type": "RADIO",
+        "name": "finish"
+      }
+    ],
     "variations": [
       {
         "_id": "1",
-        "thumbnail": [
+        "imgs": [
           {
             "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
             "title": "spin_prod_591726301"
           }
         ],
-        "category": "posters-without-frame",
         "attrs": [
           "size=250x400",
           "frame type=без рамки",
@@ -37,7 +57,6 @@
       },
       {
         "_id": "2",
-        "category": "posters-without-frame",
         "thumbnail": [
           {
             "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
@@ -54,7 +73,6 @@
       },
       {
         "_id": "3",
-        "category": "posters-without-frame",
         "thumbnail": [
           {
             "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
@@ -71,7 +89,6 @@
       },
       {
         "_id": "4",
-        "category": "/wallart/framed-posters-wood",
         "thumbnail": [
           {
             "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
@@ -88,7 +105,6 @@
       },
       {
         "_id": "5",
-        "category": "/wallart/framed-posters-plastic",
         "thumbnail": [
           {
             "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
@@ -105,7 +121,6 @@
       },
       {
         "_id": "6",
-        "category": "posters-without-frame",
         "thumbnail": [
           {
             "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
@@ -122,7 +137,6 @@
       },
       {
         "_id": "7",
-        "category": "posters-without-frame",
         "thumbnail": [
           {
             "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
@@ -170,6 +184,42 @@
         ]
       }
     ]
+  },
+  {
+    "_id": "2",
+    "name": "Открытка Веселье",
+    "lname": "postcard-veselie",
+    "desc": [
+      {
+        "lang": "en",
+        "value": "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out."
+      }
+    ],
+    "dep": "stationary",
+    "brand": {
+      "country": {
+        "name": "Россия"
+      },
+      "name": "Anastasia Kondratieva"
+    }
+  },
+  {
+    "_id": "3",
+    "name": "Постер 2",
+    "lname": "poster-3",
+    "desc": [
+      {
+        "lang": "en",
+        "value": "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out."
+      }
+    ],
+    "dep": "wall-art",
+    "brand": {
+      "country": {
+        "name": "Россия"
+      },
+      "name": "Anastasia Kondratieva"
+    }
   }
 ]
 
