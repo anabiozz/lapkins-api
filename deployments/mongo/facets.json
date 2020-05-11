@@ -18,32 +18,32 @@
     "value": "600x600"
   },
   {
-    "_id": "frame type=без рамки",
-    "name": "frame type",
+    "_id": "frame=без рамки",
+    "name": "frame",
     "display": "Тип Рамки",
     "value": "без рамки"
   },
   {
-    "_id": "frame type=деревянная рамка",
-    "name": "frame type",
+    "_id": "frame=деревянная рамка",
+    "name": "frame",
     "display": "Тип Рамки",
     "value": "деревянная рамка"
   },
   {
-    "_id": "frame type=пластиковая рамка",
-    "name": "frame type",
+    "_id": "frame=пластиковая рамка",
+    "name": "frame",
     "display": "Тип Рамки",
     "value": "пластиковая рамка"
   },
   {
-    "_id": "mat type=без паспарту",
-    "name": "mat type",
+    "_id": "mat=без паспарту",
+    "name": "mat",
     "display": "Паспарту",
     "value": "без паспарту"
   },
   {
-    "_id": "mat type=белый",
-    "name": "mat type",
+    "_id": "mat=белый",
+    "name": "mat",
     "display": "Паспарту",
     "value": "белый"
   },

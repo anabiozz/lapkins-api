@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"strings"
 )
 
 // GetCatalog ..
@@ -67,10 +68,10 @@ func (s *Storage) GetProduct(ctx context.Context, sku string, attr string) (*mod
 	variationProduct.Brand = product.Brand
 
 	var variation model.Variation
-
+	attributes := strings.Split(attr, ",")
 	var filter bson.D
 	if attr != "" {
-		filter = bson.D{{"productId", product.ID}, {"attributes.value", attr}}
+		filter = bson.D{{"productId", product.ID}, {"attrs", bson.M{"$all": attributes}}}
 	} else {
 		filter = bson.D{{"productId", product.ID}}
 	}

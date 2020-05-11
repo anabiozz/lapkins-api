@@ -23,11 +23,11 @@
       },
       {
         "type": "RADIO",
-        "name": "frame type"
+        "name": "frame"
       },
       {
         "type": "RADIO",
-        "name": "mat type"
+        "name": "mat"
       },
       {
         "type": "RADIO",
@@ -36,152 +36,6 @@
       {
         "type": "RADIO",
         "name": "finish"
-      }
-    ],
-    "variations": [
-      {
-        "_id": "1",
-        "imgs": [
-          {
-            "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
-            "title": "spin_prod_591726301"
-          }
-        ],
-        "attrs": [
-          "size=250x400",
-          "frame type=без рамки",
-          "mat type=без паспарту",
-          "paper=luster photo paper",
-          "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
-        ]
-      },
-      {
-        "_id": "2",
-        "thumbnail": [
-          {
-            "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
-            "title": "spin_prod_591726301"
-          }
-        ],
-        "attrs": [
-          "size=400x400",
-          "frame type=без рамки",
-          "mat type=без паспарту",
-          "paper=luster photo paper",
-          "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
-        ]
-      },
-      {
-        "_id": "3",
-        "thumbnail": [
-          {
-            "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
-            "title": "spin_prod_591726301"
-          }
-        ],
-        "attrs": [
-          "size=600x600",
-          "frame type=без рамки",
-          "mat type=без паспарту",
-          "paper=luster photo paper",
-          "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
-        ]
-      },
-      {
-        "_id": "4",
-        "thumbnail": [
-          {
-            "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
-            "title": "spin_prod_591726301"
-          }
-        ],
-        "attrs": [
-          "size=250x400",
-          "frame type=деревянная рамка",
-          "mat type=без паспарту",
-          "paper=luster photo paper",
-          "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
-        ]
-      },
-      {
-        "_id": "5",
-        "thumbnail": [
-          {
-            "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
-            "title": "spin_prod_591726301"
-          }
-        ],
-        "attrs": [
-          "size=400x400",
-          "frame type=пластиковая рамка",
-          "mat type=без паспарту",
-          "paper=luster photo paper",
-          "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
-        ]
-      },
-      {
-        "_id": "6",
-        "thumbnail": [
-          {
-            "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
-            "title": "spin_prod_591726301"
-          }
-        ],
-        "attrs": [
-          "size=600x600",
-          "frame type=без рамки",
-          "mat type=mat type=белый",
-          "paper=luster photo paper",
-          "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
-        ]
-      },
-      {
-        "_id": "7",
-        "thumbnail": [
-          {
-            "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
-            "title": "spin_prod_591726301"
-          }
-        ],
-        "attrs": [
-          "size=250x400",
-          "frame type=без рамки",
-          "mat type=без паспарту",
-          "paper=luster photo paper",
-          "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
-        ]
-      },
-      {
-        "_id": "8",
-        "thumbnail": [
-          {
-            "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
-            "title": "spin_prod_591726301"
-          }
-        ],
-        "attrs": [
-          "size=400x400",
-          "frame type=без рамки",
-          "mat type=без паспарту",
-          "paper=luster photo paper",
-          "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
-        ]
-      },
-      {
-        "_id": "9",
-        "thumbnail": [
-          {
-            "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726301",
-            "title": "spin_prod_591726301"
-          }
-        ],
-        "attrs": [
-          "size=600x600",
-          "frame type=без рамки",
-          "mat type=без паспарту",
-          "paper=luster photo paper",
-          "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
-        ]
       }
     ]
   },
@@ -195,7 +49,7 @@
         "value": "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out."
       }
     ],
-    "dep": "stationary",
+    "dep": "stationery",
     "brand": {
       "country": {
         "name": "Россия"
@@ -219,7 +73,29 @@
         "name": "Россия"
       },
       "name": "Anastasia Kondratieva"
-    }
+    },
+    "attrs": [
+      {
+        "type": "RADIO",
+        "name": "size"
+      },
+      {
+        "type": "RADIO",
+        "name": "frame"
+      },
+      {
+        "type": "RADIO",
+        "name": "mat"
+      },
+      {
+        "type": "RADIO",
+        "name": "paper"
+      },
+      {
+        "type": "RADIO",
+        "name": "finish"
+      }
+    ]
   }
 ]
 

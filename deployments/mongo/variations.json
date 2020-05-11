@@ -25,20 +25,27 @@
     },
     "assets": {
       "thumbnail": {
-        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "src": "https://picsum.photos/200/300?random=2",
         "title": "spin_prod_591726201"
       },
       "imgs": [
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "src": "https://picsum.photos/200/300?random=1",
           "title": "spin_prod_591726201"
         },
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "src": "https://picsum.photos/200/300?random=1",
           "title": "spin_prod_591726201"
         }
       ]
     },
+    "attrs": [
+      "size=250x400",
+      "frame=без рамки",
+      "mat=без паспарту",
+      "paper=luster photo paper",
+      "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
+    ],
     "attributes": [
       {
         "name": "Size",
@@ -79,6 +86,13 @@
         "unit": "cm"
       }
     },
+    "attrs": [
+      "size=400x400",
+      "frame=без рамки",
+      "mat=без паспарту",
+      "paper=luster photo paper",
+      "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
+    ],
     "pricing": {
       "price": 79.99,
       "sale": {
@@ -94,11 +108,11 @@
       },
       "imgs": [
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "src": "https://picsum.photos/200/300?random=1",
           "title": "spin_prod_591726201"
         },
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "src": "https://picsum.photos/200/300?random=1",
           "title": "spin_prod_591726201"
         }
       ]
@@ -151,6 +165,13 @@
       },
       "lastUpdated": 1374647707394
     },
+    "attrs": [
+      "size=600x600",
+      "frame=без рамки",
+      "mat=без паспарту",
+      "paper=luster photo paper",
+      "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
+    ],
     "assets": {
       "thumbnail": {
         "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
@@ -158,11 +179,11 @@
       },
       "imgs": [
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "src": "https://picsum.photos/200/300",
           "title": "spin_prod_591726201"
         },
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "src": "https://picsum.photos/200/300",
           "title": "spin_prod_591726201"
         }
       ]
@@ -207,6 +228,13 @@
         "unit": "cm"
       }
     },
+    "attrs": [
+      "size=250x400",
+      "frame=деревянная рамка",
+      "mat=без паспарту",
+      "paper=luster photo paper",
+      "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
+    ],
     "pricing": {
       "price": 79.99,
       "sale": {
@@ -222,11 +250,11 @@
       },
       "imgs": [
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "src": "https://picsum.photos/200/300?random=1",
           "title": "spin_prod_591726201"
         },
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "src": "https://picsum.photos/200/300?random=1",
           "title": "spin_prod_591726201"
         }
       ]
@@ -271,6 +299,13 @@
         "unit": "cm"
       }
     },
+    "attrs": [
+      "size=400x400",
+      "frame=деревянная рамка",
+      "mat=без паспарту",
+      "paper=luster photo paper",
+      "finish=300 g/m² Munken Lynx Rough paper (woodfree)"
+    ],
     "pricing": {
       "price": 79.99,
       "sale": {
@@ -286,11 +321,11 @@
       },
       "imgs": [
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "src": "https://picsum.photos/200/300",
           "title": "spin_prod_591726201"
         },
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "src": "https://picsum.photos/200/300",
           "title": "spin_prod_591726201"
         }
       ]
@@ -350,11 +385,11 @@
       },
       "imgs": [
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "src": "https://picsum.photos/200/300",
           "title": "spin_prod_591726201"
         },
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "src": "https://picsum.photos/200/300",
           "title": "spin_prod_591726201"
         }
       ]
@@ -414,11 +449,11 @@
       },
       "imgs": [
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "src": "https://picsum.photos/200/300",
           "title": "spin_prod_591726201"
         },
         {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "src": "https://picsum.photos/200/300",
           "title": "spin_prod_591726201"
         }
       ]
@@ -574,47 +609,6 @@
         "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
       }
     ]
-  },
-  {
-    "_id": "10",
-    "productId": "054VA72303012P",
-    "category": "/stationery/postcards",
-    "shipping": {
-      "dimensions": {
-        "height": "13.0",
-        "length": "1.8",
-        "width": "26.8",
-        "unit": "cm"
-      },
-      "weight": {
-        "value": "1.75",
-        "unit": "cm"
-      }
-    },
-    "pricing": {
-      "price": 54.99,
-      "sale": {
-        "salePrice": 39.72,
-        "saleEndDate": "2050-12-31 23:59:59"
-      },
-      "lastUpdated": 1374647707394
-    },
-    "assets": {
-      "thumbnail": {
-        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
-        "title": "spin_prod_591726201"
-      },
-      "imgs": [
-        {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
-          "title": "spin_prod_591726201"
-        },
-        {
-          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
-          "title": "spin_prod_591726201"
-        }
-      ]
-    }
   },
   {
     "_id": "11",
@@ -1191,5 +1185,46 @@
         "value": "300 g/m² Munken Lynx Rough paper (woodfree)"
       }
     ]
+  },
+  {
+    "_id": "10",
+    "productId": "2",
+    "category": "/stationery/postcards",
+    "shipping": {
+      "dimensions": {
+        "height": "13.0",
+        "length": "1.8",
+        "width": "26.8",
+        "unit": "cm"
+      },
+      "weight": {
+        "value": "1.75",
+        "unit": "cm"
+      }
+    },
+    "pricing": {
+      "price": 54.99,
+      "sale": {
+        "salePrice": 39.72,
+        "saleEndDate": "2050-12-31 23:59:59"
+      },
+      "lastUpdated": 1374647707394
+    },
+    "assets": {
+      "thumbnail": {
+        "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_591726201",
+        "title": "spin_prod_591726201"
+      },
+      "imgs": [
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348512",
+          "title": "spin_prod_591726201"
+        },
+        {
+          "src": "http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945348612",
+          "title": "spin_prod_591726201"
+        }
+      ]
+    }
   }
 ]
