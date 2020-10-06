@@ -12,7 +12,7 @@ import (
 )
 
 // AddProduct ..
-func (s *Storage) AddProduct(ctx context.Context, sku string, userID string, isLoggedIn bool, isTmpUserIDSet bool) (bool, string, error) {
+func (s *Storage) AddProductToCard(ctx context.Context, sku string, userID string, isLoggedIn bool, isTmpUserIDSet bool) (bool, string, error) {
 	if sku == "" {
 		return false, "", errors.New("sku should not be empty")
 	}
@@ -124,30 +124,6 @@ func (s *Storage) AddProduct(ctx context.Context, sku string, userID string, isL
 	}
 
 	return setTmpUserIDCookie, userID, nil
-}
-
-func (s Storage) GetHeaderCartInfo(ctx context.Context, userID string) (*model.HeaderCartInfo, error) {
-	info := &model.HeaderCartInfo{}
-	cart := &model.Cart{}
-
-	objID, err := primitive.ObjectIDFromHex(userID)
-	if err != nil {
-		return nil, err
-	}
-	err = s.db.Collection("cart").FindOne(ctx, bson.D{{"_id", objID}, {"status", "active"}}).Decode(cart)
-	if err != nil {
-		if err.Error() == "mongo: no documents in result" {
-			return nil, nil
-		}
-		return nil, err
-	}
-
-	for _, product := range cart.Products {
-		info.Price += product.Quantity * product.Price
-		info.Quantity += product.Quantity
-	}
-
-	return info, nil
 }
 
 // IncreaseProductQuantity ..

@@ -1,4 +1,4 @@
-package products
+package api
 
 import (
 	"encoding/json"
@@ -51,16 +51,16 @@ func errBadRequest(format string, v ...interface{}) error {
 	}
 }
 
-func errNotFound(format string, v ...interface{}) error {
+func errInternal(format string, v ...interface{}) error {
 	return &serviceError{
-		code:    http.StatusNotFound,
+		code:    http.StatusInternalServerError,
 		message: fmt.Sprintf(format, v...),
 	}
 }
 
-func errInternal(format string, v ...interface{}) error {
+func errUnauthorized(format string, v ...interface{}) error {
 	return &serviceError{
-		code:    http.StatusInternalServerError,
+		code:    http.StatusUnauthorized,
 		message: fmt.Sprintf(format, v...),
 	}
 }
