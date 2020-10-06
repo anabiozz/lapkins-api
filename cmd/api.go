@@ -8,16 +8,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/anabiozz/lapkins-api/pkg/carts"
-	"github.com/anabiozz/lapkins-api/pkg/orders"
 	"github.com/anabiozz/lapkins-api/pkg/products"
 	"github.com/anabiozz/lapkins-api/pkg/storage/mongo"
-	"github.com/anabiozz/lapkins-api/pkg/users"
 	kitlog "github.com/go-kit/kit/log"
 	"github.com/go-kit/kit/log/level"
 	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/time/rate"
 
 	_ "github.com/lib/pq"
@@ -25,7 +21,7 @@ import (
 
 const (
 	// URL ...
-	URL = "localhost:8081"
+	URL = "localhost:8084"
 )
 
 const (
@@ -56,22 +52,22 @@ func main() {
 		Buckets:   []float64{0.001, 0.002, 0.003, 0.004, 0.005, 0.010, 0.015, 0.030, 0.050, 0.100, 0.3, 0.5, 0.8, 1.2, 2},
 	}, []string{"method", "error"})
 
-	cartsSvc, err := carts.NewService(carts.ServiceConfig{
-		Logger:  logger,
-		Storage: storage,
-	})
-	if err != nil {
-		level.Error(logger).Log("msg", "failed to initialize carts service", "err", err)
-		os.Exit(1)
-	}
-
-	cartsHandler := carts.MakeHandler(carts.HandlerConfig{
-		Svc:         cartsSvc,
-		Logger:      logger,
-		EnableAuth:  false,
-		RateLimiter: rate.NewLimiter(rate.Every(100*time.Nanosecond), 100),
-		ReqMetrics:  reqMetrics,
-	})
+	//cartsSvc, err := cart.NewService(cart.ServiceConfig{
+	//	Logger:  logger,
+	//	Storage: storage,
+	//})
+	//if err != nil {
+	//	level.Error(logger).Log("msg", "failed to initialize cart service", "err", err)
+	//	os.Exit(1)
+	//}
+	//
+	//cartsHandler := cart.MakeHandler(cart.HandlerConfig{
+	//	Svc:         cartsSvc,
+	//	Logger:      logger,
+	//	EnableAuth:  false,
+	//	RateLimiter: rate.NewLimiter(rate.Every(100*time.Nanosecond), 100),
+	//	ReqMetrics:  reqMetrics,
+	//})
 
 	productsSvc, err := products.NewService(products.ServiceConfig{
 		Logger:  logger,
@@ -90,44 +86,44 @@ func main() {
 		ReqMetrics:  reqMetrics,
 	})
 
-	usersSvc, err := users.NewService(users.ServiceConfig{
-		Logger:  logger,
-		Storage: storage,
-	})
-	if err != nil {
-		level.Error(logger).Log("msg", "failed to initialize users service", "err", err)
-		os.Exit(1)
-	}
+	//usersSvc, err := users.NewService(users.ServiceConfig{
+	//	Logger:  logger,
+	//	Storage: storage,
+	//})
+	//if err != nil {
+	//	level.Error(logger).Log("msg", "failed to initialize users service", "err", err)
+	//	os.Exit(1)
+	//}
 
-	usersHandler := users.MakeHandler(users.HandlerConfig{
-		Svc:         usersSvc,
-		Logger:      logger,
-		RateLimiter: rate.NewLimiter(rate.Every(100*time.Nanosecond), 100),
-		ReqMetrics:  reqMetrics,
-	})
+	//usersHandler := users.MakeHandler(users.HandlerConfig{
+	//	Svc:         usersSvc,
+	//	Logger:      logger,
+	//	RateLimiter: rate.NewLimiter(rate.Every(100*time.Nanosecond), 100),
+	//	ReqMetrics:  reqMetrics,
+	//})
 
-	ordersSvc, err := orders.NewService(orders.ServiceConfig{
-		Logger:  logger,
-		Storage: storage,
-	})
-	if err != nil {
-		level.Error(logger).Log("msg", "failed to initialize users service", "err", err)
-		os.Exit(1)
-	}
+	//ordersSvc, err := orders.NewService(orders.ServiceConfig{
+	//	Logger:  logger,
+	//	Storage: storage,
+	//})
+	//if err != nil {
+	//	level.Error(logger).Log("msg", "failed to initialize users service", "err", err)
+	//	os.Exit(1)
+	//}
 
-	ordersHandler := orders.MakeHandler(orders.HandlerConfig{
-		Svc:         ordersSvc,
-		Logger:      logger,
-		RateLimiter: rate.NewLimiter(rate.Every(100*time.Nanosecond), 100),
-		ReqMetrics:  reqMetrics,
-	})
+	//ordersHandler := orders.MakeHandler(orders.HandlerConfig{
+	//	Svc:         ordersSvc,
+	//	Logger:      logger,
+	//	RateLimiter: rate.NewLimiter(rate.Every(100*time.Nanosecond), 100),
+	//	ReqMetrics:  reqMetrics,
+	//})
 
 	m := http.NewServeMux()
-	m.Handle("/api/v1/carts/", http.StripPrefix("/api/v1/carts", cors(cartsHandler)))
-	m.Handle("/api/v1/products/", http.StripPrefix("/api/v1/products", cors(productsHandler)))
-	m.Handle("/api/v1/users/", http.StripPrefix("/api/v1/users", cors(usersHandler)))
-	m.Handle("/api/v1/orders/", http.StripPrefix("/api/v1/orders", cors(ordersHandler)))
-	m.Handle("/metrics", promhttp.Handler())
+	//m.Handle("/api/v1/cart/", http.StripPrefix("/api/v1/cart", cors(cartsHandler)))
+	m.Handle("/api/v1/", cors(productsHandler))
+	//m.Handle("/api/v1/users/", http.StripPrefix("/api/v1/users", cors(usersHandler)))
+	//m.Handle("/api/v1/orders/", http.StripPrefix("/api/v1/orders", cors(ordersHandler)))
+	//m.Handle("/metrics", promhttp.Handler())
 
 	okHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
@@ -137,7 +133,7 @@ func main() {
 	m.Handle("/readiness", okHandler)
 
 	srv := http.Server{
-		Addr:    "localhost:8081",
+		Addr:    URL,
 		Handler: m,
 	}
 
@@ -149,7 +145,7 @@ func main() {
 				level.Info(logger).Log("msg", "server closed")
 				return
 			}
-			level.Error(logger).Log("err", "failed to serve service")
+			level.Error(logger).Log("err", err)
 			os.Exit(1)
 		}
 	}()

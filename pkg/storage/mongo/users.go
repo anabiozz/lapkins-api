@@ -45,23 +45,23 @@ func (s Storage) Login(ctx context.Context, email string, phone int64, tmpUserID
 		tmpCart := &model.Cart{}
 		tmpCartID, err := primitive.ObjectIDFromHex(tmpUserID)
 		// ищу корзину с временной айдихой
-		err = s.db.Collection("carts").FindOne(ctx, bson.D{{"_id", tmpCartID}, {"status", "active"}}).Decode(tmpCart)
+		err = s.db.Collection("cart").FindOne(ctx, bson.D{{"_id", tmpCartID}, {"status", "active"}}).Decode(tmpCart)
 		if err != nil {
 			return nil, err
 		}
-		_, err = s.db.Collection("carts").DeleteOne(ctx, bson.D{{"_id", tmpCartID}, {"status", "active"}})
+		_, err = s.db.Collection("cart").DeleteOne(ctx, bson.D{{"_id", tmpCartID}, {"status", "active"}})
 		if err != nil {
 			return nil, err
 		}
 
 		// Ищу корзину с айдихой юзера
-		err = s.db.Collection("carts").FindOne(ctx, bson.D{{"_id", user.ID}, {"status", "active"}}).Decode(cart)
+		err = s.db.Collection("cart").FindOne(ctx, bson.D{{"_id", user.ID}, {"status", "active"}}).Decode(cart)
 		if err != nil {
 			if err.Error() != "mongo: no documents in result" {
 				return nil, err
 			}
 			tmpCart.ID = user.ID
-			_, err = s.db.Collection("carts").InsertOne(ctx, tmpCart)
+			_, err = s.db.Collection("cart").InsertOne(ctx, tmpCart)
 			if err != nil {
 				return nil, err
 			}
@@ -111,7 +111,7 @@ func (s Storage) Login(ctx context.Context, email string, phone int64, tmpUserID
 				}
 
 				opts := options.Update().SetUpsert(true)
-				_, err = s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
+				_, err = s.db.Collection("cart").UpdateOne(ctx, filter, update, opts)
 				if err != nil {
 					return nil, err
 				}

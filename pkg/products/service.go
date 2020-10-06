@@ -8,28 +8,28 @@ import (
 )
 
 type Storage interface {
-	GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error)
-	GetProduct(ctx context.Context, sku string, attr string) (*model.VariationProduct, error)
+	GetProduct(ctx context.Context, sku string) (*model.Product, error)
+	GetProducts(ctx context.Context) ([]*model.Product, error)
 	GetCategories(ctx context.Context) ([]*model.Category, error)
-	GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error)
 	AddAttribute(ctx context.Context, sku string, attribute *model.NameValue) error
 	RemoveAttribute(ctx context.Context, sku string, attribute string) error
 	AddCategory(ctx context.Context, sku string, category *model.Category) error
 	RemoveCategory(ctx context.Context, sku string, category *model.Category) error
+	UpdateProduct(ctx context.Context, product *model.Product) error
 }
 
 type Service interface {
 	GetCategories(ctx context.Context) ([]*model.Category, error)
-	GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error)
-	GetProduct(ctx context.Context, sku string, attr string) (*model.VariationProduct, error)
-	GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error)
+	GetProducts(ctx context.Context) ([]*model.Product, error)
+	GetProduct(ctx context.Context, sku string) (*model.Product, error)
 	AddAttribute(ctx context.Context, sku string, attribute *model.NameValue) error
 	RemoveAttribute(ctx context.Context, sku string, attribute string) error
 	AddCategory(ctx context.Context, sku string, category *model.Category) error
 	RemoveCategory(ctx context.Context, sku string, category *model.Category) error
+	UpdateProduct(ctx context.Context, product *model.Product) error
 }
 
-type BasicService struct {
+type service struct {
 	logger  log.Logger
 	storage Storage
 }
@@ -39,7 +39,7 @@ type ServiceConfig struct {
 	Storage Storage
 }
 
-func NewService(cfg ServiceConfig) (*BasicService, error) {
+func NewService(cfg ServiceConfig) (*service, error) {
 	logger := cfg.Logger
 	if logger == nil {
 		logger = log.NewNopLogger()
@@ -49,7 +49,7 @@ func NewService(cfg ServiceConfig) (*BasicService, error) {
 		return nil, errBadRequest("storage must be provided")
 	}
 
-	svc := &BasicService{
+	svc := &service{
 		logger:  logger,
 		storage: cfg.Storage,
 	}
@@ -57,7 +57,7 @@ func NewService(cfg ServiceConfig) (*BasicService, error) {
 	return svc, nil
 }
 
-func (s *BasicService) GetCategories(ctx context.Context) ([]*model.Category, error) {
+func (s *service) GetCategories(ctx context.Context) ([]*model.Category, error) {
 	categories, err := s.storage.GetCategories(ctx)
 	if err != nil {
 		return nil, err
@@ -65,31 +65,31 @@ func (s *BasicService) GetCategories(ctx context.Context) ([]*model.Category, er
 	return categories, nil
 }
 
-func (s *BasicService) GetCatalog(ctx context.Context, department string, category string) ([]*model.CatalogProduct, error) {
-	products, err := s.storage.GetCatalog(ctx, department, category)
-	if err != nil {
-		return nil, err
-	}
-	return products, nil
-}
-
-func (s *BasicService) GetProduct(ctx context.Context, sku string, attr string) (*model.VariationProduct, error) {
-	product, err := s.storage.GetProduct(ctx, sku, attr)
+func (s *service) GetProduct(ctx context.Context, sku string) (*model.Product, error) {
+	product, err := s.storage.GetProduct(ctx, sku)
 	if err != nil {
 		return nil, err
 	}
 	return product, nil
 }
 
-func (s *BasicService) GetProductsByCategory(ctx context.Context, category string) ([]*model.SKUProduct, error) {
-	products, err := s.storage.GetProductsByCategory(ctx, category)
+func (s *service) GetProducts(ctx context.Context) ([]*model.Product, error) {
+	products, err := s.storage.GetProducts(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return products, nil
 }
 
-func (s *BasicService) AddAttribute(ctx context.Context, sku string, attribute *model.NameValue) error {
+func (s *service) UpdateProduct(ctx context.Context, product *model.Product) error {
+	err := s.storage.UpdateProduct(ctx, product)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *service) AddAttribute(ctx context.Context, sku string, attribute *model.NameValue) error {
 	err := s.storage.AddAttribute(ctx, sku, attribute)
 	if err != nil {
 		return err
@@ -97,7 +97,7 @@ func (s *BasicService) AddAttribute(ctx context.Context, sku string, attribute *
 	return nil
 }
 
-func (s *BasicService) RemoveAttribute(ctx context.Context, sku string, attribute string) error {
+func (s *service) RemoveAttribute(ctx context.Context, sku string, attribute string) error {
 	err := s.storage.RemoveAttribute(ctx, sku, attribute)
 	if err != nil {
 		return err
@@ -105,7 +105,7 @@ func (s *BasicService) RemoveAttribute(ctx context.Context, sku string, attribut
 	return nil
 }
 
-func (s *BasicService) AddCategory(ctx context.Context, sku string, category *model.Category) error {
+func (s *service) AddCategory(ctx context.Context, sku string, category *model.Category) error {
 	err := s.storage.AddCategory(ctx, sku, category)
 	if err != nil {
 		return err
@@ -113,7 +113,7 @@ func (s *BasicService) AddCategory(ctx context.Context, sku string, category *mo
 	return nil
 }
 
-func (s *BasicService) RemoveCategory(ctx context.Context, sku string, category *model.Category) error {
+func (s *service) RemoveCategory(ctx context.Context, sku string, category *model.Category) error {
 	err := s.storage.RemoveCategory(ctx, sku, category)
 	if err != nil {
 		return err

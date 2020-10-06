@@ -137,7 +137,7 @@ func (p *Storage) GetCategories(categoryURL string) (categories []model.Category
 
 // AddProduct ..
 func (p *Storage) AddProduct(variationID int, cartSession string, sizeOptionID int) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM carts.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM cart.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
 	_, err = p.Exec(query)
 	if err != nil {
 		return err
@@ -147,7 +147,7 @@ func (p *Storage) AddProduct(variationID int, cartSession string, sizeOptionID i
 
 // IncreaseProductQuantity ..
 func (p *Storage) IncreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM carts.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM cart.add_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
 	_, err = p.Exec(query)
 	if err != nil {
 		return err
@@ -157,7 +157,7 @@ func (p *Storage) IncreaseProductQuantity(variationID int, cartSession string, s
 
 // DecreaseProductQuantity ..
 func (p *Storage) DecreaseProductQuantity(variationID int, cartSession string, sizeOptionID int) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM carts.decrease_product_quantity(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM cart.decrease_product_quantity(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
 	_, err = p.Exec(query)
 	if err != nil {
 		return err
@@ -167,7 +167,7 @@ func (p *Storage) DecreaseProductQuantity(variationID int, cartSession string, s
 
 // RemoveProduct ..
 func (p *Storage) RemoveProduct(variationID int, cartSession string, sizeOptionID int) (err error) {
-	query := fmt.Sprintf(`SELECT * FROM carts.remove_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
+	query := fmt.Sprintf(`SELECT * FROM cart.remove_product(%d, '%s', %d);`, variationID, cartSession, sizeOptionID)
 	_, err = p.Exec(query)
 	if err != nil {
 		return err
@@ -177,7 +177,7 @@ func (p *Storage) RemoveProduct(variationID int, cartSession string, sizeOptionI
 
 // LoadCart ..
 func (p *Storage) LoadCart(cartSession string) (cartItems []model.CartItemResponse, err error) {
-	query := fmt.Sprintf(`SELECT * FROM carts.load_cart('%s');`, cartSession)
+	query := fmt.Sprintf(`SELECT * FROM cart.load_cart('%s');`, cartSession)
 
 	rows, err := p.Query(query)
 	if err != nil {

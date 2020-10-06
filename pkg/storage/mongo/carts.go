@@ -56,7 +56,7 @@ func (s *Storage) AddProduct(ctx context.Context, sku string, userID string, isL
 	//	}
 	//}
 
-	err = s.db.Collection("carts").FindOne(ctx, bson.D{{"_id", cartID}, {"status", "active"}, {"products.sku", sku}}).Decode(cart)
+	err = s.db.Collection("cart").FindOne(ctx, bson.D{{"_id", cartID}, {"status", "active"}, {"products.sku", sku}}).Decode(cart)
 	if err != nil {
 		if err.Error() == "mongo: no documents in result" {
 
@@ -92,7 +92,7 @@ func (s *Storage) AddProduct(ctx context.Context, sku string, userID string, isL
 				},
 			}
 			opts := options.Update().SetUpsert(true)
-			_, err := s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
+			_, err := s.db.Collection("cart").UpdateOne(ctx, filter, update, opts)
 			if err != nil {
 				return false, "", err
 			}
@@ -117,7 +117,7 @@ func (s *Storage) AddProduct(ctx context.Context, sku string, userID string, isL
 		}
 
 		opts := options.Update().SetUpsert(true)
-		_, err := s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
+		_, err := s.db.Collection("cart").UpdateOne(ctx, filter, update, opts)
 		if err != nil {
 			return false, "", err
 		}
@@ -134,7 +134,7 @@ func (s Storage) GetHeaderCartInfo(ctx context.Context, userID string) (*model.H
 	if err != nil {
 		return nil, err
 	}
-	err = s.db.Collection("carts").FindOne(ctx, bson.D{{"_id", objID}, {"status", "active"}}).Decode(cart)
+	err = s.db.Collection("cart").FindOne(ctx, bson.D{{"_id", objID}, {"status", "active"}}).Decode(cart)
 	if err != nil {
 		if err.Error() == "mongo: no documents in result" {
 			return nil, nil
@@ -172,7 +172,7 @@ func (s *Storage) IncreaseProductQuantity(ctx context.Context, userID string, sk
 		},
 	}
 	opts := options.Update().SetUpsert(true)
-	_, err = s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
+	_, err = s.db.Collection("cart").UpdateOne(ctx, filter, update, opts)
 	if err != nil {
 		return err
 	}
@@ -201,7 +201,7 @@ func (s *Storage) DecreaseProductQuantity(ctx context.Context, userID string, sk
 		},
 	}
 	opts := options.Update().SetUpsert(true)
-	_, err = s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
+	_, err = s.db.Collection("cart").UpdateOne(ctx, filter, update, opts)
 	if err != nil {
 		return err
 	}
@@ -230,7 +230,7 @@ func (s *Storage) RemoveProduct(ctx context.Context, userID string, sku string) 
 		},
 	}
 	opts := options.Update().SetUpsert(true)
-	_, err = s.db.Collection("carts").UpdateOne(ctx, filter, update, opts)
+	_, err = s.db.Collection("cart").UpdateOne(ctx, filter, update, opts)
 	if err != nil {
 		return err
 	}
@@ -246,7 +246,7 @@ func (s *Storage) LoadCart(ctx context.Context, userID string) ([]*model.CartPro
 	if err != nil {
 		return nil, err
 	}
-	err = s.db.Collection("carts").FindOne(ctx, bson.D{{"_id", objID}, {"status", "active"}}).Decode(cart)
+	err = s.db.Collection("cart").FindOne(ctx, bson.D{{"_id", objID}, {"status", "active"}}).Decode(cart)
 	if err != nil {
 		return nil, err
 	}
