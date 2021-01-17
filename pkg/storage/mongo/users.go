@@ -6,7 +6,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/anabiozz/lapkins-api/pkg/model"
+	"github.com/anabiozz/core/lapkins/pkg/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"

@@ -1,4 +1,4 @@
-package model
+package erp
 
 import (
 	"encoding/json"

@@ -1,4 +1,4 @@
-package model
+package erp
 
 // Paths ...
 type Paths struct {

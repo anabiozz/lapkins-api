@@ -3,7 +3,7 @@ package mongo
 import (
 	"context"
 
-	"github.com/anabiozz/lapkins-api/pkg/model"
+	"github.com/anabiozz/core/lapkins/pkg/model"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

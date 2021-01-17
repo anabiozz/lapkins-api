@@ -1,12 +1,14 @@
-package api
+package erpsvc
 
 import (
 	"context"
+	"github.com/gorilla/handlers"
 	"net/http"
 	"net/http/pprof"
 	"time"
 
 	"github.com/go-kit/kit/log"
+
 	kithttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -20,6 +22,7 @@ type ServerConfig struct {
 	WriteTimeout    time.Duration
 	ShutdownTimeout time.Duration
 	MetricPrefix    string
+	AllowedOrigins  []string
 }
 
 // Server is a service server.
@@ -48,7 +51,7 @@ func NewServer(cfg ServerConfig) (*Server, error) {
 	router.Handle("/api/v1/", makeHandler(svc))
 
 	srv := &http.Server{
-		Handler:      router,
+		Handler:      handlers.CORS(handlers.AllowedOrigins(cfg.AllowedOrigins))(router),
 		Addr:         ":" + cfg.Port,
 		ReadTimeout:  cfg.ReadTimeout,
 		WriteTimeout: cfg.WriteTimeout,
@@ -88,68 +91,12 @@ func makeHandler(svc Service) http.Handler {
 
 	router := mux.NewRouter()
 
-	router.Path("/api/v1/products").Methods(http.MethodGet).Handler(kithttp.NewServer(
-		makeGetProductsEndpoint(svc),
-		decodeGetProductRequest,
-		encodeGetProductResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/product").Methods(http.MethodPost).Handler(kithttp.NewServer(
-		makeUpdateProductEndpoint(svc),
-		decodeUpdateProductRequest,
-		encodeUpdateProductResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/products").Methods(http.MethodGet).Handler(kithttp.NewServer(
-		makeGetProductsEndpoint(svc),
-		decodeGetProductsRequest,
-		encodeGetProductsResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/categories").Methods(http.MethodGet).Handler(kithttp.NewServer(
-		makeGetCategoriesEndpoint(svc),
-		decodeGetCategoriesRequest,
-		encodeGetCategoriesResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/attribute").Methods(http.MethodPost).Handler(kithttp.NewServer(
-		makeAddAttributeEndpoint(svc),
-		decodeAddAttributeRequest,
-		encodeAddAttributeResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/attribute").Methods(http.MethodDelete).Handler(kithttp.NewServer(
-		makeRemoveAttributeEndpoint(svc),
-		decodeRemoveAttributeRequest,
-		encodeRemoveAttributeResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/category").Methods(http.MethodPost).Handler(kithttp.NewServer(
-		makeAddCategoryEndpoint(svc),
-		decodeAddCategoryRequest,
-		encodeAddCategoryResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/category").Methods(http.MethodDelete).Handler(kithttp.NewServer(
-		makeRemoveCategoryEndpoint(svc),
-		decodeRemoveCategoryRequest,
-		encodeRemoveCategoryResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/card/summary").Methods(http.MethodGet).Handler(kithttp.NewServer(
-		makeGetHeaderCartInfo(svc),
-		decodeGetHeaderCartInfoRequest,
-		encodeGetHeaderCartInfoResponse,
-		opts...,
-	))
+	//router.Path("/api/v1/card/summary").Methods(http.MethodGet).Handler(kithttp.NewServer(
+	//	makeGetHeaderCartInfo(svc),
+	//	decodeGetHeaderCartInfoRequest,
+	//	encodeGetHeaderCartInfoResponse,
+	//	opts...,
+	//))
 
 	router.Path("/api/v1/card").Methods(http.MethodGet).Handler(kithttp.NewServer(
 		makeGetCart(svc),
@@ -186,40 +133,12 @@ func makeHandler(svc Service) http.Handler {
 		opts...,
 	))
 
-	router.Path("/api/v1/order").Methods(http.MethodPost).Handler(kithttp.NewServer(
-		makeAddOrderEndpoint(svc),
-		decodeAddOrderRequest,
-		encodeAddOrderResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/user/register").Methods(http.MethodPost).Handler(kithttp.NewServer(
-		makeRegisterEndpoint(svc),
-		decodeRegisterRequest,
-		encodeRegisterResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/user/login").Methods(http.MethodPost).Handler(kithttp.NewServer(
-		makeLoginEndpoint(svc),
-		decodeLoginRequest,
-		encodeLoginResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/user/refresh-token").Methods(http.MethodPut).Handler(kithttp.NewServer(
-		makeRefreshTokenEndpoint(svc),
-		decodeRefreshTokenRequest,
-		encodeRefreshTokenResponse,
-		opts...,
-	))
-
-	router.Path("/api/v1/users").Methods(http.MethodGet).Handler(kithttp.NewServer(
-		makeGetUsersEndpoint(svc),
-		decodeGetUsersRequest,
-		encodeGetUsersResponse,
-		opts...,
-	))
+	//router.Path("/api/v1/order").Methods(http.MethodPost).Handler(kithttp.NewServer(
+	//	makeAddOrderEndpoint(svc),
+	//	decodeAddOrderRequest,
+	//	encodeAddOrderResponse,
+	//	opts...,
+	//))
 
 	return router
 }

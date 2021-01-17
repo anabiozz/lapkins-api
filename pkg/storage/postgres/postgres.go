@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/anabiozz/lapkins-api/pkg/model"
+	"github.com/anabiozz/core/lapkins/pkg/model"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/lib/pq"
 	log "github.com/sirupsen/logrus"

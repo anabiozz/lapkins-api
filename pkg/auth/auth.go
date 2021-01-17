@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/anabiozz/lapkins-api/pkg/cookies"
+	"github.com/anabiozz/core/lapkins/pkg/cookies"
 	"github.com/dgrijalva/jwt-go"
 )
 
